@@ -1,1 +1,1 @@
-
+This is the capstone project for the STEP Pod including Claire, Grant, and Meagan.
