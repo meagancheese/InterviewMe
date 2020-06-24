@@ -5,6 +5,7 @@
     <title>Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="global.css">
     <link rel="stylesheet" href="profile.css">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -43,7 +44,7 @@
         <div class="form-group row">
           <label for="name" class="col-sm-2 col-form-label">Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="user-company" value="Tess Ter">
+            <input type="text" readonly class="form-control-plaintext editable" id="user-company" value="Tess Ter">
           </div>
         </div>
         <div class="form-group row">
@@ -55,25 +56,26 @@
         <div class="form-group row">
           <label for="user-company" class="col-sm-2 col-form-label">Company</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="user-company" value="Google">
+            <input type="text" readonly class="form-control-plaintext editable" id="user-company" value="Google">
           </div>
         </div>
         <div class="form-group row">
           <label for="user-job" class="col-sm-2 col-form-label">Job</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="user-job" value="Software Engineer">
+            <input type="text" readonly class="form-control-plaintext editable" id="user-job" value="Software Engineer">
           </div>
         </div>
         <div class="form-group row">
           <label for="user-LinkedIn" class="col-sm-2 col-form-label">LinkedIn</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="user-LinkedIn" value="https://www.linkedin.com/">
+            <input type="text" readonly class="form-control-plaintext editable" id="user-LinkedIn" value="https://www.linkedin.com/">
           </div>
         </div>
-        <!-- TODO: Have this update button actually update profile info to Datastore. -->
         <div class="form-group row">
           <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <!-- TODO: Have this update button actually update profile info to Datastore. -->            
+            <button type="submit" id="update-button" hidden class="btn btn-primary">Update</button>
+            <button type="button" id="edit-button" onclick="makeEditable()" class="btn btn-primary">Edit</button>
           </div>
         </div>
       </form>
