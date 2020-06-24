@@ -6,4 +6,10 @@
 
 .scheduled-interview-card {
   margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#scheduled-interviews-heading {
+  text-align: center;
 }
