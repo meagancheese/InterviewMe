@@ -4,11 +4,21 @@
   width: 650px;
 }
 
-.space-above {
-  margin-top: 1rem;
+.form-row {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.center-with-form {
+  margin-top: 5px;
   margin-bottom: 0;
 }
 
-.start-times {
-  margin-bottom: 0;
+.end-time {
+  margin-left: 8px;
+}
+
+.space-above {
+  margin-top: 1rem;
 }
