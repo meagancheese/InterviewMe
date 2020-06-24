@@ -16,8 +16,28 @@
   </head>
   <body>
     <div id="content">
-      <!-- TODO: add navbar here. -->
-      <h1>Your Profile</h1>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">InterviewMe</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+          data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home</a>
+            <!--TODO: Put in links to other pages. Put on all pages-->
+            <a class="nav-item nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="scheduled-interviews.html">Events</a>
+            <a class="nav-item nav-link" href="#">Availability</a>
+            <a class="nav-item nav-link" href="#">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
+            <a class="nav-item nav-link" href="#">Logout</a>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <h1 class="text-center">Your Profile</h1>
       <form>
         <!-- TODO: fill in values based on user data from Datastore. -->
         <div class="form-group row">
