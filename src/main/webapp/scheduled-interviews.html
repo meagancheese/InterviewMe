@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Scheduled Interviews</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="scheduled-interviews.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="scheduled-interviews.js"></script>
+  </head>
+  <body>
+    <div id="content">
+      <!-- TODO: add navbar here. -->
+      <h1 class="text-center">Scheduled Interviews</h1>
+      <!-- TODO: Render all scheduled events using Datastore information and Javascript, remove hardcoded ones. -->
+      <section id="scheduled-interviews-cards">
+        <div class="row">
+          <div class="card w-75 scheduled-interview-card">
+            <div class="card-body">
+              <h5 class="card-title">Your role: Interviewer</h5>
+              <p class="card-text">July 17, 2020 @ 3:00PM - 4:00PM EST</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Interviewee Email: alice@gmail.com</li>
+              <li class="list-group-item">Interviewer Email: tess@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card w-75 scheduled-interview-card">
+            <div class="card-body">
+              <h5 class="card-title">Your role: Interviewee</h5>
+              <p class="card-text">July 20, 2020 @ 2:30PM - 3:30PM EST</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Interviewee Email: tess@gmail.com</li>
+              <li class="list-group-item">Interviewer Email: bob@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <br><br><br>
+    </div>
+  </body>
+</html>
