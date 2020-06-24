@@ -1,5 +1,12 @@
 #content {
-    margin-left: auto;
-    margin-right: auto;
-    width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+}
+
+.vertical-center {
+  width: 650px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
