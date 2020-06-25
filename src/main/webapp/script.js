@@ -25,7 +25,7 @@ function checkLogin() {
       }
       document.getElementById('login-tab').innerText = 'Logout';
     } else {
-      document.getElementById('loggedOut').style.display = 'inline';
+      document.getElementById('login-message').style.display = 'inline';
       document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
       restrictedTabs = document.getElementsByClassName('restricted-tab');
       for(let element of restrictedTabs) {
