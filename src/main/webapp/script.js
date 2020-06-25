@@ -24,7 +24,6 @@ function checkLogin() {
         element.className = 'restricted-tab nav-item nav-link';
       }
       document.getElementById('login-tab').innerText = 'Logout';
-      document.getElementById('login-tab').href = status.changeLogInStatusURL;
     } else {
       document.getElementById('loggedOut').style.display = 'inline';
       document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
@@ -33,7 +32,7 @@ function checkLogin() {
         element.className = 'restricted-tab nav-item nav-link disabled';
       }
       document.getElementById('login-tab').innerText = 'Login';
-      document.getElementById('login-tab').href = status.changeLogInStatusURL;
     }
+    document.getElementById('login-tab').href = status.changeLogInStatusURL;
   });
 }
