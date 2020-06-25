@@ -9,9 +9,9 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-//import com.google.appengine.api.oauth.OAuthService;
-//import com.google.appengine.api.oauth.OAuthServiceFactory;
-//import com.google.appengine.api.users.User;
+// import com.google.appengine.api.oauth.OAuthService;
+// import com.google.appengine.api.oauth.OAuthServiceFactory;
+// import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
@@ -31,7 +31,6 @@ public class LogInServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // TODO: Might have to use OAuthService and OAuthServiceFactory, but maybe not here.
-    hithr
     response.setContentType("application/json;");
     UserService userService = UserServiceFactory.getUserService();
     boolean loggedIn = userService.isUserLoggedIn();

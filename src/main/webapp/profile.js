@@ -13,6 +13,17 @@
 // limitations under the License.
 
 // Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
+
+function onLoad() {
+  supplyLogoutLink();
+}
+
+function supplyLogoutLink() {
+  fetch('/login').then(response => response.json()).then(status => {
+    document.getElementById('login-tab').href = status.changeLogInStatusURL;
+  });
+}
+
 function makeEditable() {
   const editButton = document.getElementById("edit-button");
   const updateButton = document.getElementById("update-button");

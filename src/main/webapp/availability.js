@@ -12,3 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function onLoad() {
+  supplyLogoutLink();
+}
+
+function supplyLogoutLink() {
+  fetch('/login').then(response => response.json()).then(status => {
+    document.getElementById('login-tab').href = status.changeLogInStatusURL;
+  });
+}
