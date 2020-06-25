@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function findInterview() {
-  // TODO: fetch and get all interviews instead of toggling a hidden card
+function loadInterviews() {
+  // TODO: fetch and get all interviews instead of unhiding something hidden
   const searchResultsDiv = document.getElementById("search-results");
+  searchResultsDiv.removeAttribute("hidden");
 }

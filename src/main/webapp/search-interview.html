@@ -18,16 +18,89 @@
   <body>
     <div id="content">
       <!-- TODO: add navbar here. -->
-      <h1>Search for an Interview</h1>
+      <h1 class="text-center">Search for an Interview</h1>
       <h5 class="text-center lead">Search for possible times in which you will be interviewed!</h5>
       <br>
       <form>
         <div class="form-group">
-          <!-- This seems dumb right now, but will make more sense once we add positions to our site. -->
-          <button type="button" class="btn btn-primary" onclick="findInterviews()">Search</button>
+          <!-- TODO: add parameters for this form. -->
+          <button type="button" class="btn btn-primary" onclick="loadInterviews()">Search</button>
         </div>
       </form>
-      <section id="search-results"></section>
+      <br>      
+      <section hidden id="search-results">
+        <!--TODO: Include Timezone consideration; Add pagination; Render these interview times dynamically; store choice selected;-->
+        <form>
+          <div class="form-row">
+            <div class="col-3 date-label">
+              <label>Monday 6/29</label>
+            </div>
+            <div class="col-5">
+              <select class="form-control">
+                <option>8:15 AM - 9:15 PM</option>
+                <option>10:30 AM - 11:30 AM</option>
+                <option>1:00 PM - 2:00 PM</option>
+              </select>
+            </div>
+            <!-- TODO: Add an additional confirmation step to guard against misclicks. -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary mb-2">Select</button>
+            </div>
+          </div>
+        </form>
+        <br>
+        <form>
+          <div class="form-row">
+            <div class="col-3 date-label">
+              <label>Wednesday 6/30</label>
+            </div>
+            <div class="col-5">
+              <select class="form-control">
+                <option>6:30 PM - 7:30 PM</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary mb-2">Select</button>
+            </div>
+          </div>
+        </form>
+        <br>     
+        <form>
+          <div class="form-row">
+            <div class="col-3 date-label">
+              <label>Thursday 7/1</label>
+            </div>
+            <div class="col-5">
+              <select class="form-control">
+                <option>9:30 AM - 10:30 AM</option>
+                <option>6:30 PM - 7:30 PM</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary mb-2">Select</button>
+            </div>
+          </div>
+        </form>
+        <br>  
+        <form>
+          <div class="form-row">
+            <div class="col-3 date-label">
+              <label>Sunday 7/1</label>
+            </div>
+            <div class="col-5">
+              <select class="form-control">
+                <option>9:30 AM - 10:30 AM</option>
+                <option>9:30 AM - 10:30 AM</option>
+                <option>6:30 PM - 7:30 PM</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary mb-2">Select</button>
+            </div>
+          </div>
+        </form>
+        <br>  
+      </section>
     </div>
   </body>
 </html>
