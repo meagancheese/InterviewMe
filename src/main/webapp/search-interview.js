@@ -18,3 +18,13 @@ function loadInterviews() {
   const searchResultsDiv = document.getElementById("search-results");
   searchResultsDiv.removeAttribute("hidden");
 }
+
+// Confirms interview selection with user and sends this selection to Datastore if confirmed.
+function selectInterview() {
+  // TODO: fill in with actual interview info.
+  if (confirm("You selected: Sunday 7/1 from 6:30 PM - 7:30 PM. Click OK if you wish to proceed.")) {
+    alert("You have scheduled an interview on Sunday 7/1 from 6:30 PM - 7:30 PM. Check your email for more information.");
+    // TODO: Call a servlet to handle this selection.
+    location.reload();
+  }
+}

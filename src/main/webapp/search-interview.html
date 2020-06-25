@@ -29,7 +29,7 @@
       </form>
       <br>      
       <section hidden id="search-results">
-        <!--TODO: Include Timezone consideration; Add pagination; Render these interview times dynamically; store choice selected;-->
+        <!--TODO: Include Timezone consideration; Add pagination; Render these interview times dynamically;-->
         <form>
           <div class="form-row">
             <div class="col-3 date-label">
@@ -42,9 +42,8 @@
                 <option>1:00 PM - 2:00 PM</option>
               </select>
             </div>
-            <!-- TODO: Add an additional confirmation step to guard against misclicks. -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary mb-2">Select</button>
+              <button type="button" class="btn btn-primary mb-2">Select</button>
             </div>
           </div>
         </form>
@@ -60,7 +59,7 @@
               </select>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary mb-2">Select</button>
+              <button type="button" class="btn btn-primary mb-2">Select</button>
             </div>
           </div>
         </form>
@@ -77,7 +76,7 @@
               </select>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary mb-2">Select</button>
+              <button type="button" class="btn btn-primary mb-2">Select</button>
             </div>
           </div>
         </form>
@@ -95,7 +94,8 @@
               </select>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary mb-2">Select</button>
+              <!-- TODO: change onclick to addEventListener inside loadInterviews() so it can pass in params. -->
+              <button type="button" class="btn btn-primary mb-2" onclick="selectInterview()">Select</button>
             </div>
           </div>
         </form>
