@@ -43,7 +43,7 @@ public class LogInServlet extends HttpServlet {
     response.getWriter().println(new Gson().toJson(toSend));
   }
 
-  private class LoginInfo {
+  private static class LoginInfo {
     private final boolean loggedIn;
     private final String changeLogInStatusURL;
 
