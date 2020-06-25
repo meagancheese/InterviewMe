@@ -15,9 +15,3 @@
 function onLoad() {
   supplyLogoutLink();
 }
-
-function supplyLogoutLink() {
-  fetch('/login').then(response => response.json()).then(status => {
-    document.getElementById('login-tab').href = status.changeLogInStatusURL;
-  });
-}
