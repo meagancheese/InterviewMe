@@ -21,15 +21,15 @@ function checkLogin() {
     if(status.loggedIn){
       restrictedTabs = document.getElementsByClassName('restricted-tab');
       for(let element of restrictedTabs) {
-        element.className = 'restricted-tab nav-item nav-link';
+        element.classList.remove('disabled');
       }
       document.getElementById('login-tab').innerText = 'Logout';
     } else {
-      document.getElementById('login-message').style.display = 'inline';
+      document.getElementById('loggedOut').style.display = 'inline';
       document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
       restrictedTabs = document.getElementsByClassName('restricted-tab');
       for(let element of restrictedTabs) {
-        element.className = 'restricted-tab nav-item nav-link disabled';
+        element.classList.add('disabled');
       }
       document.getElementById('login-tab').innerText = 'Login';
     }
