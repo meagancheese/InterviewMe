@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Availability</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="availability.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="availabilty.js"></script>
+  </head>
+  <body>
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">InterviewMe</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+          data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home</a>
+            <!--TODO: Put in links to other pages. Put on all pages-->
+            <a class="nav-item nav-link" href="profile.html">Profile</a>
+            <a class="nav-item nav-link" href="scheduled-interviews">Events</a>
+            <a class="nav-item nav-link active" href="#">Availability</a>
+            <a class="nav-item nav-link" href="#">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
+            <a class="nav-item nav-link" href="#">Logout</a>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <h1 class="text-center">Availability</h1>
+      <h5 class="text-center lead">Update your availability to be an Interviewer for this week below:</h5>
+      <br>
+      <!--TODO: Include Timezone consideration; Check inputs for correctness: end is after start, at least an hour long;
+         Add pagination; Figure out how to update the dates (dynamically); store and show inputted data; Allow for more than one
+         time range per day (have a plus button)-->
+      <h5 class="font-weight-bold">Monday 6/29</h5>
+      <form>
+        <div class="form-row">
+          <p class="form-labels">Start Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <p class="form-labels end-time">End Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <h5 class="font-weight-bold">Tuesday 6/30</h5>
+      <form>
+        <div class="form-row">
+          <p class="form-labels">Start Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <p class="form-labels end-time">End Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <h5 class="font-weight-bold">Wednesday 7/1</h5>
+      <form>
+        <div class="form-row">
+          <p class="form-labels">Start Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <p class="form-labels end-time">End Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <h5 class="font-weight-bold">Thursday 7/2</h5>
+      <form>
+        <div class="form-row">
+          <p class="form-labels">Start Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <p class="form-labels end-time">End Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <br>
+      
+      <h5 class="font-weight-bold">Friday 7/3</h5>
+      <form>
+        <div class="form-row">
+          <p class="form-labels">Start Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+          <p class="form-labels end-time">End Time:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+          </div>
+          <p class="form-labels">:</p>
+          <div class="col">
+            <select class="form-control">
+              <option>00</option>
+              <option>15</option>
+              <option>30</option>
+              <option>45</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control">
+              <option>AM</option>
+              <option>PM</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <button type="submit" class="btn btn-primary mb-2 submit-button">Update Availability</button>
+      <br><br><br>
+    </div>
+  </body>
+</html>
