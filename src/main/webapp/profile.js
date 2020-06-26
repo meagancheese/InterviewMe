@@ -14,7 +14,7 @@
 
 // Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
 
-function onLoad() {
+function onProfileLoad() {
   supplyLogoutLink();
 }
 
