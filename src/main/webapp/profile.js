@@ -29,4 +29,9 @@ function makeEditable() {
     editableField.classList.remove("form-control-plaintext");
     editableField.classList.add("form-control");
   });
+  
+  const currentJob = document.getElementById("current-job");
+  currentJob.setAttribute("hidden", true);
+  const jobField = document.getElementById("job-field");
+  jobField.removeAttribute("hidden");
 }

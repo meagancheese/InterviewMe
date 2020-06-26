@@ -51,23 +51,24 @@
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="first-name-field">First name</label>
-            <input type="text" class="form-control-plaintext editable" id="first-name-field" placeholder="First name" value="Tess" required>
+            <input type="text" readonly class="form-control-plaintext editable" id="first-name-field" placeholder="First name" value="Tess" required>
           </div>
           <div class="col-md-6 mb-3">
             <label for="first-name-field">Last name</label>
-            <input type="text" class="form-control-plaintext editable" id="last-name-field" placeholder="Last name" value="Ter" required>
+            <input type="text" readonly class="form-control-plaintext editable" id="last-name-field" placeholder="Last name" value="Ter" required>
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="company-field">Company</label>
-            <input type="text" class="form-control-plaintext editable" id="company-field" value="Google">
+            <input type="text" readonly class="form-control-plaintext editable" id="company-field" value="Google">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label for="job-field">Job</label>
-            <select class="form-control" id="job-field">
+            <p id="current-job">Product Manager</p>            
+            <select hidden readonly class="form-control-plaintext editable" id="job-field">
               <option>Software Engineer</option>
-              <option>Product Manager</option>
+              <option selected>Product Manager</option>
               <option>Business Analyst</option>
               <option>Technical Consultant</option>
               <option>Software Tester</option>
@@ -81,7 +82,7 @@
         <div class="form-row">
           <div class="col-md-12 mb-3">
             <label for="linkedin-field">LinkedIn URL</label>
-            <input type="text" class="form-control-plaintext editable" id="linkedin-field" placeholder="https://www.linkedin.com/" value="">
+            <input type="text" readonly class="form-control-plaintext editable" id="linkedin-field" placeholder="https://www.linkedin.com/" value="">
           </div>
         </div>
         <div class="form-group row">
