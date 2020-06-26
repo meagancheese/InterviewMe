@@ -14,8 +14,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="profile.js"></script>
+    <script src="logout.js"></script>
   </head>
-  <body>
+  <body onload="onProfileLoad()">
     <div id="content">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <span class="navbar-brand mb-0 h1">InterviewMe</span>
@@ -31,8 +32,8 @@
             <a class="nav-item nav-link" href="scheduled-interviews.html">Events</a>
             <a class="nav-item nav-link" href="availability.html">Availability</a>
             <a class="nav-item nav-link" href="search-interview.html">Scheduling</a>
-            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
-            <a class="nav-item nav-link" href="#">Logout</a>
+            <!--TODO: Move this to the right of the navbar-->
+            <a class="nav-item nav-link" href="#" id="login-tab">Logout</a>
           </div>
         </div>
       </nav>

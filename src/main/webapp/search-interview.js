@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function onSearchInterviewLoad() {
+  supplyLogoutLink();
+}
+
 // Should query Datastore for appropriate interviews and render them on the page.
 function loadInterviews() {
   // TODO: fetch and get all interviews instead of unhiding something hidden
