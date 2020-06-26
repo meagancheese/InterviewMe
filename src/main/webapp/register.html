@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="register.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="register.js"></script>
+  </head>
+  <body onload="prepareFormValidation()">
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">InterviewMe</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+          data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
+          aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <!-- TODO: disable some of these links when registering. -->            
+            <a class="nav-item nav-link active" href="#">Home</a>
+            <!--TODO: Put in links to other pages. Put on all pages-->
+            <a class="nav-item nav-link" href="profile.html">Profile</a>
+            <a class="nav-item nav-link" href="scheduled-interviews.html">Events</a>
+            <a class="nav-item nav-link" href="availability.html">Availability</a>
+            <a class="nav-item nav-link" href="#">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
+            <a class="nav-item nav-link" href="#">Logout</a>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <h1 class="text-center">Register for InterviewMe</h1>
+      <h5 class="text-center lead">Fill in the following fields below.</h5>
+      <br>   
+      <!-- TODO: copy to profile page once this is approved so that the forms match. -->
+      <form class="needs-validation" novalidate action="/register" method="POST">
+        <div class="form-row">
+          <div class="col-md-12 mb-3">
+            <label for="user-email">Email</label>
+            <!-- TODO: replace with user's actual email -->
+            <input type="text" readonly class="form-control" id="user-email" value="tess@gmail.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label for="first-name-field">First name</label>
+            <input type="text" class="form-control" id="first-name-field" placeholder="First name" value="" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="first-name-field">Last name</label>
+            <input type="text" class="form-control" id="last-name-field" placeholder="Last name" value="" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label for="company-field">Company</label>
+            <input type="text" class="form-control" id="company-field" placeholder="Google" value="">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label for="job-field">Job</label>
+            <select class="form-control" id="job-field">
+              <option>Software Engineer</option>
+              <option>Product Manager</option>
+              <option>Business Analyst</option>
+              <option>Technical Consultant</option>
+              <option>Software Tester</option>
+              <option>Technical Sales</option>
+              <option>Network Engineer</option>
+              <option>Systems Analyst</option>
+              <option>Technical Support</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-12 mb-3">
+            <label for="linkedin-field">LinkedIn URL</label>
+            <input type="text" class="form-control" id="linkedin-field" placeholder="https://www.linkedin.com/" value="">
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+      <br><br><br>
+    </div>
+  </body>
+</html>
