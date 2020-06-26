@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function onRegisterLoad() {
+  supplyLogoutLink();
+  prepareFormValidation();
+}
+
+
 // Finds fields that need an input and makes sure that submit won't go through if they are empty. 
 // Straight from Bootstrap.
 function prepareFormValidation() {
