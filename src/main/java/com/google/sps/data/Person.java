@@ -24,10 +24,6 @@ public class Person {
     this.linkedIn = linkedIn;
   }
 
-  public void setKey(String newEmail) {
-    email = newEmail;
-  }
-
   public void updateName(String newName) {
     name = newName;
   }
