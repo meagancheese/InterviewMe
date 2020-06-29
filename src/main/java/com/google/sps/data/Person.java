@@ -12,23 +12,55 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-/**
- * Represents a user on the site.
- * The email is used as the key to the user table.
- */
+/** Represents a user on the site. The email is used as the key to the user table. */
 public class Person {
-  private string email, name, company, job, linkedin;
-   
-  public Person(string email, string name, string company, string job, string linkedin) {
+  private String email, name, company, job, linkedIn;
+
+  public Person(String email, String name, String company, String job, String linkedIn) {
     this.email = email;
-    this.name = name; 
+    this.name = name;
     this.company = company;
     this.job = job;
-    this.linkedin = linkedin; 
+    this.linkedIn = linkedIn;
   }
 
-  public string key() {
-    return email; 
+  public void setKey(String newEmail) {
+    email = newEmail;
+  }
+
+  public void updateName(String newName) {
+    name = newName;
+  }
+
+  public void updateCompany(String newCompany) {
+    company = newCompany;
+  }
+
+  public void updateJob(String newJob) {
+    job = newJob;
+  }
+
+  public void updateLinkedIn(String newLinkedIn) {
+    linkedIn = newLinkedIn;
+  }
+
+  public String key() {
+    return email;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getCompany() {
+    return company;
+  }
+
+  public String getJob() {
+    return job;
+  }
+
+  public String getLinkedIn() {
+    return linkedIn;
   }
 }
