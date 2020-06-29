@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function onProfileLoad() {
+  prepareFormValidation();
+}
+
 // Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
 
 function onProfileLoad() {
@@ -30,4 +34,9 @@ function makeEditable() {
     editableField.classList.remove("form-control-plaintext");
     editableField.classList.add("form-control");
   });
+  
+  const currentJob = document.getElementById("current-job");
+  currentJob.setAttribute("hidden", true);
+  const jobField = document.getElementById("job-field");
+  jobField.removeAttribute("hidden");
 }
