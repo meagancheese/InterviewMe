@@ -15,6 +15,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="profile.js"></script>
     <script src="register.js"></script>    
+    <script src="logout.js"></script>
   </head>
   <body onload="onProfileLoad()">
     <div id="content">
@@ -28,13 +29,12 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="index.html">Home</a>
-            <!--TODO: Put in links to other pages. Put on all pages-->
             <a class="nav-item nav-link active" href="#">Profile</a>
             <a class="nav-item nav-link" href="scheduled-interviews.html">Events</a>
             <a class="nav-item nav-link" href="availability.html">Availability</a>
-            <a class="nav-item nav-link" href="#">Scheduling</a>
-            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
-            <a class="nav-item nav-link" href="#">Logout</a>
+            <a class="nav-item nav-link" href="search-interview.html">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar-->
+            <a class="nav-item nav-link" href="#" id="login-tab">Logout</a>
           </div>
         </div>
       </nav>

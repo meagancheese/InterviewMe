@@ -4,3 +4,7 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+#login-message-container {
+  display: none;
+}

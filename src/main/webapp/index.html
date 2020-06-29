@@ -14,8 +14,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="script.js"></script>
+    <script src="logout.js"></script>
   </head>
-  <body>
+  <body onload="onIndexLoad()">
     <div id="content">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <span class="navbar-brand mb-0 h1">InterviewMe</span>
@@ -27,22 +28,24 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link active" href="#">Home</a>
-            <!--TODO: Put in links to other pages. Put on all pages-->
-            <a class="nav-item nav-link" href="profile.html">Profile</a>
-            <a class="nav-item nav-link" href="scheduled-interviews.html">Events</a>
-            <a class="nav-item nav-link" href="availability.html">Availability</a>
-            <a class="nav-item nav-link" href="#">Scheduling</a>
-            <!--TODO: Move this to the right of the navbar and allow user to log in and out using Authentication-->
-            <a class="nav-item nav-link" href="#">Logout</a>
+            <a class="restricted-tab nav-item nav-link" href="profile.html">Profile</a>
+            <a class="restricted-tab nav-item nav-link" href="scheduled-interviews.html">Events</a>
+            <a class="restricted-tab nav-item nav-link" href="availability.html">Availability</a>
+            <a class="restricted-tab nav-item nav-link" href="search-interview.html">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar-->
+            <a class="nav-item nav-link" href="#" id="login-tab"></a>
           </div>
         </div>
       </nav>
       <div class="vertical-center">
         <h1 class="text-center display-4">Welcome to InterviewMe!</h1>
-        <h4 class="text-center lead">InterviewMe is a platform for conducting mock technical interviews where interviewers and interviewees alike can 
-          practice their skills. We aim to connect users with live video chats in order to encapsulate the true feeling
-          and pace of a technical interview.
+        <h4 class="text-center lead">InterviewMe is a platform for conducting mock technical interviews where 
+          interviewers and interviewees alike can practice their skills. We aim to connect users with live video chats 
+          in order to encapsulate the true feeling and pace of a technical interview.
         </h4>
+        <div id="login-message-container">
+          <p class="text-center" id="login-message"></p>
+        </div>
       </div>
     </div>
   </body>

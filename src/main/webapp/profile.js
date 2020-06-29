@@ -17,6 +17,11 @@ function onProfileLoad() {
 }
 
 // Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
+
+function onProfileLoad() {
+  supplyLogoutLink();
+}
+
 function makeEditable() {
   const editButton = document.getElementById("edit-button");
   const updateButton = document.getElementById("update-button");

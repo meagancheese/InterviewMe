@@ -12,3 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+function onIndexLoad() {
+  checkLogin();
+}
+
+function checkLogin() {
+  fetch('/login').then(response => response.json()).then(status => {
+    if(status.loggedIn){
+      restrictedTabs = document.getElementsByClassName('restricted-tab');
+      for(let element of restrictedTabs) {
+        element.classList.remove('disabled');
+      }
+      document.getElementById('login-tab').innerText = 'Logout';
+    } else {
+      document.getElementById('login-message-container').style.display = 'inline';
+      document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
+      restrictedTabs = document.getElementsByClassName('restricted-tab');
+      for(let element of restrictedTabs) {
+        element.classList.add('disabled');
+      }
+      document.getElementById('login-tab').innerText = 'Login';
+    }
+    document.getElementById('login-tab').href = status.changeLogInStatusURL;
+  });
+}
