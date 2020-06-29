@@ -19,14 +19,18 @@ import java.util.List;
 public interface BaseDao<T> {
 
   public T get(long id);
+
   public T get(String name);
+
   public List<T> getAll(String kind);
-  
+
   public void put(T entity);
+
   public void put(T entity, long id);
+
   public void put(T entity, String name);
-  
+
   public void update(T entity, long id);
+
   public void update(T entity, String name);
-  
 }
