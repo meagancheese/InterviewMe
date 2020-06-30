@@ -26,7 +26,7 @@ public class ScheduledInterview {
     this.intervieweeEmail = intervieweeEmail;
   }
 
-  /* Returns a TimeRange representing the when the interview occurs.
+  /* Returns a TimeRange representing the when the interview starts and ends.
    */
   public TimeRange getWhen() {
     return when;
