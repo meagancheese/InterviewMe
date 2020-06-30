@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+/* Represents a scheduled interview. Contains the timerange of the interview and the emails of the attendees. */
 public class ScheduledInterview {
   private TimeRange when;
   private String interviewerEmail;
@@ -26,20 +27,17 @@ public class ScheduledInterview {
     this.intervieweeEmail = intervieweeEmail;
   }
 
-  /* Returns a TimeRange representing the when the interview starts and ends.
-   */
+  /* Returns a TimeRange representing the when the interview starts and ends. */
   public TimeRange getWhen() {
     return when;
   }
 
-  /* Returns the email of the interviewer.
-   */
+  /* Returns the email of the interviewer. */
   public String getInterviewerEmail() {
     return interviewerEmail;
   }
 
-  /* Returns the email of the interviewee.
-   */
+  /* Returns the email of the interviewee. */
   public String getIntervieweeEmail() {
     return intervieweeEmail;
   }
