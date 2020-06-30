@@ -57,6 +57,7 @@ public class DatastorePersonDao implements PersonDao {
   /* Since email is a personEntity's key, we retrieve the corresponding personEntity from Datastore and return it as a Person object. */
   public Person get(String email)
       throws com.google.appengine.api.datastore.EntityNotFoundException {
+    // TODO: test this with the profile page
     Key key = KeyFactory.createKey("Person", email);
     Entity personEntity = datastore.get(key);
     return entityToPerson(personEntity);
