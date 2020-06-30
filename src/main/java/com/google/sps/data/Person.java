@@ -12,20 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+package com.google.sps;
+
 /** Represents a user on the site. The email is used as the key to the user table. */
 public class Person {
-  private String email, name, company, job, linkedIn;
+  private String email, firstName, lastName, company, job, linkedIn;
 
-  public Person(String email, String name, String company, String job, String linkedIn) {
+  public Person(
+      String email,
+      String firstName,
+      String lastName,
+      String company,
+      String job,
+      String linkedIn) {
     this.email = email;
-    this.name = name;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.company = company;
     this.job = job;
     this.linkedIn = linkedIn;
   }
 
-  public void updateName(String newName) {
-    name = newName;
+  public void updateFirstName(String newFirstName) {
+    firstName = newFirstName;
+  }
+
+  public void updateLastName(String newLastName) {
+    lastName = newLastName;
   }
 
   public void updateCompany(String newCompany) {
@@ -44,8 +57,12 @@ public class Person {
     return email;
   }
 
-  public String getName() {
-    return name;
+  public String getfirstName() {
+    return firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
   }
 
   public String getCompany() {
