@@ -57,7 +57,7 @@ public class Person {
     return email;
   }
 
-  public String getfirstName() {
+  public String getFirstName() {
     return firstName;
   }
 
