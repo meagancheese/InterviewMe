@@ -14,34 +14,32 @@
 
 package com.google.sps;
 
-import java.time.Instant;
-
 public class ScheduledInterview {
   private TimeRange when;
-  private Instant date;
   private String interviewerEmail;
   private String intervieweeEmail;
 
   public ScheduledInterview(
-      TimeRange when, Instant date, String interviewerEmail, String intervieweeEmail) {
+      TimeRange when, String interviewerEmail, String intervieweeEmail) {
     this.when = when;
-    this.date = date;
     this.interviewerEmail = interviewerEmail;
     this.intervieweeEmail = intervieweeEmail;
   }
 
+  /* Returns a TimeRange representing the when the interview occurs.
+   */
   public TimeRange getWhen() {
     return when;
   }
 
-  public Instant getDate() {
-    return date;
-  }
-
+  /* Returns the email of the interviewer.
+   */
   public String getInterviewerEmail() {
     return interviewerEmail;
   }
 
+  /* Returns the email of the interviewee.
+   */
   public String getIntervieweeEmail() {
     return intervieweeEmail;
   }
