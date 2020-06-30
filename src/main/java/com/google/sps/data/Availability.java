@@ -32,27 +32,15 @@ public class Availability {
     this.date = date;
   }
 
-  public void setAvailability(Timerange range) {
-    when = range;
+  public void updateTimeRange(Timerange range) {
+    this.when = range;
   }
 
-  public void setDate(Instant day) {
-    date = day;
+  public void updateDate(Instant day) {
+    this.date = day;
   }
 
-  public void setEmail(String email) {
-    personEmail = email;
-  }
-
-  public TimeRange getAvailability() {
+  public TimeRange getTimeRange() {
     return when;
-  }
-
-  public Instant getDate() {
-    return date;
-  }
-
-  public String getEmail() {
-    return personEmail;
   }
 }
