@@ -17,7 +17,6 @@ function onRegisterLoad() {
   prepareFormValidation();
 }
 
-
 // Finds fields that need an input and makes sure that submit won't go through if they are empty. 
 // Straight from Bootstrap.
 function prepareFormValidation() {
