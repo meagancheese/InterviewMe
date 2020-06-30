@@ -14,7 +14,7 @@
 
 package com.google.sps;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 /**
  * Availability is a time range when a given person is available to offer interviews as an
@@ -23,10 +23,10 @@ import java.time.Instant;
 public class Availability {
   private String personEmail;
   private TimeRange when;
-  private Instant date;
+  private LocalDate date;
 
   /** This constructor creates a new Availability object */
-  public Availability(String personEmail, TimeRange when, Instant date) {
+  public Availability(String personEmail, TimeRange when, LocalDate date) {
     this.personEmail = personEmail;
     this.when = when;
     this.date = date;
@@ -40,7 +40,7 @@ public class Availability {
     return when;
   }
 
-  public Instant getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
