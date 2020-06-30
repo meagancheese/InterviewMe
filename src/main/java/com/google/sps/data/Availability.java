@@ -43,4 +43,8 @@ public class Availability {
   public Instant getDate() {
     return date;
   }
+
+  public String getEmail() {
+    return personEmail;
+  }
 }
