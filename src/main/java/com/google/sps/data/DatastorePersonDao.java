@@ -46,6 +46,7 @@ public class DatastorePersonDao implements PersonDao {
 
   private static Entity personToEntity(Person person) {
     Entity personEntity = new Entity("Person", person.key());
+    personEntity.setProperty("email", person.key());    
     personEntity.setProperty("firstName", person.getFirstName());
     personEntity.setProperty("lastName", person.getLastName());
     personEntity.setProperty("company", person.getCompany());
