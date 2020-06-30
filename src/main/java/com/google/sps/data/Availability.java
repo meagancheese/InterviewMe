@@ -12,23 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import java.util.LocalDate;
+package com.google.sps;
+
+import java.time.Instant;
 
 /**
-* Availability is a time range when a given person is available
-* to offer interviews as an Interviewer.
-*/
+ * Availability is a time range when a given person is available to offer interviews as an
+ * Interviewer.
+ */
 public class Availability {
   private String personEmail;
   private TimeRange when;
-  private LocalDate date;
+  private Instant date;
 
-  /**
-  * This constructor creates a new Availability object
-  */
-  public Availability(String personEmail, TimeRange when, LocalDate date) {
+  /** This constructor creates a new Availability object */
+  public Availability(String personEmail, TimeRange when, Instant date) {
     this.personEmail = personEmail;
     this.when = when;
     this.date = date;
+  }
+
+  public void setAvailability(Timerange range) {
+    when = range;
+  }
+
+  public void setDate(Instant day) {
+    date = day;
+  }
+
+  public void setEmail(String email) {
+    personEmail = email;
+  }
+
+  public TimeRange getAvailability() {
+    return when;
+  }
+
+  public Instant getDate() {
+    return date;
+  }
+
+  public String getEmail() {
+    return personEmail;
   }
 }
