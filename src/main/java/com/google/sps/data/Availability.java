@@ -36,11 +36,11 @@ public class Availability {
     this.when = range;
   }
 
-  public void updateDate(Instant day) {
-    this.date = day;
-  }
-
   public TimeRange getTimeRange() {
     return when;
+  }
+
+  public Instant getDate() {
+    return date;
   }
 }
