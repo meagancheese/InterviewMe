@@ -25,25 +25,29 @@ public class Availability {
   private TimeRange when;
   private LocalDate date;
 
-  /** This constructor creates a new Availability object */
+  /** This constructor creates a new Availability object. */
   public Availability(String personEmail, TimeRange when, LocalDate date) {
     this.personEmail = personEmail;
     this.when = when;
     this.date = date;
   }
 
+  /** Updates the range of availability. */
   public void updateTimeRange(TimeRange range) {
     this.when = range;
   }
 
+  /** Returns the range of availability. */
   public TimeRange getTimeRange() {
     return when;
   }
 
+  /** Returns the date of availability. */
   public LocalDate getDate() {
     return date;
   }
 
+  /** Returns the email of the available interviewer. */
   public String getEmail() {
     return personEmail;
   }
