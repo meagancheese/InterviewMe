@@ -53,7 +53,7 @@ public class Person {
     linkedIn = newLinkedIn;
   }
 
-  public String key() {
+  public String getEmail() {
     return email;
   }
 

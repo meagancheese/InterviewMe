@@ -14,7 +14,7 @@
 
 package com.google.sps;
 
-/* PersonDao includes the basic methods anything managing Person entities must support */
+/** PersonDao includes the basic methods anything managing Person entities must support. */
 public interface PersonDao {
   // Returns a Person object from storage, with email as the key.
   public Person get(String email) throws com.google.appengine.api.datastore.EntityNotFoundException;

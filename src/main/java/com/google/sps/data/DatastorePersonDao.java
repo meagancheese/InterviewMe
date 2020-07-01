@@ -39,14 +39,16 @@ public class DatastorePersonDao implements PersonDao {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  /* We make an entity in Datastore with person's fields as properties and their email as the key. */
+  /**
+   * We make an entity in Datastore with person's fields as properties and their email as the key.
+   */
   public void put(Person person) {
     datastore.put(personToEntity(person));
   }
 
   private static Entity personToEntity(Person person) {
     Entity personEntity = new Entity("Person", person.key());
-    personEntity.setProperty("email", person.key());    
+    personEntity.setProperty("email", person.key());
     personEntity.setProperty("firstName", person.getFirstName());
     personEntity.setProperty("lastName", person.getLastName());
     personEntity.setProperty("company", person.getCompany());
@@ -55,7 +57,10 @@ public class DatastorePersonDao implements PersonDao {
     return personEntity;
   }
 
-  /* Since email is a personEntity's key, we retrieve the corresponding personEntity from Datastore and return it as a Person object. */
+  /**
+   * Since email is a personEntity's key, we retrieve the corresponding personEntity from Datastore
+   * and return it as a Person object.
+   */
   // TODO: make our own PersonNotFoundException and refactor how we're handling these
   public Person get(String email)
       throws com.google.appengine.api.datastore.EntityNotFoundException {
