@@ -1,4 +1,4 @@
- // Copyright 2019 Google LLC
+// Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,22 +14,51 @@
 
 package com.google.sps;
 
-/** Represents a scheduled interview. Contains the timerange of the interview and the emails of the attendees. */
+import java.time.LocalDate;
+
+/** Represents a scheduled interview. */
 public class ScheduledInterview {
+  // TODO: Add the Timerange java class so that this compiles.
   private TimeRange when;
+  private LocalDate date; 
   private String interviewerEmail;
   private String intervieweeEmail;
-
+  /** Creates a scheduled interview that contains a timerange, the date and the emails of the attendees. */
   public ScheduledInterview(
-      TimeRange when, String interviewerEmail, String intervieweeEmail) {
+      TimeRange when, LocalDate date, String interviewerEmail, String intervieweeEmail) {
     this.when = when;
+    this.date = date; 
     this.interviewerEmail = interviewerEmail;
     this.intervieweeEmail = intervieweeEmail;
   }
 
-  /** Returns a TimeRange representing the when the interview starts and ends. */
+  /** Sets the timerange of the interview. */
+  public void setWhen(Timerange range) {
+    when = range; 
+  }
+
+  /** Sets the date of the interview. */
+  public void setDate(LocalDate day) {
+    date = day; 
+  }
+
+  /** Sets the interviewer email. */
+  public void setInterviewerEmail(String email) {
+    interviewerEmail = email; 
+  }
+
+  /** Sets the interviewee email. */
+  public void setIntervieweeEmail(String email) {
+    intervieweeEmail = email; 
+  }
+  /** Returns the timerange of the interview */
   public TimeRange getWhen() {
     return when;
+  }
+
+  /** Returns the date of the interview */
+  public LocalDate getDate() {
+    return date; 
   }
 
   /** Returns the email of the interviewer. */
