@@ -44,16 +44,16 @@ public class ScheduledInterview {
 
   /** 
    * Sets the interviewer email. 
-   * TODO: use in future work when updating interview
-   * due to cancellations */
+   * TODO: Use in future work when updating interview
+   * due to cancellations. */
   public void setInterviewerEmail(String email) {
     interviewerEmail = email; 
   }
 
   /** 
    * Sets the interviewee email. 
-   * TODO: use in future work when updating interview
-   * due to cancellations */
+   * TODO: Use in future work when updating interview
+   * due to cancellations. */
   public void setIntervieweeEmail(String email) {
     intervieweeEmail = email; 
   }
