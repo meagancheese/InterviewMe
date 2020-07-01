@@ -32,7 +32,7 @@ public class Availability {
     this.date = date;
   }
 
-  public void updateTimeRange(Timerange range) {
+  public void updateTimeRange(TimeRange range) {
     this.when = range;
   }
 
