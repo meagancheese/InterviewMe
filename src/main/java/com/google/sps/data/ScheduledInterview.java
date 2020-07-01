@@ -42,15 +42,22 @@ public class ScheduledInterview {
     date = day; 
   }
 
-  /** Sets the interviewer email. */
+  /** 
+   * Sets the interviewer email. 
+   * TODO: use in future work when updating interview
+   * due to cancellations */
   public void setInterviewerEmail(String email) {
     interviewerEmail = email; 
   }
 
-  /** Sets the interviewee email. */
+  /** 
+   * Sets the interviewee email. 
+   * TODO: use in future work when updating interview
+   * due to cancellations */
   public void setIntervieweeEmail(String email) {
     intervieweeEmail = email; 
   }
+
   /** Returns the timerange of the interview */
   public TimeRange getWhen() {
     return when;
