@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.servlets;
+package com.google.sps;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -26,8 +26,28 @@ import com.google.gson.Gson;
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
 
+  private PersonDao personDao;
+
+  @Override
+  public void init() {
+    init(new DatastorePersonDao());
+  }
+
+  // TODO: add a FakePersonDao class so this will become useful
+  public void init(PersonDao personDao) {
+    this.personDao = personDao;
+  }
+
+  // Sends the request's contents to Datastore in the form of a new Person
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // TODO: send the request's contents to Datastore in the form of a new User
+    personDao.put(
+        new Person(
+            request.getParameter("user-email"),
+            request.getParameter("first-name"),
+            request.getParameter("last-name"),
+            request.getParameter("company"),
+            request.getParameter("job"),
+            request.getParameter("linkedin")));
   }
 }
