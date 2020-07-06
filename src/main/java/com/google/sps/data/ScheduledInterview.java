@@ -14,67 +14,43 @@
 
 package com.google.sps;
 
+import com.google.auto.value.AutoValue;
 import java.time.LocalDate;
 
 /** Represents a scheduled interview. */
-public class ScheduledInterview {
-  // TODO: Add the Timerange java class so that this compiles.
-  private TimeRange when;
-  private LocalDate date; 
-  private String interviewerEmail;
-  private String intervieweeEmail;
-  /** Creates a scheduled interview that contains a timerange, the date and the emails of the attendees. */
-  public ScheduledInterview(
+@AutoValue
+abstract static class ScheduledInterview {
+  // TODO: Add the TimeRange java class so that this compiles.
+  abstract TimeRange when();
+
+  abstract LocalDate date();
+
+  abstract String interviewerEmail();
+
+  abstract String intervieweeEmail();
+  /**
+   * Creates a scheduled interview that contains a timerange, the date and the emails of the
+   * attendees.
+   */
+  static ScheduledInterview create(
       TimeRange when, LocalDate date, String interviewerEmail, String intervieweeEmail) {
-    this.when = when;
-    this.date = date; 
-    this.interviewerEmail = interviewerEmail;
-    this.intervieweeEmail = intervieweeEmail;
+    return new AutoValue_ScheduledInterview(when, date, interviewerEmail, intervieweeEmail);
   }
 
-  /** Sets the timerange of the interview. */
-  public void setWhen(Timerange range) {
-    when = range; 
+  static Builder builder() {
+    return new AutoValue_ScheduledInterview.Builder();
   }
 
-  /** Sets the date of the interview. */
-  public void setDate(LocalDate day) {
-    date = day; 
-  }
+  @AutoValue.Builder
+  abstract static class Builder {
+    abstract builder setWhen(TimeRange range);
 
-  /** 
-   * Sets the interviewer email. 
-   * TODO: Use in future work when updating interview
-   * due to cancellations. */
-  public void setInterviewerEmail(String email) {
-    interviewerEmail = email; 
-  }
+    abstract builder setDate(LocalDate day);
 
-  /** 
-   * Sets the interviewee email. 
-   * TODO: Use in future work when updating interview
-   * due to cancellations. */
-  public void setIntervieweeEmail(String email) {
-    intervieweeEmail = email; 
-  }
+    abstract builder setInterviewerEmail(String email);
 
-  /** Returns the timerange of the interview */
-  public TimeRange getWhen() {
-    return when;
-  }
+    abstract builder setIntervieweeEmail(String email);
 
-  /** Returns the date of the interview */
-  public LocalDate getDate() {
-    return date; 
-  }
-
-  /** Returns the email of the interviewer. */
-  public String getInterviewerEmail() {
-    return interviewerEmail;
-  }
-
-  /** Returns the email of the interviewee. */
-  public String getIntervieweeEmail() {
-    return intervieweeEmail;
+    abstract ScheduledInterview build();
   }
 }
