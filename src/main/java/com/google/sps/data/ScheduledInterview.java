@@ -20,21 +20,25 @@ import java.time.LocalDate;
 /** Represents a scheduled interview. */
 @AutoValue
 public abstract class ScheduledInterview {
-  // TODO: Add the TimeRange java class so that this compiles.
-  abstract TimeRange when();
+  public abstract TimeRange when();
 
-  abstract LocalDate date();
+  public abstract LocalDate date();
 
-  abstract String interviewerEmail();
+  public abstract String interviewerEmail();
 
-  abstract String intervieweeEmail();
+  public abstract String intervieweeEmail();
   /**
    * Creates a scheduled interview that contains a timerange, the date and the emails of the
    * attendees.
    */
-  static ScheduledInterview create(
+  public static ScheduledInterview create(
       TimeRange when, LocalDate date, String interviewerEmail, String intervieweeEmail) {
-    return new AutoValue_ScheduledInterview(when, date, interviewerEmail, intervieweeEmail);
+    return builder()
+        .setWhen(when)
+        .setDate(date)
+        .setInterviewerEmail(interviewerEmail)
+        .setIntervieweeEmail(intervieweeEmail)
+        .build();
   }
 
   static Builder builder() {
