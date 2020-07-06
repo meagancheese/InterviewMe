@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** Accesses Datastore to support managing Person entities. */
 public class DatastorePersonDao implements PersonDao {
@@ -42,6 +43,7 @@ public class DatastorePersonDao implements PersonDao {
   /**
    * We make an entity in Datastore with person's fields as properties and their email as the key.
    */
+  @Override
   public void put(Person person) {
     datastore.put(personToEntity(person));
   }
@@ -61,13 +63,17 @@ public class DatastorePersonDao implements PersonDao {
    * Since email is a personEntity's key, we retrieve the corresponding personEntity from Datastore
    * and return it as a Person object.
    */
-  // TODO: make our own PersonNotFoundException and refactor how we're handling these
-  public Person get(String email)
-      throws com.google.appengine.api.datastore.EntityNotFoundException {
-    // TODO: test this with the profile page
+  @Override
+  public Optional<Person> get(String email) {
+    // TODO: handle this with the profile page servlet
     Key key = KeyFactory.createKey("Person", email);
-    Entity personEntity = datastore.get(key);
-    return entityToPerson(personEntity);
+    Entity personEntity;
+    try {
+      personEntity = datastore.get(key);
+    } catch (Exception e) {
+      return Optional.empty();
+    }
+    return Optional.of(entityToPerson(personEntity));
   }
 
   private static Person entityToPerson(Entity personEntity) {

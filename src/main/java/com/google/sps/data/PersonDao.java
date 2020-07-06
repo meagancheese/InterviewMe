@@ -14,10 +14,12 @@
 
 package com.google.sps;
 
+import java.util.Optional;
+
 /** PersonDao includes the basic methods anything managing Person entities must support. */
 public interface PersonDao {
   // Returns a Person object from storage, with email as the key.
-  public Person get(String email) throws com.google.appengine.api.datastore.EntityNotFoundException;
+  public Optional<Person> get(String email);
 
   // Puts a Person object into storage, with email as the key.
   public void put(Person person);
