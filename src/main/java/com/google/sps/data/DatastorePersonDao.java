@@ -70,8 +70,10 @@ public class DatastorePersonDao implements PersonDao {
     Entity personEntity;
     try {
       personEntity = datastore.get(key);
-    } catch (Exception e) {
+    } catch (com.google.appengine.api.datastore.EntityNotFoundException e) {
       return Optional.empty();
+    } catch (Exception e) {
+      throw e;
     }
     return Optional.of(entityToPerson(personEntity));
   }
