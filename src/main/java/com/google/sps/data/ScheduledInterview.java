@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
 import java.time.LocalDate;
 
 /** Represents a scheduled interview. */
 @AutoValue
-abstract static class ScheduledInterview {
+abstract class ScheduledInterview {
   // TODO: Add the TimeRange java class so that this compiles.
   abstract TimeRange when();
 
@@ -43,13 +43,13 @@ abstract static class ScheduledInterview {
 
   @AutoValue.Builder
   abstract static class Builder {
-    abstract builder setWhen(TimeRange range);
+    abstract Builder setWhen(TimeRange range);
 
-    abstract builder setDate(LocalDate day);
+    abstract Builder setDate(LocalDate day);
 
-    abstract builder setInterviewerEmail(String email);
+    abstract Builder setInterviewerEmail(String email);
 
-    abstract builder setIntervieweeEmail(String email);
+    abstract Builder setIntervieweeEmail(String email);
 
     abstract ScheduledInterview build();
   }
