@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 /** Represents a scheduled interview. */
 @AutoValue
-abstract class ScheduledInterview {
+public abstract class ScheduledInterview {
   // TODO: Add the TimeRange java class so that this compiles.
   abstract TimeRange when();
 
