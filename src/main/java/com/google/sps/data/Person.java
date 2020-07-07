@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.sps.data;
 
 /** Represents a user on the site. The email is used as the key to the user table. */
 public class Person {
