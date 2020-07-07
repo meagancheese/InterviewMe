@@ -14,41 +14,41 @@
 
 package com.google.sps.data;
 
+import com.google.auto.value.AutoValue;
 import java.time.LocalDate;
 
 /**
  * Availability is a time range when a given person is available to offer interviews as an
- * Interviewer.
+ * interviewer.
  */
-public class Availability {
-  private String personEmail;
-  private TimeRange when;
-  private LocalDate date;
+@AutoValue
+public abstract class Availability {
+  public abstract String email();
 
-  /** This constructor creates a new Availability object. */
-  public Availability(String personEmail, TimeRange when, LocalDate date) {
-    this.personEmail = personEmail;
-    this.when = when;
-    this.date = date;
+  public abstract TimeRange when();
+
+  public abstract LocalDate date();
+
+  public static Availability create(String email, TimeRange when, LocalDate date) {
+    return builder()
+        .setEmail(email)
+        .setWhen(when)
+        .setDate(date)
+        .build();
   }
 
-  /** Updates the range of availability. */
-  public void updateTimeRange(TimeRange range) {
-    this.when = range;
+  public static Builder builder() {
+    return new AutoValue_Availability.Builder();
   }
 
-  /** Returns the range of availability. */
-  public TimeRange getTimeRange() {
-    return when;
-  }
+  @AutoValue.Builder
+  public abstract static class Builder {
+    public abstract Builder setEmail(String email);
 
-  /** Returns the date of availability. */
-  public LocalDate getDate() {
-    return date;
-  }
+    public abstract Builder setWhen(TimeRange when);
 
-  /** Returns the email of the available interviewer. */
-  public String getEmail() {
-    return personEmail;
+    public abstract Builder setDate(LocalDate date);
+
+    public abstract Availability build();
   }
 }
