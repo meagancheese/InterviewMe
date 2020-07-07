@@ -52,8 +52,7 @@
         <h1 class="text-center">Available Interview Times</h1>     
         <h5 class="text-center lead">Select the time you want from the dropdown on the day you want. </h5>         
         <br>
-        <!--TODO: Include Timezone consideration; Add pagination; Render these interview times dynamically;-->
-        <!-- TODO: Possibly change display to a calendar grid format. -->
+        <!--TODO: Include Timezone consideration; Add pagination-->
         <form>
           <div class="form-row">
             <div class="col-3 date-label">
@@ -106,24 +105,42 @@
         </form>
         <br>  
         <form>
+          <!-- TODO: Dynamically generate these with Sunday as the model. -->
+          <!-- TODO: Make the week Sunday - Saturday. -->
           <div class="form-row">
             <div class="col-3 date-label">
-              <label>Saturday 7/4</label>
+              <label>Sunday 7/5</label>
             </div>
             <div class="col-5">
-              <select class="form-control">
+              <select class="form-control" id="7/5/2020-options">
                 <option>9:30 AM - 10:30 AM</option>
                 <option>6:30 PM - 7:30 PM</option>
               </select>
             </div>
             <div class="col-4">
-              <!-- TODO: change onclick to addEventListener inside loadInterviews() so it can pass in params. -->
-              <button type="button" class="btn btn-primary mb-2" onclick="selectInterview()">Select</button>
+              <button type="button" class="btn btn-primary mb-2" 
+              onclick="showInterviewers(this)" id="7/5/2020">Select</button>
             </div>
           </div>
         </form>
         <br>  
       </section>
+      <div class="modal fade" id="interviewer-modal" role="dialog">
+        <div class="modal-dialog mw-100 w-25" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title"></h5>
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <br><br><br>  
     </div>
   </body>
