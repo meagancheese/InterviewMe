@@ -29,7 +29,7 @@ public class LogInServlet extends HttpServlet {
     response.getWriter().println(new Gson().toJson(getLoginInfo("/")));
   }
 
-  // Returns a LoginInfo that represents the logged in status. 
+  // Returns a LoginInfo that represents the logged in status.
   public static LoginInfo getLoginInfo(String rootUrl) {
     UserService userService = UserServiceFactory.getUserService();
     boolean loggedIn = userService.isUserLoggedIn();

@@ -49,19 +49,19 @@ public class DatastorePersonDao implements PersonDao {
   }
 
   private static Entity personToEntity(Person person) {
-    Entity personEntity = new Entity("Person", person.getEmail());
-    personEntity.setProperty("email", person.getEmail());
-    personEntity.setProperty("firstName", person.getFirstName());
-    personEntity.setProperty("lastName", person.getLastName());
-    personEntity.setProperty("company", person.getCompany());
-    personEntity.setProperty("job", person.getJob());
-    personEntity.setProperty("linkedIn", person.getLinkedIn());
+    Entity personEntity = new Entity("Person", person.email());
+    personEntity.setProperty("email", person.email());
+    personEntity.setProperty("firstName", person.firstName());
+    personEntity.setProperty("lastName", person.lastName());
+    personEntity.setProperty("company", person.company());
+    personEntity.setProperty("job", person.job());
+    personEntity.setProperty("linkedIn", person.linkedIn());
     return personEntity;
   }
 
   /**
-   * Retrieve the person from Datastore from their email and wrap it in an 
-   * Optional. If they aren't in Datastore, the Optional is empty.
+   * Retrieve the person from Datastore from their email and wrap it in an Optional. If they aren't
+   * in Datastore, the Optional is empty.
    */
   @Override
   public Optional<Person> get(String email) {
@@ -72,12 +72,12 @@ public class DatastorePersonDao implements PersonDao {
       personEntity = datastore.get(key);
     } catch (com.google.appengine.api.datastore.EntityNotFoundException e) {
       return Optional.empty();
-    } 
+    }
     return Optional.of(entityToPerson(personEntity));
   }
 
   private static Person entityToPerson(Entity personEntity) {
-    return new Person(
+    return Person.create(
         (String) personEntity.getProperty("email"),
         (String) personEntity.getProperty("firstName"),
         (String) personEntity.getProperty("lastName"),

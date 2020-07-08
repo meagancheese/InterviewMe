@@ -45,7 +45,7 @@ public class RegistrationServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     personDao.put(
-        new Person(
+        Person.create(
             request.getParameter("user-email"),
             request.getParameter("first-name"),
             request.getParameter("last-name"),

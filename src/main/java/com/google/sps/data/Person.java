@@ -14,66 +14,61 @@
 
 package com.google.sps.data;
 
-/** Represents a user on the site. The email is used as the key to the user table. */
-public class Person {
-  private String email, firstName, lastName, company, job, linkedIn;
+import com.google.auto.value.AutoValue;
 
-  public Person(
+/** Represents a user on the site. The email is used as the key to the user table. */
+@AutoValue
+public abstract class Person {
+  public abstract String email();
+
+  public abstract String firstName();
+
+  public abstract String lastName();
+
+  public abstract String company();
+
+  public abstract String job();
+
+  public abstract String linkedIn();
+
+  /**
+   * Creates a person that contains email, first name, last name, company, job, and LinkedIn URL.
+   */
+  public static Person create(
       String email,
       String firstName,
       String lastName,
       String company,
       String job,
       String linkedIn) {
-    this.email = email;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.company = company;
-    this.job = job;
-    this.linkedIn = linkedIn;
+    return builder()
+        .setEmail(email)
+        .setFirstName(firstName)
+        .setLastName(lastName)
+        .setCompany(company)
+        .setJob(job)
+        .setLinkedIn(linkedIn)
+        .build();
   }
 
-  public void updateFirstName(String newFirstName) {
-    firstName = newFirstName;
+  static Builder builder() {
+    return new AutoValue_Person.Builder();
   }
 
-  public void updateLastName(String newLastName) {
-    lastName = newLastName;
-  }
+  @AutoValue.Builder
+  abstract static class Builder {
+    abstract Builder setEmail(String email);
 
-  public void updateCompany(String newCompany) {
-    company = newCompany;
-  }
+    abstract Builder setFirstName(String firstName);
 
-  public void updateJob(String newJob) {
-    job = newJob;
-  }
+    abstract Builder setLastName(String lastName);
 
-  public void updateLinkedIn(String newLinkedIn) {
-    linkedIn = newLinkedIn;
-  }
+    abstract Builder setCompany(String company);
 
-  public String getEmail() {
-    return email;
-  }
+    abstract Builder setJob(String job);
 
-  public String getFirstName() {
-    return firstName;
-  }
+    abstract Builder setLinkedIn(String linkedIn);
 
-  public String getLastName() {
-    return lastName;
-  }
-
-  public String getCompany() {
-    return company;
-  }
-
-  public String getJob() {
-    return job;
-  }
-
-  public String getLinkedIn() {
-    return linkedIn;
+    abstract Person build();
   }
 }
