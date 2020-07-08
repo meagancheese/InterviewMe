@@ -167,9 +167,17 @@ public final class TimeRangeTest {
     Assert.assertFalse(range.contains(range));
   }
 
+  // Tests whether or not a TimeRange contains itself
   @Test
   public void rangeContainsSelf() {
     TimeRange range = TimeRange.fromStartEnd(TIME_7PM, TIME_730PM);
     Assert.assertTrue(range.contains(range));
+  }
+
+  // Tests whether or not a TimeRange overlaps itself
+  @Test
+  public void rangeOverlapsSelf() {
+    TimeRange range = TimeRange.fromStartEnd(TIME_7PM, TIME_730PM);
+    Assert.assertTrue(range.overlaps(range));
   }
 }

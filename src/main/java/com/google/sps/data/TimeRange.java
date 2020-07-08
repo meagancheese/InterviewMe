@@ -79,14 +79,7 @@ public final class TimeRange {
     //
     // Case 3: |---------|
     //            |---|
-    if (this.start.isBefore(other.start)) {
-      return this.contains(other.start);
-    }
-
-    if (this.start.equals(other.start)) {
-      return this.end.isAfter(other.end);
-    }
-    return other.contains(this.start);
+    return other.end.isAfter(this.start) && other.start.isBefore(this.end);
   }
 
   /**
@@ -100,26 +93,7 @@ public final class TimeRange {
       return false;
     }
 
-    /**
-     * If the ends of the range are equal, check whether the start of range comes after the other or
-     * are equal.
-     */
-    if (other.end == this.end) {
-      return other.start.isAfter(this.start) || other.start == this.start;
-    }
-
-    /**
-     * If the start of the ranges are the same, check if one end is before the other or are equal.
-     */
-    if (other.start == this.start) {
-      return other.end.isBefore(this.end) || other.end == this.end;
-    }
-
-    // We need the inclusive end for this check in order for this case to equal true:
-    // |------|
-    //     |--|
-    Instant otherInclusiveEnd = other.end;
-    return contains(this, other.start) && contains(this, otherInclusiveEnd);
+    return !(other.start.isBefore(this.start) || other.end.isAfter(this.end));
   }
 
   /** Checks if a timerange contains a certain instant. */
@@ -138,22 +112,7 @@ public final class TimeRange {
       return false;
     }
 
-    /** If the point comes before the start of the range, the range will not contain it. */
-    if (instant.isBefore(range.start) || instant.isAfter(range.end)) {
-      return false;
-    }
-
-    /** If the point is equal to the end of the range, the range will not contain it. */
-    if (instant == range.end) {
-      return false;
-    }
-
-    /**
-     * If the point is on the end of the range. We don't count it as included in the range. For
-     * example, if we have a range that starts at 8:00 and is 30 minutes long, it would end at 8:30.
-     * But that range should not contain 8:30 because it would end just before 8:30 began.
-     */
-    return instant.isAfter(range.start);
+    return !instant.isBefore(range.start) && !instant.isAfter(range.end);
   }
 
   /** Checks if two timeranges are the same. */
