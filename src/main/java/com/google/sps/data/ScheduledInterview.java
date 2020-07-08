@@ -20,6 +20,8 @@ import java.time.LocalDate;
 /** Represents a scheduled interview. */
 @AutoValue
 public abstract class ScheduledInterview {
+  public abstract long id();  
+
   public abstract TimeRange when();
 
   public abstract LocalDate date();
@@ -32,8 +34,9 @@ public abstract class ScheduledInterview {
    * attendees.
    */
   public static ScheduledInterview create(
-      TimeRange when, LocalDate date, String interviewerEmail, String intervieweeEmail) {
+      long id, TimeRange when, LocalDate date, String interviewerEmail, String intervieweeEmail) {
     return builder()
+        .setId(id)
         .setWhen(when)
         .setDate(date)
         .setInterviewerEmail(interviewerEmail)
@@ -47,6 +50,8 @@ public abstract class ScheduledInterview {
 
   @AutoValue.Builder
   abstract static class Builder {
+    abstract Builder setId(long id); 
+
     abstract Builder setWhen(TimeRange range);
 
     abstract Builder setDate(LocalDate day);
