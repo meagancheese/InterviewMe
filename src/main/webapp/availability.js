@@ -14,4 +14,27 @@
 
 function onAvailabilityLoad() {
   supplyLogoutLink();
+  loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
+}
+
+// Toggles a tile from green to white and vice versa when clicked.
+function toggleTile(tile) {
+  tile.classList.toggle('table-success');
+}
+
+function loadAvailabilityTable(tableDiv, timezoneOffset) {
+  fetch(`/availabilityTable.jsp?timeZoneOffset=${timezoneOffset}`)
+    .then(response => response.text())
+    .then(tableContents => {
+      tableDiv.innerHTML = tableContents;
+    });
+}
+
+function browserTimezoneOffset() {
+  let date = new Date();
+  return (-1) * date.getTimezoneOffset();
+}
+
+function availabilityTableDiv() {
+  return document.getElementById('table-container');
 }
