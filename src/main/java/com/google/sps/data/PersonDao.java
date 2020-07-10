@@ -21,6 +21,9 @@ public interface PersonDao {
   // Returns a Person object from storage, with email as the key.
   public Optional<Person> get(String email);
 
-  // Puts a Person object into storage, with email as the key.
-  public void put(Person person);
+  // Adds a Person object into storage, with email as the key.
+  public void create(Person person);
+
+  // Updates a Person object in storage, with email as the key.
+  public void update(Person person);
 }

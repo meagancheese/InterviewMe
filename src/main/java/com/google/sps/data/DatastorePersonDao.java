@@ -44,7 +44,15 @@ public class DatastorePersonDao implements PersonDao {
    * We make an entity in Datastore with person's fields as properties and their email as the key.
    */
   @Override
-  public void put(Person person) {
+  public void create(Person person) {
+    datastore.put(personToEntity(person));
+  }
+
+  /**
+   * We update an entity in Datastore with person's fields as properties and their email as the key.
+   */
+  @Override
+  public void update(Person person) {
     datastore.put(personToEntity(person));
   }
 
