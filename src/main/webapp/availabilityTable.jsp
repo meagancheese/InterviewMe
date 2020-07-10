@@ -3,8 +3,8 @@
 <%@ page import="java.util.List,java.time.Instant" %>
 <%@ page import="java.lang.Integer" %>
 <%
-  List<AvailabilityTimeSlot> list = AvailabilityTimeSlotGenerator
-    .timeSlotsForDay(Instant.now(), Integer.parseInt(request
+  List<List<AvailabilityTimeSlot>> list = AvailabilityTimeSlotGenerator
+    .timeSlotsForWeek(Instant.now(), Integer.parseInt(request
     .getParameter("timeZoneOffset")));
   pageContext.setAttribute("list", list);
 %>
@@ -13,18 +13,21 @@
 <table class="table table-sm text-center">
   <thead>
     <tr>
-      <th scope="col">${list.get(0).date()}</th>
+      <c:forEach items = "${pageScope.list}" var = "day">
+        <th scope="col">${day.get(0).date()}</th>
+      </c:forEach>
     </tr>
   </thead>
   <tbody>
     <!-- TODO: Allow clicking and scrolling over multiple slots to select them.-->
     <!-- TODO: Change page format so that it is vertically condensed.-->
-    <c:forEach items = "${pageScope.list}" var = "timeSlot">
+    <c:forEach var = "i" begin = "0" end = "${pageScope.list.get(0).size() - 1}">
       <tr>
-        <td onclick="toggleTile(this)" data-utc="${timeSlot.utcEncoding()}" 
-          class="${timeSlot.selected() ? 'table-success' : ''}">
-          ${timeSlot.time()}
-        </td>
+        <c:forEach items = "${pageScope.list}" var = "day">
+          <td onclick="toggleTile(this)" data-utc="${day.get(i).utcEncoding()}" class="${day.get(i).selected() ? 'table-success' : ''}">
+            ${day.get(i).time()}
+          </td>
+        </c:forEach>
       </tr>
     </c:forEach>
   </tbody>

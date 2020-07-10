@@ -15,12 +15,14 @@
 package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -58,21 +60,38 @@ public class AvailabilityTimeSlotGenerator {
   }
 
   /**
-   * Constructs a list of a day's worth of AvailabilityTimeSlot objects.
+   * Constructs a List of lists that represents a week's worth of AvailabilityTimeSlot objects. One
+   * list corresponds to one day.
    *
-   * @param instant An Instant on the day that time slots are generated for.
+   * @param instant An Instant on the first day of the week for which time slots are generated.
    * @param timezoneOffsetMinutes An int that represents the difference between UTC and the user's
    *     current timezone. Example: A user in EST has a timezoneOffsetMinutes of -240 which means
    *     that EST is 240 minutes behind UTC.
    * @throws IllegalArgumentException if the magnitude of timezoneOffsetMinutes is greater than 720.
    */
-  // TODO: Create a timeSlotsForWeek method.
-  public static List<AvailabilityTimeSlot> timeSlotsForDay(
+  public static List<List<AvailabilityTimeSlot>> timeSlotsForWeek(
       Instant instant, int timezoneOffsetMinutes) {
     Preconditions.checkArgument(
         Math.abs(timezoneOffsetMinutes) <= 720,
         "Offset greater than 720 minutes (12 hours): %s",
         timezoneOffsetMinutes);
+    ImmutableList.Builder<List<AvailabilityTimeSlot>> weekList = ImmutableList.builder();
+    for (int i = 0; i < 7; i++) {
+      weekList.add(timeSlotsForDay(instant.plus(i, ChronoUnit.DAYS), timezoneOffsetMinutes));
+    }
+    return weekList.build();
+  }
+
+  /**
+   * Constructs a List of a day's worth of AvailabilityTimeSlot objects.
+   *
+   * @param instant An Instant on the day for which time slots are generated.
+   * @param timezoneOffsetMinutes An int that represents the difference between UTC and the user's
+   *     current timezone. Example: A user in EST has a timezoneOffsetMinutes of -240 which means
+   *     that EST is 240 minutes behind UTC.
+   */
+  @VisibleForTesting
+  static List<AvailabilityTimeSlot> timeSlotsForDay(Instant instant, int timezoneOffsetMinutes) {
     ZonedDateTime day = generateDay(instant, timezoneOffsetMinutes);
     ZoneId zoneId = day.getZone();
     String dayOfWeek = day.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
