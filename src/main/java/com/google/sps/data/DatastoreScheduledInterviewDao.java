@@ -26,7 +26,6 @@ import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,6 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
     Entity scheduledInterviewEntity = new Entity("ScheduledInterview");
     scheduledInterviewEntity.setProperty("startTime", scheduledInterview.when().start().toString());
     scheduledInterviewEntity.setProperty("endTime", scheduledInterview.when().end().toString());
-    scheduledInterviewEntity.setProperty("date", scheduledInterview.date().toString());
     scheduledInterviewEntity.setProperty("interviewer", scheduledInterview.interviewerEmail());
     scheduledInterviewEntity.setProperty("interviewee", scheduledInterview.intervieweeEmail());
     datastore.put(scheduledInterviewEntity);
@@ -112,7 +110,6 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
         new TimeRange(
             Instant.parse(scheduledInterviewEntity.getProperty("startTime").toString()),
             Instant.parse(scheduledInterviewEntity.getProperty("endTime").toString())),
-        LocalDate.parse(scheduledInterviewEntity.getProperty("date").toString()),
         (String) scheduledInterviewEntity.getProperty("interviewer"),
         (String) scheduledInterviewEntity.getProperty("interviewee"));
   }
