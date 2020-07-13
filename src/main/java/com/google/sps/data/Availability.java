@@ -28,8 +28,11 @@ public abstract class Availability {
 
   public abstract long id();
 
-  public static Availability create(String email, TimeRange when, long id) {
-    return builder().setEmail(email).setWhen(when).setId(id).build();
+  // If this time slot has an interview.
+  public abstract boolean scheduled();
+
+  public static Availability create(String email, TimeRange when, long id, boolean scheduled) {
+    return builder().setEmail(email).setWhen(when).setId(id).setScheduled(scheduled).build();
   }
 
   public static Builder builder() {
@@ -43,6 +46,8 @@ public abstract class Availability {
     public abstract Builder setWhen(TimeRange when);
 
     public abstract Builder setId(long id);
+
+    public abstract Builder setScheduled(boolean scheduled);
 
     public abstract Availability build();
   }
