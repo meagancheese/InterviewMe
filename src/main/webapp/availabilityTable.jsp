@@ -24,7 +24,8 @@
     <c:forEach var = "i" begin = "0" end = "${pageScope.list.get(0).size() - 1}">
       <tr>
         <c:forEach items = "${pageScope.list}" var = "day">
-          <td onclick="toggleTile(this)" data-utc="${day.get(i).utcEncoding()}" class="${day.get(i).selected() ? 'table-success' : ''}">
+          <td onclick="toggleTile(this)" data-utc="${day.get(i).utcEncoding()}" 
+            class="${day.get(i).selected() ? 'table-success selected-time-slot' : ''}">
             ${day.get(i).time()}
           </td>
         </c:forEach>
