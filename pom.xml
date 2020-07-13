@@ -33,7 +33,7 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>1.9.59</version>
+      <version>1.9.24</version>
     </dependency>
         
     <!-- For Datastore tests -->
@@ -43,6 +43,28 @@
       <version>1.9.24</version>
       <scope>test</scope>      
     </dependency>
+    
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-stubs</artifactId>
+      <version>1.9.24</version>
+      <scope>test</scope>      
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-labs</artifactId>
+      <version>1.9.24</version>
+      <scope>test</scope>      
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-tools-sdk</artifactId>
+      <version>1.9.24</version>
+      <scope>test</scope>      
+    </dependency>
+    <!-- End of dependencies for Datastore tests -->
     
     <dependency>
       <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
