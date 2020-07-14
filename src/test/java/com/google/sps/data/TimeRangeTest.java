@@ -23,32 +23,29 @@ import org.junit.runners.JUnit4;
 /** */
 @RunWith(JUnit4.class)
 public final class TimeRangeTest {
-  Instant TIME_430PM = Instant.parse("2020-07-06T17:00:10Z");
-  Instant TIME_5PM = Instant.parse("2020-07-06T17:00:10Z");
-  Instant TIME_530PM = Instant.parse("2020-07-06T17:30:10Z");
-  Instant TIME_6PM = Instant.parse("2020-07-06T18:00:10Z");
-  Instant TIME_630PM = Instant.parse("2020-07-06T18:30:10Z");
-  Instant TIME_645PM = Instant.parse("2020-07-06T18:45:10Z");
-  Instant TIME_7PM = Instant.parse("2020-07-06T19:00:10Z");
-  Instant TIME_730PM = Instant.parse("2020-07-06T19:30:10Z");
-  Instant TIME_745PM = Instant.parse("2020-07-06T19:45:10Z");
-  Instant TIME_8PM = Instant.parse("2020-07-06T20:00:10Z");
-  Instant TIME_830PM = Instant.parse("2020-07-06T20:30:10Z");
-  Instant TIME_9PM = Instant.parse("2020-07-06T21:00:10Z");
-  Instant TIME_930PM = Instant.parse("2020-07-06T21:30:10Z");
+  Instant TIME_430PM = Instant.parse("2020-07-06T17:00:10.324978Z");
+  Instant TIME_5PM = Instant.parse("2020-07-06T17:00:10.324978Z");
+  Instant TIME_530PM = Instant.parse("2020-07-06T17:30:10.324978Z");
+  Instant TIME_6PM = Instant.parse("2020-07-06T18:00:10.324978Z");
+  Instant TIME_630PM = Instant.parse("2020-07-06T18:30:10.324978Z");
+  Instant TIME_645PM = Instant.parse("2020-07-06T18:45:10.324978Z");
+  Instant TIME_7PM = Instant.parse("2020-07-06T19:00:10.324978Z");
+  Instant TIME_730PM = Instant.parse("2020-07-06T19:30:10.324978Z");
+  Instant TIME_745PM = Instant.parse("2020-07-06T19:45:10.324978Z");
+  Instant TIME_8PM = Instant.parse("2020-07-06T20:00:10.324978Z");
+  Instant TIME_830PM = Instant.parse("2020-07-06T20:30:10.324978Z");
+  Instant TIME_9PM = Instant.parse("2020-07-06T21:00:10.324978Z");
+  Instant TIME_930PM = Instant.parse("2020-07-06T21:30:10.324978Z");
 
   // Tests whether or not two TimeRanges are the same
   @Test
   public void equality() {
-    Instant COPYTIME_530PM = Instant.parse("2020-07-06T17:30:10Z");
-    Instant COPYTIME_6PM = Instant.parse("2020-07-06T18:00:10Z");
     Assert.assertEquals(
-        TimeRange.fromStartEnd(TIME_530PM, TIME_6PM),
-        TimeRange.fromStartEnd(COPYTIME_530PM, COPYTIME_6PM));
+        TimeRange.fromStartEnd(TIME_530PM, TIME_6PM), TimeRange.fromStartEnd(TIME_530PM, TIME_6PM));
 
     Assert.assertNotEquals(
         TimeRange.fromStartEnd(TIME_530PM, TIME_6PM),
-        TimeRange.fromStartEnd(COPYTIME_530PM, TIME_630PM));
+        TimeRange.fromStartEnd(TIME_530PM, TIME_630PM));
   }
 
   // Tests whether or not a timerange contains a certain instant.
