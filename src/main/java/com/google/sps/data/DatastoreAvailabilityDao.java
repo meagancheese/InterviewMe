@@ -165,7 +165,8 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
   }
 
   private List<Entity> getEntitiesInRange(long minTime, long maxTime, Optional<Filter> filterOpt) {
-    Filter minFilter = new FilterPredicate("startTime", FilterOperator.GREATER_THAN_OR_EQUAL, minTime);
+    Filter minFilter =
+        new FilterPredicate("startTime", FilterOperator.GREATER_THAN_OR_EQUAL, minTime);
     Filter maxFilter = new FilterPredicate("startTime", FilterOperator.LESS_THAN_OR_EQUAL, maxTime);
     CompositeFilter compFilter = CompositeFilterOperator.and(minFilter, maxFilter);
     if (filterOpt.isPresent()) {
