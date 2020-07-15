@@ -35,19 +35,22 @@ public class LogInServlet extends HttpServlet {
     boolean loggedIn = userService.isUserLoggedIn();
     LoginInfo toSend;
     if (loggedIn) {
-      return new LoginInfo(loggedIn, userService.createLogoutURL(rootUrl));
-    } else {
-      return new LoginInfo(loggedIn, userService.createLoginURL(rootUrl));
+      return new LoginInfo(
+          loggedIn, userService.createLogoutURL(rootUrl), userService.getCurrentUser().getEmail());
     }
+    return new LoginInfo(loggedIn, userService.createLoginURL(rootUrl), "");
   }
 
-  private static class LoginInfo {
-    private final boolean loggedIn;
-    private final String changeLogInStatusURL;
+  // Represents the logged in status of the site.
+  public static class LoginInfo {
+    public boolean loggedIn;
+    public final String changeLogInStatusURL;
+    public final String email;
 
-    public LoginInfo(boolean loggedIn, String changeLogInStatusURL) {
+    public LoginInfo(boolean loggedIn, String changeLogInStatusURL, String email) {
       this.loggedIn = loggedIn;
       this.changeLogInStatusURL = changeLogInStatusURL;
+      this.email = email;
     }
   }
 }

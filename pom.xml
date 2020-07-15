@@ -35,7 +35,7 @@
       <artifactId>appengine-api-1.0-sdk</artifactId>
       <version>1.9.24</version>
     </dependency>
-    
+
     <!-- For servlet tests -->      
     <dependency>
       <groupId>org.springframework</groupId>

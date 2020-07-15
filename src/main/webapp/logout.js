@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// If user is logged in, returns a logout link. If not, redirects to home page.
 function supplyLogoutLink() {
   fetch('/login').then(response => response.json()).then(status => {
-    if(status.loggedIn){
+    if (status.loggedIn) {
       document.getElementById('login-tab').href = status.changeLogInStatusURL;
     } else {
-      window.location.replace("/");
+      window.location.replace('/');
     }
   });
 }

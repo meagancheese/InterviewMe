@@ -13,30 +13,54 @@
 // limitations under the License.
 
 function onProfileLoad() {
+  supplyLogoutLink();  
+  getUserIfRegistered().then((person) => {
+    autofillForm(person);      
+  });
   prepareFormValidation();
 }
 
-// Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
-
-function onProfileLoad() {
-  supplyLogoutLink();
+// Returns a Person if they registered in the past. If not, redirect to  
+// registration page.
+function getUserIfRegistered(){
+  return fetch('/login')
+    .then(response => response.json())
+    .then(status => fetch(`/person?email=${status.email}`))
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+        return;
+      }
+      return response.json();
+    });
 }
 
+// Fills in the profile form with data from Datastore.
+function autofillForm(person) {
+  document.getElementById('user-email').value = person.email;
+  document.getElementById('first-name-field').value = person.firstName;
+  document.getElementById('last-name-field').value = person.lastName;
+  document.getElementById('company-field').value = person.company;
+  document.getElementById('job-field').value = person.job;
+  document.getElementById('linkedin-field').value = person.linkedIn;    
+}
+
+// Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
 function makeEditable() {
-  const editButton = document.getElementById("edit-button");
-  const updateButton = document.getElementById("update-button");
-  editButton.setAttribute("hidden", true);
-  updateButton.removeAttribute("hidden");
+  const editButton = document.getElementById('edit-button');
+  const updateButton = document.getElementById('update-button');
+  editButton.setAttribute('hidden', true);
+  updateButton.removeAttribute('hidden');
   
-  const editableFields = document.getElementsByClassName("editable");
+  const editableFields = document.getElementsByClassName('editable');
   Array.from(editableFields).forEach(function(editableField) {
-    editableField.removeAttribute("readonly");
-    editableField.classList.remove("form-control-plaintext");
-    editableField.classList.add("form-control");
+    editableField.removeAttribute('readonly');
+    editableField.classList.remove('form-control-plaintext');
+    editableField.classList.add('form-control');
   });
   
-  const currentJob = document.getElementById("current-job");
-  currentJob.setAttribute("hidden", true);
-  const jobField = document.getElementById("job-field");
-  jobField.removeAttribute("hidden");
+  const currentJob = document.getElementById('current-job');
+  currentJob.setAttribute('hidden', true);
+  const jobField = document.getElementById('job-field');
+  jobField.removeAttribute('hidden');
 }
