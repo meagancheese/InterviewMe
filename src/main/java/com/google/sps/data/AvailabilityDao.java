@@ -21,11 +21,15 @@ import java.util.Optional;
  * AvailabilityDao includes the basic methods anything managing Availability entities must support.
  */
 public interface AvailabilityDao {
-  // Returns a list of all Availability's ranging from minTime to maxTime of a user.
+  // Returns a list of all Availabilities ranging from minTime to maxTime of a user.
   // minTime and maxTime are in milliseconds.
   public List<Availability> getInRangeForUser(String email, long minTime, long maxTime);
 
-  // Returns all Availability's across all users ranging from minTime to maxTime.
+  // Returns a list of all scheduled Availabilities ranging from minTim to maxTime of a
+  // user. minTime and maxTime are in milliseconds.
+  public List<Availability> getScheduledInRangeForUser(String email, long minTime, long maxTime);
+
+  // Returns all Availabilities across all users ranging from minTime to maxTime.
   // minTime and maxTime are in milliseconds.
   public List<Availability> getInRangeForAll(long minTime, long maxTime);
 
