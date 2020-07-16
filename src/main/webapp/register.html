@@ -14,6 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="register.js"></script>
+    <script src="profile.js"></script>    
     <script src="logout.js"></script>
   </head>
   <body onload="onRegisterLoad()">
@@ -88,7 +89,9 @@
             <input type="text" class="form-control" id="linkedin-field" placeholder="https://www.linkedin.com/" value="" name="linkedin">
           </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary" type="button" onclick="submitProfileForm('POST','/')">
+          Submit
+        </button>
       </form>
       <br><br><br>
     </div>

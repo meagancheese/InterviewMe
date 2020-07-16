@@ -45,28 +45,34 @@
           <div class="col-md-12 mb-3">
             <label for="user-email">Email</label>
             <!-- TODO: replace with user's actual email -->
-            <input type="text" readonly class="form-control-plaintext" id="user-email" value="tess@gmail.com">
+            <input type="text" readonly class="form-control-plaintext" id="user-email" 
+                value="tess@gmail.com" name="user-email">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="first-name-field">First name</label>
-            <input type="text" readonly class="form-control-plaintext editable" id="first-name-field" placeholder="First name" value="" required>
+            <input type="text" readonly class="form-control-plaintext editable" 
+                id="first-name-field" placeholder="First name" value="Tess" required 
+                name="first-name">
           </div>
           <div class="col-md-6 mb-3">
             <label for="last-name-field">Last name</label>
-            <input type="text" readonly class="form-control-plaintext editable" id="last-name-field" placeholder="Last name" value="" required>
+            <input type="text" readonly class="form-control-plaintext editable" 
+                id="last-name-field" placeholder="Last name" value="Ter" required name="last-name">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="company-field">Company</label>
-            <input type="text" readonly class="form-control-plaintext editable" id="company-field" value="">
+            <input type="text" readonly class="form-control-plaintext editable" id="company-field" 
+                placeholder="Google" value="" name="company">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label for="job-field">Job</label>
-            <p id="current-job">Product Manager</p>            
-            <select hidden readonly class="form-control-plaintext editable" id="job-field">
+            <p id="current-job">Product Manager</p>    
+            <select hidden readonly class="form-control-plaintext editable" id="job-field" 
+                name="job">
               <option>Software Engineer</option>
               <option>Product Manager</option>
               <option>Business Analyst</option>
@@ -82,14 +88,20 @@
         <div class="form-row">
           <div class="col-md-12 mb-3">
             <label for="linkedin-field">LinkedIn URL</label>
-            <input type="text" readonly class="form-control-plaintext editable" id="linkedin-field" placeholder="https://www.linkedin.com/" value="">
+            <input type="text" readonly class="form-control-plaintext editable" id="linkedin-field" 
+                placeholder="https://www.linkedin.com/" value="" name="linkedin">
           </div>
         </div>
         <div class="form-group row">
           <div class="col-sm-10">
-            <!-- TODO: make this actually update -->
-            <button type="submit" id="update-button" hidden class="btn btn-primary">Update</button>
-            <button type="button" id="edit-button" onclick="makeEditable()" class="btn btn-primary">Edit</button>
+            <button class="btn btn-primary" id="update-button" type="button" 
+                onclick="submitProfileForm('PUT','/profile.html')" hidden>
+              Update Profile
+            </button>
+            <button type="button" id="edit-button" onclick="makeEditable()" 
+                class="btn btn-primary">
+              Edit
+            </button>
           </div>
         </div>
       </form>

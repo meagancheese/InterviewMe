@@ -20,6 +20,26 @@ function onProfileLoad() {
   prepareFormValidation();
 }
 
+// Submits profile form to Datastore.
+function submitProfileForm(methodType, redirectUrl) {
+  const personJson = {
+    email: $('#user-email').val(),
+    firstName: $('#first-name-field').val(),
+    lastName: $('#last-name-field').val(),
+    company: $('#company-field').val(),
+    job: $('#job-field').val(),
+    linkedin: $('#linkedin-field').val()
+  };
+  fetch('/person',{
+    method: methodType,
+    body: JSON.stringify(personJson)
+  }).then(window.location.replace(redirectUrl))
+    .catch((error) => {
+      alert('Error: ' + error + '\nThere was an error submitting your information.' +
+      ' Please try again.');
+    });
+}
+
 // Returns a Person if they registered in the past. If not, redirect to  
 // registration page.
 function getUserIfRegistered(){

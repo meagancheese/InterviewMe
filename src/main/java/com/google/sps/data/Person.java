@@ -51,6 +51,18 @@ public abstract class Person {
         .build();
   }
 
+  // Creates a person from a Person Servlet put request.
+  public static Person create(PersonRequest personRequest) {
+    return builder()
+        .setEmail(personRequest.getEmail())
+        .setFirstName(personRequest.getFirstName())
+        .setLastName(personRequest.getLastName())
+        .setCompany(personRequest.getCompany())
+        .setJob(personRequest.getJob())
+        .setLinkedIn(personRequest.getLinkedIn())
+        .build();
+  }
+
   static Builder builder() {
     return new AutoValue_Person.Builder();
   }
