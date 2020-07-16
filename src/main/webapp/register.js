@@ -14,7 +14,7 @@
 
 function onRegisterLoad() {
   supplyLogoutLink();
-  autofillEmail().then(prepareFormValidation());
+  autofillEmail().then(prepareFormValidation);
 }
 
 // Autofills email on the registration form of the email of the logged in user.
