@@ -35,6 +35,13 @@ public abstract class Availability {
     return builder().setEmail(email).setWhen(when).setId(id).setScheduled(scheduled).build();
   }
 
+  abstract Builder toBuilder();
+
+  // Returns a new Availability with the old information plus an updated id.
+  public Availability withId(long id) {
+    return toBuilder().setId(id).build();
+  }
+
   public static Builder builder() {
     return new AutoValue_Availability.Builder();
   }
