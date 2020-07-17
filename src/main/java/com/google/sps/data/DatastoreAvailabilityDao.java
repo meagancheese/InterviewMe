@@ -151,7 +151,7 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
         new FilterPredicate(
             "startTime", FilterOperator.GREATER_THAN_OR_EQUAL, minTime.toEpochMilli());
     // Queries can only perform inequality filters on one parameter, and so instead
-    // of using endTime for the maxFilter, startTime is used and the maxTime has 15 
+    // of using endTime for the maxFilter, startTime is used and the maxTime has 15
     // minutes subtracted from it to be equal to the latest possible startTime.
     Filter maxFilter =
         new FilterPredicate(
