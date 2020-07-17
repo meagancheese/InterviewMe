@@ -58,12 +58,9 @@ public class FakeAvailabilityDao implements AvailabilityDao {
     return Optional.empty();
   }
 
-  /**
-   * Deletes all Availability entities for a user ranging from minTime to maxTime. minTime and
-   * maxTime are in milliseconds.
-   */
+  /** Deletes all Availability entities for a user ranging from minTime to maxTime. */
   @Override
-  public void deleteInRangeForUser(String email, long minTime, long maxTime) {
+  public void deleteInRangeForUser(String email, Instant minTime, Instant maxTime) {
     List<Availability> userAvailability = getForUser(email);
     List<Availability> userAvailabilityInRange = getInRange(userAvailability, minTime, maxTime);
     for (Availability avail : userAvailabilityInRange) {
@@ -71,12 +68,9 @@ public class FakeAvailabilityDao implements AvailabilityDao {
     }
   }
 
-  /**
-   * Collects all Availabilities for the specified user within the specified time range, where
-   * minTime and maxTime are in milliseconds.
-   */
+  /** Collects all Availabilities for the specified user within the specified time range. */
   @Override
-  public List<Availability> getInRangeForUser(String email, long minTime, long maxTime) {
+  public List<Availability> getInRangeForUser(String email, Instant minTime, Instant maxTime) {
     List<Availability> userAvailability = getForUser(email);
     return getInRange(userAvailability, minTime, maxTime);
   }
@@ -102,18 +96,15 @@ public class FakeAvailabilityDao implements AvailabilityDao {
     return scheduledAvailability;
   }
 
-  /**
-   * Collects all Availabilities within the specified time range, where minTime and maxTime are in
-   * milliseconds.
-   */
+  /** Collects all Availabilities within the specified time range. */
   @Override
-  public List<Availability> getInRangeForAll(long minTime, long maxTime) {
+  public List<Availability> getInRangeForAll(Instant minTime, Instant maxTime) {
     return getInRange(new ArrayList<Availability>(storedObjects.values()), minTime, maxTime);
   }
 
   private List<Availability> getInRange(
-      List<Availability> allAvailability, long minTime, long maxTime) {
-    TimeRange range = new TimeRange(Instant.ofEpochMilli(minTime), Instant.ofEpochMilli(maxTime));
+      List<Availability> allAvailability, Instant minTime, Instant maxTime) {
+    TimeRange range = new TimeRange(minTime, maxTime);
     List<Availability> inRangeAvailability = new ArrayList<Availability>();
     for (Availability avail : allAvailability) {
       if (range.contains(avail.when())) {
