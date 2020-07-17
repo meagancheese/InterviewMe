@@ -209,8 +209,8 @@ public class DatastoreScheduledInterviewTest {
     List<ScheduledInterview> result =
         dao.getScheduledInterviewsInRangeForUser(
             scheduledInterview1.interviewerEmail(),
-            scheduledInterview2.when().start().toEpochMilli(),
-            scheduledInterview4.when().end().toEpochMilli());
+            scheduledInterview2.when().start(),
+            scheduledInterview4.when().end());
     List<Entity> entities =
         datastore
             .prepare(new Query("ScheduledInterview").addSort("startTime", SortDirection.ASCENDING))

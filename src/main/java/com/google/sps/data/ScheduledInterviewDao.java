@@ -14,6 +14,7 @@
 
 package com.google.sps.data;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface ScheduledInterviewDao {
   // Returns a list of all scheduled ScheduledInterview objects ranging from minTim to maxTime of a
   // user. minTime and maxTime are in milliseconds.
   public List<ScheduledInterview> getScheduledInterviewsInRangeForUser(
-      String email, long minTime, long maxTime);
+      String email, Instant minTime, Instant maxTime);
 
   // Creates a ScheduledInterview entity.
   public void create(ScheduledInterview scheduledInterview);
