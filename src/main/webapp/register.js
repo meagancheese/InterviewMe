@@ -13,17 +13,14 @@
 // limitations under the License.
 
 function onRegisterLoad() {
-  supplyLogoutLink();
-  autofillEmail().then(prepareFormValidation);
+  const loginInfo = getLoginInfo();
+  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
+  loginInfo.then(autofillEmail).then(prepareFormValidation);
 }
 
 // Autofills email on the registration form of the email of the logged in user.
-function autofillEmail() {
-  return fetch('/login')
-    .then(response => response.json())
-    .then((status) => {
-      $('#user-email').val(status.email);
-    });
+function autofillEmail(loginInfo) {
+  $('#user-email').val(loginInfo.email);
 } 
 
 // Finds fields that need an input and makes sure that submit won't go through if they are empty. 

@@ -15,7 +15,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="profile.js"></script>
     <script src="register.js"></script>    
-    <script src="logout.js"></script>
+    <script src="authentication.js"></script>
   </head>
   <body onload="onProfileLoad()">
     <div id="content">
@@ -44,22 +44,21 @@
         <div class="form-row">
           <div class="col-md-12 mb-3">
             <label for="user-email">Email</label>
-            <!-- TODO: replace with user's actual email -->
             <input type="text" readonly class="form-control-plaintext" id="user-email" 
-                value="tess@gmail.com" name="user-email">
+                value="" name="user-email">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="first-name-field">First name</label>
             <input type="text" readonly class="form-control-plaintext editable" 
-                id="first-name-field" placeholder="First name" value="Tess" required 
+                id="first-name-field" placeholder="First name" value="" required 
                 name="first-name">
           </div>
           <div class="col-md-6 mb-3">
             <label for="last-name-field">Last name</label>
             <input type="text" readonly class="form-control-plaintext editable" 
-                id="last-name-field" placeholder="Last name" value="Ter" required name="last-name">
+                id="last-name-field" placeholder="Last name" value="" required name="last-name">
           </div>
         </div>
         <div class="form-row">

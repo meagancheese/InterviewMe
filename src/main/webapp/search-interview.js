@@ -13,7 +13,9 @@
 // limitations under the License.
 
 function onSearchInterviewLoad() {
-  supplyLogoutLink();
+  const loginInfo = getLoginInfo();
+  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
+  loginInfo.then(getUserOrRedirectRegistration);
 }
 
 // Should query Datastore for appropriate interviews and render them on the

@@ -13,7 +13,9 @@
 // limitations under the License.
 
 function onAvailabilityLoad() {
-  supplyLogoutLink();
+  const loginInfo = getLoginInfo();
+  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
+  loginInfo.then(getUserOrRedirectRegistration);
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }
 

@@ -13,12 +13,27 @@
 // limitations under the License.
 
 // If user is logged in, returns a logout link. If not, redirects to home page.
-function supplyLogoutLink() {
-  fetch('/login').then(response => response.json()).then(status => {
-    if (status.loggedIn) {
-      document.getElementById('login-tab').href = status.changeLogInStatusURL;
-    } else {
-      window.location.replace('/');
-    }
-  });
+function supplyLogoutLinkOrRedirectHome(loginInfo) {
+  if (loginInfo.loggedIn) {
+    document.getElementById('login-tab').href = loginInfo.changeLogInStatusURL;
+  } else {
+    window.location.replace('/');
+  }
+}
+
+function getLoginInfo() {
+  return fetch('/login').then(response => response.json());
+}
+
+// Returns a Person if they registered in the past. If not, redirect to  
+// registration page.
+function getUserOrRedirectRegistration(loginInfo){
+  return fetch(`/person?email=${loginInfo.email}`)
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+        return;
+      }
+      return response.json();
+    });
 }

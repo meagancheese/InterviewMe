@@ -13,8 +13,9 @@
 // limitations under the License.
 
 function onProfileLoad() {
-  supplyLogoutLink();  
-  getUserIfRegistered().then((person) => {
+  const loginInfo = getLoginInfo();
+  loginInfo.then(supplyLogoutLinkOrRedirectHome);  
+  loginInfo.then(getUserOrRedirectRegistration).then((person) => {
     autofillForm(person);      
   });
   prepareFormValidation();
@@ -37,21 +38,6 @@ function submitProfileForm(methodType, redirectUrl) {
     .catch((error) => {
       alert('Error: ' + error + '\nThere was an error submitting your information.' +
       ' Please try again.');
-    });
-}
-
-// Returns a Person if they registered in the past. If not, redirect to  
-// registration page.
-function getUserIfRegistered(){
-  return fetch('/login')
-    .then(response => response.json())
-    .then(status => fetch(`/person?email=${status.email}`))
-    .then(response => {
-      if (response.redirected) {
-        window.location.href = response.url;
-        return;
-      }
-      return response.json();
     });
 }
 
