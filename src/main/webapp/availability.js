@@ -20,11 +20,14 @@ function onAvailabilityLoad() {
 }
 
 // Toggles a tile from selected (green) to un-selected (white) and vice versa when clicked.
+// Scheduled tiles (red) remain unaffected.
 function toggleTile(tile) {
   let classList = tile.classList;
-  if (classList.contains('table-success') && classList.contains('selected-time-slot')) {
+  if (classList.contains('selected-time-slot')) {
     classList.remove('table-success', 'selected-time-slot');
-  } else {
+    return;
+  }
+  if (! classList.contains('scheduled-time-slot')) {
     classList.add('table-success', 'selected-time-slot');
   }
 }
@@ -48,6 +51,8 @@ function availabilityTableDiv() {
 
 function updateAvailability() {
   let selectedSlots = document.getElementsByClassName('selected-time-slot');
+  let scheduledSlots = document.getElementsByClassName('scheduled-time-slot');
+  let markedSlots = Array.from(selectedSlots).concat(Array.from(scheduledSlots));
   let firstSlot = document.getElementsByTagName('tbody').item(0)
     .firstElementChild.firstElementChild.getAttribute('data-utc');
   let lastSlot = document.getElementsByTagName('tbody').item(0)
@@ -55,7 +60,7 @@ function updateAvailability() {
   let requestObject = {
     firstSlot: firstSlot,
     lastSlot: lastSlot,
-    selectedSlots: Array.from(selectedSlots).map(s => s.getAttribute('data-utc')),
+    markedSlots: markedSlots.map(s => s.getAttribute('data-utc')),
   };
   let requestBody = JSON.stringify(requestObject);
   let request = new Request('/availability', {method: 'PUT', body: requestBody});

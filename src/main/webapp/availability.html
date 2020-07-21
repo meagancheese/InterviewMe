@@ -41,16 +41,13 @@
       <h1 class="text-center">Availability</h1>
       <h5 class="text-center lead">Update your availability to be an Interviewer for this week below:</h5>
       <br>
-      <!--TODO: Include Timezone consideration; Check inputs for correctness: end is after start, at least an hour long;
-         Add pagination; Figure out how to update the dates (dynamically); store and show inputted data; Allow for more than one
-         time range per day (have a plus button)-->
+      <!--TODO: Check inputs for correctness: end is after start, at least an hour long;
+         Add pagination-->
       <!-- This table-container is filled with a JSP page onload.-->
       <div id="table-container">
         <!-- This is a place holder for when the page is slow to load.-->
         <p class="text-center">Loading your interview availability...</p>
       </div>
-      <!-- TODO: Implement an onclick function called updateAvailability() that will process whether or not a time slot is
-        selected and use the UTC Encoding to send relevant requests to the backend.-->
       <div id="submit-button-container">
         <button type="submit" class="btn btn-primary mb-2 submit-button" onclick="updateAvailability()">Update Availability</button>
       </div>

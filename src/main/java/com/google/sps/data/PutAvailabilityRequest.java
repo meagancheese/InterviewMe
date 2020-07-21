@@ -19,13 +19,12 @@ import java.util.ArrayList;
 public class PutAvailabilityRequest {
   private String firstSlot;
   private String lastSlot;
-  private ArrayList<String> selectedSlots;
+  private ArrayList<String> markedSlots;
 
-  public PutAvailabilityRequest(
-      String firstSlot, String lastSlot, ArrayList<String> selectedSlots) {
+  public PutAvailabilityRequest(String firstSlot, String lastSlot, ArrayList<String> markedSlots) {
     this.firstSlot = firstSlot;
     this.lastSlot = lastSlot;
-    this.selectedSlots = selectedSlots;
+    this.markedSlots = markedSlots;
   }
 
   public String getFirstSlot() {
@@ -36,12 +35,12 @@ public class PutAvailabilityRequest {
     return lastSlot;
   }
 
-  public ArrayList<String> getSelectedSlots() {
-    return selectedSlots;
+  public ArrayList<String> getMarkedSlots() {
+    return markedSlots;
   }
 
   public boolean allFieldsPopulated() {
-    return !(firstSlot == null || lastSlot == null || selectedSlots == null);
+    return !(firstSlot == null || lastSlot == null || markedSlots == null);
   }
 
   public String toString() {
@@ -52,7 +51,7 @@ public class PutAvailabilityRequest {
         firstSlot,
         "lastSlot",
         lastSlot,
-        "selectedSlots",
-        selectedSlots);
+        "markedSlots",
+        markedSlots);
   }
 }

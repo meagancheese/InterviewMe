@@ -301,4 +301,47 @@ public class DatastoreAvailabilityDaoTest {
     expectedAvailabilities.add(expectedAvailabilityThree);
     Assert.assertEquals(expectedAvailabilities, actual);
   }
+
+  // Checks that all of the Availability objects within a given time range are returned
+  // in ascending order by start time.
+  @Test
+  public void getsAllUsersAvailabilityInRangeInOrder() {
+    dao.create(availabilityFour);
+    dao.create(availabilityThree);
+    dao.create(availabilityTwo);
+    dao.create(availabilityOne);
+    List<Availability> actual =
+        dao.getInRangeForAll(availabilityOne.when().start(), availabilityThree.when().end());
+    List<Entity> entities =
+        datastore
+            .prepare(new Query("Availability").addSort("startTime", SortDirection.ASCENDING))
+            .asList(FetchOptions.Builder.withDefaults());
+    List<Availability> availabilities = new ArrayList<Availability>();
+    for (Entity entity : entities) {
+      availabilities.add(dao.entityToAvailability(entity));
+    }
+    Availability expectedAvailabilityOne =
+        Availability.create(
+            availabilityOne.email(),
+            availabilityOne.when(),
+            availabilities.get(0).id(),
+            availabilityOne.scheduled());
+    Availability expectedAvailabilityTwo =
+        Availability.create(
+            availabilityTwo.email(),
+            availabilityTwo.when(),
+            availabilities.get(1).id(),
+            availabilityTwo.scheduled());
+    Availability expectedAvailabilityThree =
+        Availability.create(
+            availabilityThree.email(),
+            availabilityThree.when(),
+            availabilities.get(2).id(),
+            availabilityThree.scheduled());
+    List<Availability> expectedAvailabilities = new ArrayList<Availability>();
+    expectedAvailabilities.add(expectedAvailabilityOne);
+    expectedAvailabilities.add(expectedAvailabilityTwo);
+    expectedAvailabilities.add(expectedAvailabilityThree);
+    Assert.assertEquals(expectedAvailabilities, actual);
+  }
 }

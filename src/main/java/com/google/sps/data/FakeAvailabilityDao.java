@@ -68,7 +68,10 @@ public class FakeAvailabilityDao implements AvailabilityDao {
     }
   }
 
-  /** Collects all Availabilities for the specified user within the specified time range. */
+  /**
+   * Collects all Availabilities for the specified user within the specified time range and returns
+   * them in order (by ascending start times).
+   */
   @Override
   public List<Availability> getInRangeForUser(String email, Instant minTime, Instant maxTime) {
     List<Availability> userAvailability = getForUser(email);
@@ -86,17 +89,10 @@ public class FakeAvailabilityDao implements AvailabilityDao {
     return userAvailability;
   }
 
-  private List<Availability> getScheduled(List<Availability> allAvailability) {
-    List<Availability> scheduledAvailability = new ArrayList<Availability>();
-    for (Availability avail : allAvailability) {
-      if (avail.scheduled()) {
-        scheduledAvailability.add(avail);
-      }
-    }
-    return scheduledAvailability;
-  }
-
-  /** Collects all Availabilities within the specified time range. */
+  /**
+   * Collects all Availabilities within the specified time range and returns them in order (by
+   * ascending start times).
+   */
   @Override
   public List<Availability> getInRangeForAll(Instant minTime, Instant maxTime) {
     return getInRange(new ArrayList<Availability>(storedObjects.values()), minTime, maxTime);
@@ -111,6 +107,16 @@ public class FakeAvailabilityDao implements AvailabilityDao {
         inRangeAvailability.add(avail);
       }
     }
+    inRangeAvailability.sort(
+        (Availability a1, Availability a2) -> {
+          if (a1.when().start().equals(a2.when().start())) {
+            return 0;
+          }
+          if (a1.when().start().isBefore(a2.when().start())) {
+            return -1;
+          }
+          return 1;
+        });
     return inRangeAvailability;
   }
 }
