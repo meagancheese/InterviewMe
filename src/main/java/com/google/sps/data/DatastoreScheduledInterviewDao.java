@@ -158,8 +158,9 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
   }
 
   /**
-   * Returns interviews within a desired range. For example: scheduledInterviews starting >= 2:00PM
-   * and ending <= 6:00PM on a certain date. The maxTime is 6:00PM on that day.
+   * Returns interviews within a desired range in the order in which they occur. For example:
+   * scheduledInterviews starting >= 2:00PM and ending <= 6:00PM on a certain date. The maxTime is
+   * 6:00PM on that day.
    */
   private List<Entity> getEntitiesInRange(
       Instant minTime, Instant maxTime, Optional<Filter> filterOpt) {
@@ -178,7 +179,10 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
     if (filterOpt.isPresent()) {
       compFilter = CompositeFilterOperator.and(compFilter, filterOpt.get());
     }
-    Query scheduledInterviewQuery = new Query("ScheduledInterview").setFilter(compFilter);
+    Query scheduledInterviewQuery =
+        new Query("ScheduledInterview")
+            .setFilter(compFilter)
+            .addSort("startTime", SortDirection.ASCENDING);
     return datastore.prepare(scheduledInterviewQuery).asList(FetchOptions.Builder.withDefaults());
   }
 }

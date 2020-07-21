@@ -26,6 +26,7 @@ public abstract class ScheduledInterview {
   public abstract String interviewerEmail();
 
   public abstract String intervieweeEmail();
+
   /**
    * Creates a scheduled interview that contains a timerange, the date and the emails of the
    * attendees.
@@ -37,6 +38,16 @@ public abstract class ScheduledInterview {
         .setWhen(when)
         .setInterviewerEmail(interviewerEmail)
         .setIntervieweeEmail(intervieweeEmail)
+        .build();
+  }
+
+  /** Used to help serialize the ScheduledInterview before it is sent to the frontend */
+  public static ScheduledInterview create(ScheduledInterviewRequest scheduledInterviewRequest) {
+    return builder()
+        .setId(scheduledInterviewRequest.getId())
+        .setWhen(scheduledInterviewRequest.getWhen())
+        .setInterviewerEmail(scheduledInterviewRequest.getInterviewerEmail())
+        .setIntervieweeEmail(scheduledInterviewRequest.getIntervieweeEmail())
         .build();
   }
 

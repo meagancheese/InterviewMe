@@ -29,7 +29,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,7 +43,7 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
 
   /** Initializes the fields for ScheduledInterviewDatastoreDAO. */
   public FakeScheduledInterviewDao() {
-    data = new LinkedHashMap<Long, ScheduledInterview>();
+    data = new HashMap<Long, ScheduledInterview>();
   }
 
   /**
@@ -86,7 +86,10 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
     return relevantInterviews;
   }
 
-  /** Returns a list of all scheduledInterviews ranging from minTime to maxTime of a user. */
+  /**
+   * Returns a list of all scheduledInterviews ranging from minTime to maxTime of a user in the
+   * order in which they occur.
+   */
   @Override
   public List<ScheduledInterview> getScheduledInterviewsInRangeForUser(
       String email, Instant minTime, Instant maxTime) {
