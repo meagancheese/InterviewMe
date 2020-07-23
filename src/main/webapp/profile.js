@@ -14,7 +14,7 @@
 
 function onProfileLoad() {
   const loginInfo = getLoginInfo();
-  loginInfo.then(supplyLogoutLinkOrRedirectHome);  
+  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
   loginInfo.then(getUserOrRedirectRegistration).then((person) => {
     autofillForm(person);      
   });

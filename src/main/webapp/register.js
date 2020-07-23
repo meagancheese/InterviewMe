@@ -14,8 +14,22 @@
 
 function onRegisterLoad() {
   const loginInfo = getLoginInfo();
+  loginInfo.then(redirectProfileIfRegistered);
   loginInfo.then(supplyLogoutLinkOrRedirectHome); 
   loginInfo.then(autofillEmail).then(prepareFormValidation);
+}
+
+// If they have registered before, redirect them to profile page.
+function redirectProfileIfRegistered() {
+  fetch('/person')
+    .then(response => {
+      if (!response.redirected) {
+        // If response was redirected, that means the logged in user has not registered before.
+        // Otherwise, it means they have registered before and should not re-register.
+        window.location.href = '/profile.html';
+        return;
+      }
+    });
 }
 
 // Autofills email on the registration form of the email of the logged in user.
