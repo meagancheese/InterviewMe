@@ -1,0 +1,16 @@
+TODO: Add more specifications and refine. (This is just the first draft)
+
+You have been registered for an interview on {{formatted_date}}. You are the interviewer. You will be mock interviewing {{interviewee_full_name}} ({{interviewee_email}}) for the position of: {{position}}.
+
+Before the interviewer, you will need to:
+Prepare {{questions_amount}} questions for the interviewer. You may not use all {{questions_amount}} but it is best to be prepared.
+
+Be sure to follow these general guidelines when interviewing:
+Keep the time in mind??
+
+After interviewing:
+Send the interviewee feedback through this form: [TODO].
+Remember:
+Treat this as an actual interview. Be professional.
+
+A Google Calendar event titled "InterviewMe Interview {{interviewer_full_name}} / {{interviewee_full_name}}" was added to your Google Calendar. Please reach out if you have any questions.

@@ -2,3 +2,4 @@ target/
 WEB-INF/appengine-generated/datastore-indexes-auto.xml
 WEB-INF/appengine-generated/local_db.bin
 .idea
+src/test/java/com/google/sps/do_not_test_with_git
