@@ -22,7 +22,7 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class Availability {
-  public abstract String email();
+  public abstract String userId();
 
   public abstract TimeRange when();
 
@@ -31,8 +31,8 @@ public abstract class Availability {
   // If this time slot has an interview.
   public abstract boolean scheduled();
 
-  public static Availability create(String email, TimeRange when, long id, boolean scheduled) {
-    return builder().setEmail(email).setWhen(when).setId(id).setScheduled(scheduled).build();
+  public static Availability create(String userId, TimeRange when, long id, boolean scheduled) {
+    return builder().setUserId(userId).setWhen(when).setId(id).setScheduled(scheduled).build();
   }
 
   abstract Builder toBuilder();
@@ -48,7 +48,7 @@ public abstract class Availability {
 
   @AutoValue.Builder
   public abstract static class Builder {
-    public abstract Builder setEmail(String email);
+    public abstract Builder setUserId(String userId);
 
     public abstract Builder setWhen(TimeRange when);
 

@@ -23,21 +23,21 @@ public abstract class ScheduledInterview {
 
   public abstract TimeRange when();
 
-  public abstract String interviewerEmail();
+  public abstract String interviewerId();
 
-  public abstract String intervieweeEmail();
+  public abstract String intervieweeId();
 
   /**
    * Creates a scheduled interview that contains a timerange, the date and the emails of the
    * attendees.
    */
   public static ScheduledInterview create(
-      long id, TimeRange when, String interviewerEmail, String intervieweeEmail) {
+      long id, TimeRange when, String interviewerId, String intervieweeId) {
     return builder()
         .setId(id)
         .setWhen(when)
-        .setInterviewerEmail(interviewerEmail)
-        .setIntervieweeEmail(intervieweeEmail)
+        .setInterviewerId(interviewerId)
+        .setIntervieweeId(intervieweeId)
         .build();
   }
 
@@ -46,8 +46,8 @@ public abstract class ScheduledInterview {
     return builder()
         .setId(scheduledInterviewRequest.getId())
         .setWhen(scheduledInterviewRequest.getWhen())
-        .setInterviewerEmail(scheduledInterviewRequest.getInterviewerEmail())
-        .setIntervieweeEmail(scheduledInterviewRequest.getIntervieweeEmail())
+        .setInterviewerId(scheduledInterviewRequest.getInterviewerId())
+        .setIntervieweeId(scheduledInterviewRequest.getIntervieweeId())
         .build();
   }
 
@@ -61,9 +61,9 @@ public abstract class ScheduledInterview {
 
     abstract Builder setWhen(TimeRange range);
 
-    abstract Builder setInterviewerEmail(String email);
+    abstract Builder setInterviewerId(String interviewerId);
 
-    abstract Builder setIntervieweeEmail(String email);
+    abstract Builder setIntervieweeId(String intervieweeId);
 
     abstract ScheduledInterview build();
   }

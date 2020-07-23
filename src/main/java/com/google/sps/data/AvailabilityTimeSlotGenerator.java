@@ -84,9 +84,16 @@ public class AvailabilityTimeSlotGenerator {
     List<Instant> startAndEndOfWeek = getStartAndEndOfWeek(instant, timezoneOffsetMinutes);
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
+    String userId = userService.getCurrentUser().getUserId();
+    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
+    // replaced with this hashcode.
+    if (userId == null) {
+      userId = String.format("%d", email.hashCode());
+    }
+
     List<Availability> userAvailabilityForWeek =
         availabilityDao.getInRangeForUser(
-            email, startAndEndOfWeek.get(0), startAndEndOfWeek.get(1));
+            userId, startAndEndOfWeek.get(0), startAndEndOfWeek.get(1));
     Map<Instant, Availability> availabilityMap = new HashMap<Instant, Availability>();
     for (Availability avail : userAvailabilityForWeek) {
       availabilityMap.put(avail.when().start(), avail);

@@ -63,7 +63,7 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
    * returns them as a list of ScheduledInterview objects in the order in which they occur.
    */
   @Override
-  public List<ScheduledInterview> getForPerson(String email) {
+  public List<ScheduledInterview> getForPerson(String userId) {
     List<ScheduledInterview> relevantInterviews = new ArrayList<>();
     List<ScheduledInterview> scheduledInterviews = new ArrayList<ScheduledInterview>(data.values());
     scheduledInterviews.sort(
@@ -78,8 +78,8 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
         });
 
     for (ScheduledInterview scheduledInterview : scheduledInterviews) {
-      if (email.equals(scheduledInterview.interviewerEmail())
-          || email.equals(scheduledInterview.intervieweeEmail())) {
+      if (userId.equals(scheduledInterview.interviewerId())
+          || userId.equals(scheduledInterview.intervieweeId())) {
         relevantInterviews.add(scheduledInterview);
       }
     }
@@ -92,9 +92,9 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
    */
   @Override
   public List<ScheduledInterview> getScheduledInterviewsInRangeForUser(
-      String email, Instant minTime, Instant maxTime) {
+      String userId, Instant minTime, Instant maxTime) {
     TimeRange range = new TimeRange(minTime, maxTime);
-    List<ScheduledInterview> scheduledInterviews = getForPerson(email);
+    List<ScheduledInterview> scheduledInterviews = getForPerson(userId);
     List<ScheduledInterview> scheduledInterviewsInRange = new ArrayList<ScheduledInterview>();
     for (ScheduledInterview scheduledInterview : scheduledInterviews) {
       if (range.contains(scheduledInterview.when())) {
@@ -112,8 +112,8 @@ public class FakeScheduledInterviewDao implements ScheduledInterviewDao {
         ScheduledInterview.create(
             generatedId,
             scheduledInterview.when(),
-            scheduledInterview.interviewerEmail(),
-            scheduledInterview.intervieweeEmail());
+            scheduledInterview.interviewerId(),
+            scheduledInterview.intervieweeId());
     data.put(generatedId, storedScheduledInterview);
   }
 

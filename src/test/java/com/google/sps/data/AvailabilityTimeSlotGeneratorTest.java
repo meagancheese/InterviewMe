@@ -168,16 +168,20 @@ public final class AvailabilityTimeSlotGeneratorTest {
     Instant instant = day.toInstant();
     int timezoneOffsetMinutes = -240;
     Map<Instant, Availability> userAvailabilityForWeek = new HashMap<Instant, Availability>();
+
+    String email = "user@mail.com";
+    String userId = String.format("%d", email.hashCode());
+
     Availability availabilityOne =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T12:45:00Z"), Instant.parse("2020-07-07T13:00:00Z")),
             -1,
             false);
     Availability availabilityTwo =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T17:00:00Z"), Instant.parse("2020-07-07T17:15:00Z")),
             -1,
@@ -300,16 +304,20 @@ public final class AvailabilityTimeSlotGeneratorTest {
     Instant instant = day.toInstant();
     int timezoneOffsetMinutes = -240;
     Map<Instant, Availability> userAvailabilityForWeek = new HashMap<Instant, Availability>();
+
+    String email = "user@mail.com";
+    String userId = String.format("%d", email.hashCode());
+
     Availability availabilityOne =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T16:15:00Z"), Instant.parse("2020-07-07T16:30:00Z")),
             -1,
             true);
     Availability availabilityTwo =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T22:45:00Z"), Instant.parse("2020-07-07T23:00:00Z")),
             -1,
@@ -431,16 +439,20 @@ public final class AvailabilityTimeSlotGeneratorTest {
     Instant instant = day.toInstant();
     int timezoneOffsetMinutes = -240;
     Map<Instant, Availability> userAvailabilityForWeek = new HashMap<Instant, Availability>();
+
+    String email = "user@mail.com";
+    String userId = String.format("%d", email.hashCode());
+
     Availability availabilityOne =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T15:15:00Z"), Instant.parse("2020-07-07T15:30:00Z")),
             -1,
             true);
     Availability availabilityTwo =
         Availability.create(
-            "user@mail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T19:00:00Z"), Instant.parse("2020-07-07T19:15:00Z")),
             -1,
@@ -844,18 +856,22 @@ public final class AvailabilityTimeSlotGeneratorTest {
     Instant instant = day.toInstant();
     int timezoneOffsetMinutes = -240;
     // This is necessary for accessing the current user's Availability for the week.
+
+    String email = "user@gmail.com";
     helper.setEnvIsLoggedIn(true).setEnvEmail("user@gmail.com").setEnvAuthDomain("auth");
     FakeAvailabilityDao dao = new FakeAvailabilityDao();
+    String userId = String.format("%d", email.hashCode());
+
     dao.create(
         Availability.create(
-            "user@gmail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-07T12:00:00Z"), Instant.parse("2020-07-07T12:15:00Z")),
             -1,
             true));
     dao.create(
         Availability.create(
-            "user@gmail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-09T12:00:00Z"), Instant.parse("2020-07-09T12:15:00Z")),
             -1,

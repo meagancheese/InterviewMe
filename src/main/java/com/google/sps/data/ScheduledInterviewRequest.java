@@ -18,15 +18,15 @@ package com.google.sps.data;
 public class ScheduledInterviewRequest {
   private long id;
   private TimeRange when;
-  private String interviewerEmail;
-  private String intervieweeEmail;
+  private String interviewerId;
+  private String intervieweeId;
 
   public ScheduledInterviewRequest(
-      long id, TimeRange when, String interviewerEmail, String intervieweeEmail) {
+      long id, TimeRange when, String interviewerId, String intervieweeId) {
     this.id = id;
     this.when = when;
-    this.interviewerEmail = interviewerEmail;
-    this.intervieweeEmail = intervieweeEmail;
+    this.interviewerId = interviewerId;
+    this.intervieweeId = intervieweeId;
   }
 
   public long getId() {
@@ -37,25 +37,18 @@ public class ScheduledInterviewRequest {
     return when;
   }
 
-  public String getInterviewerEmail() {
-    return interviewerEmail;
+  public String getInterviewerId() {
+    return interviewerId;
   }
 
-  public String getIntervieweeEmail() {
-    return intervieweeEmail;
+  public String getIntervieweeId() {
+    return intervieweeId;
   }
 
   public String toString() {
     return String.format(
         "{%s:%s, %s:%s, %s:%s, %s:%s}",
-        "id",
-        id,
-        "when",
-        when,
-        "interviewerEmail",
-        interviewerEmail,
-        "intervieweeEmail",
-        intervieweeEmail);
+        "id", id, "when", when, "interviewerId", interviewerId, "intervieweeId", intervieweeId);
   }
 
   public boolean equals(Object o) {
@@ -66,8 +59,8 @@ public class ScheduledInterviewRequest {
       ScheduledInterviewRequest that = (ScheduledInterviewRequest) o;
       return this.getId() == that.getId()
           && this.getWhen().equals(that.getWhen())
-          && this.getInterviewerEmail().equals(that.getInterviewerEmail())
-          && this.getIntervieweeEmail().equals(that.getIntervieweeEmail());
+          && this.getInterviewerId().equals(that.getInterviewerId())
+          && this.getIntervieweeId().equals(that.getIntervieweeId());
     }
     return false;
   }

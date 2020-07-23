@@ -72,21 +72,29 @@ public class AvailabilityServlet extends HttpServlet {
       response.sendError(400);
       return;
     }
+
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
+    String userId = userService.getCurrentUser().getUserId();
+    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
+    // replaced with this hashcode.
+    if (userId == null) {
+      userId = String.format("%d", email.hashCode());
+    }
+
     Instant minTime = Instant.parse(utcEncodings.getFirstSlot());
     // The last slot for the week starts 15 minutes before the true end of the week.
     Instant maxTime = Instant.parse(utcEncodings.getLastSlot()).plus(15, ChronoUnit.MINUTES);
-    availabilityDao.deleteInRangeForUser(email, minTime, maxTime);
+    availabilityDao.deleteInRangeForUser(userId, minTime, maxTime);
     List<ScheduledInterview> scheduledInterviewsForUser =
-        scheduledInterviewDao.getScheduledInterviewsInRangeForUser(email, minTime, maxTime);
+        scheduledInterviewDao.getScheduledInterviewsInRangeForUser(userId, minTime, maxTime);
     for (String markedSlot : utcEncodings.getMarkedSlots()) {
-      createAndStoreAvailability(markedSlot, email, scheduledInterviewsForUser);
+      createAndStoreAvailability(markedSlot, userId, scheduledInterviewsForUser);
     }
   }
 
   private void createAndStoreAvailability(
-      String utc, String email, List<ScheduledInterview> scheduledInterviews) {
+      String utc, String userId, List<ScheduledInterview> scheduledInterviews) {
     TimeRange when =
         new TimeRange(Instant.parse(utc), Instant.parse(utc).plus(15, ChronoUnit.MINUTES));
     boolean scheduled = false;
@@ -95,7 +103,7 @@ public class AvailabilityServlet extends HttpServlet {
         scheduled = true;
       }
     }
-    Availability avail = Availability.create(email, when, -1, scheduled);
+    Availability avail = Availability.create(userId, when, -1, scheduled);
     availabilityDao.create(avail);
   }
 }

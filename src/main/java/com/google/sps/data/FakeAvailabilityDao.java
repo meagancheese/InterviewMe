@@ -60,8 +60,8 @@ public class FakeAvailabilityDao implements AvailabilityDao {
 
   /** Deletes all Availability entities for a user ranging from minTime to maxTime. */
   @Override
-  public void deleteInRangeForUser(String email, Instant minTime, Instant maxTime) {
-    List<Availability> userAvailability = getForUser(email);
+  public void deleteInRangeForUser(String userId, Instant minTime, Instant maxTime) {
+    List<Availability> userAvailability = getForUser(userId);
     List<Availability> userAvailabilityInRange = getInRange(userAvailability, minTime, maxTime);
     for (Availability avail : userAvailabilityInRange) {
       storedObjects.remove(avail.id());
@@ -73,16 +73,16 @@ public class FakeAvailabilityDao implements AvailabilityDao {
    * them in order (by ascending start times).
    */
   @Override
-  public List<Availability> getInRangeForUser(String email, Instant minTime, Instant maxTime) {
-    List<Availability> userAvailability = getForUser(email);
+  public List<Availability> getInRangeForUser(String userId, Instant minTime, Instant maxTime) {
+    List<Availability> userAvailability = getForUser(userId);
     return getInRange(userAvailability, minTime, maxTime);
   }
 
-  private List<Availability> getForUser(String email) {
+  private List<Availability> getForUser(String userId) {
     List<Availability> allAvailability = new ArrayList<Availability>(storedObjects.values());
     List<Availability> userAvailability = new ArrayList<Availability>();
     for (Availability avail : allAvailability) {
-      if (avail.email().equals(email)) {
+      if (avail.userId().equals(userId)) {
         userAvailability.add(avail);
       }
     }

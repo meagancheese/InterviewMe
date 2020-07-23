@@ -48,7 +48,7 @@ public class DatastoreAvailabilityDaoTest {
 
   private final Availability availabilityOne =
       Availability.create(
-          "user1@mail.com",
+          "user1",
           new TimeRange(
               Instant.parse("2020-07-07T12:00:00Z"), Instant.parse("2020-07-07T12:15:00Z")),
           (long) -1,
@@ -56,7 +56,7 @@ public class DatastoreAvailabilityDaoTest {
 
   private final Availability availabilityTwo =
       Availability.create(
-          "user1@mail.com",
+          "user1",
           new TimeRange(
               Instant.parse("2020-07-07T15:45:00Z"), Instant.parse("2020-07-07T16:00:00Z")),
           (long) -1,
@@ -64,7 +64,7 @@ public class DatastoreAvailabilityDaoTest {
 
   private final Availability availabilityThree =
       Availability.create(
-          "user2@mail.com",
+          "user2",
           new TimeRange(
               Instant.parse("2020-07-07T17:30:00Z"), Instant.parse("2020-07-07T17:45:00Z")),
           (long) -1,
@@ -72,7 +72,7 @@ public class DatastoreAvailabilityDaoTest {
 
   private final Availability availabilityFour =
       Availability.create(
-          "user1@mail.com",
+          "user1",
           new TimeRange(
               Instant.parse("2020-07-07T22:30:00Z"), Instant.parse("2020-07-07T22:45:00Z")),
           (long) -1,
@@ -98,7 +98,7 @@ public class DatastoreAvailabilityDaoTest {
     Availability storedAvailability = dao.entityToAvailability(entity);
     Availability availabilityOneWithID =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             storedAvailability.id(),
             availabilityOne.scheduled());
@@ -113,7 +113,7 @@ public class DatastoreAvailabilityDaoTest {
     Availability storedAvailability = dao.entityToAvailability(entity);
     Availability update =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             storedAvailability.id(),
             !availabilityOne.scheduled());
@@ -132,7 +132,7 @@ public class DatastoreAvailabilityDaoTest {
     Optional<Availability> actualAvailabilityOptional = dao.get(storedAvailability.id());
     Availability expectedAvailability =
         Availability.create(
-            availabilityTwo.email(),
+            availabilityTwo.userId(),
             availabilityTwo.when(),
             storedAvailability.id(),
             availabilityTwo.scheduled());
@@ -156,13 +156,12 @@ public class DatastoreAvailabilityDaoTest {
     dao.create(availabilityOne);
     dao.create(availabilityTwo);
     dao.create(availabilityFour);
-    dao.deleteInRangeForUser(
-        "user1@mail.com", availabilityOne.when().start(), availabilityTwo.when().end());
+    dao.deleteInRangeForUser("user1", availabilityOne.when().start(), availabilityTwo.when().end());
     Entity entity = datastore.prepare(new Query("Availability")).asSingleEntity();
     Availability actual = dao.entityToAvailability(entity);
     Availability expected =
         Availability.create(
-            availabilityFour.email(),
+            availabilityFour.userId(),
             availabilityFour.when(),
             actual.id(),
             availabilityFour.scheduled());
@@ -177,12 +176,12 @@ public class DatastoreAvailabilityDaoTest {
     dao.create(availabilityTwo);
     dao.create(availabilityThree);
     dao.deleteInRangeForUser(
-        "user1@mail.com", availabilityOne.when().start(), availabilityThree.when().end());
+        "user1", availabilityOne.when().start(), availabilityThree.when().end());
     Entity entity = datastore.prepare(new Query("Availability")).asSingleEntity();
     Availability actual = dao.entityToAvailability(entity);
     Availability expected =
         Availability.create(
-            availabilityThree.email(),
+            availabilityThree.userId(),
             availabilityThree.when(),
             actual.id(),
             availabilityThree.scheduled());
@@ -197,7 +196,7 @@ public class DatastoreAvailabilityDaoTest {
     dao.create(availabilityFour);
     List<Availability> actual =
         dao.getInRangeForUser(
-            "user1@mail.com", availabilityOne.when().start(), availabilityTwo.when().end());
+            "user1", availabilityOne.when().start(), availabilityTwo.when().end());
     List<Entity> entities =
         datastore
             .prepare(new Query("Availability").addSort("startTime", SortDirection.ASCENDING))
@@ -208,13 +207,13 @@ public class DatastoreAvailabilityDaoTest {
     }
     Availability expectedAvailabilityOne =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             availabilities.get(0).id(),
             availabilityOne.scheduled());
     Availability expectedAvailabilityTwo =
         Availability.create(
-            availabilityTwo.email(),
+            availabilityTwo.userId(),
             availabilityTwo.when(),
             availabilities.get(1).id(),
             availabilityTwo.scheduled());
@@ -233,7 +232,7 @@ public class DatastoreAvailabilityDaoTest {
     dao.create(availabilityThree);
     List<Availability> actual =
         dao.getInRangeForUser(
-            "user1@mail.com", availabilityOne.when().start(), availabilityThree.when().end());
+            "user1", availabilityOne.when().start(), availabilityThree.when().end());
     List<Entity> entities =
         datastore
             .prepare(new Query("Availability").addSort("startTime", SortDirection.ASCENDING))
@@ -244,13 +243,13 @@ public class DatastoreAvailabilityDaoTest {
     }
     Availability expectedAvailabilityOne =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             availabilities.get(0).id(),
             availabilityOne.scheduled());
     Availability expectedAvailabilityTwo =
         Availability.create(
-            availabilityTwo.email(),
+            availabilityTwo.userId(),
             availabilityTwo.when(),
             availabilities.get(1).id(),
             availabilityTwo.scheduled());
@@ -279,19 +278,19 @@ public class DatastoreAvailabilityDaoTest {
     }
     Availability expectedAvailabilityOne =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             availabilities.get(0).id(),
             availabilityOne.scheduled());
     Availability expectedAvailabilityTwo =
         Availability.create(
-            availabilityTwo.email(),
+            availabilityTwo.userId(),
             availabilityTwo.when(),
             availabilities.get(1).id(),
             availabilityTwo.scheduled());
     Availability expectedAvailabilityThree =
         Availability.create(
-            availabilityThree.email(),
+            availabilityThree.userId(),
             availabilityThree.when(),
             availabilities.get(2).id(),
             availabilityThree.scheduled());
@@ -322,19 +321,19 @@ public class DatastoreAvailabilityDaoTest {
     }
     Availability expectedAvailabilityOne =
         Availability.create(
-            availabilityOne.email(),
+            availabilityOne.userId(),
             availabilityOne.when(),
             availabilities.get(0).id(),
             availabilityOne.scheduled());
     Availability expectedAvailabilityTwo =
         Availability.create(
-            availabilityTwo.email(),
+            availabilityTwo.userId(),
             availabilityTwo.when(),
             availabilities.get(1).id(),
             availabilityTwo.scheduled());
     Availability expectedAvailabilityThree =
         Availability.create(
-            availabilityThree.email(),
+            availabilityThree.userId(),
             availabilityThree.when(),
             availabilities.get(2).id(),
             availabilityThree.scheduled());

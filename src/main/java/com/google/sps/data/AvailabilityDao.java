@@ -24,7 +24,7 @@ import java.util.Optional;
 public interface AvailabilityDao {
   // Returns a sorted (by ascending start times) list of all Availabilities ranging from minTime
   // to maxTime of a user.
-  public List<Availability> getInRangeForUser(String email, Instant minTime, Instant maxTime);
+  public List<Availability> getInRangeForUser(String userId, Instant minTime, Instant maxTime);
 
   // Returns all Availabilities across all users ranging from minTime to maxTime in a sorted
   // (by ascending start times) list.
@@ -40,5 +40,5 @@ public interface AvailabilityDao {
   public void update(Availability availability);
 
   // Deletes all Availability entities for a user ranging from minTime to maxTime.
-  public void deleteInRangeForUser(String email, Instant minTime, Instant maxTime);
+  public void deleteInRangeForUser(String userId, Instant minTime, Instant maxTime);
 }

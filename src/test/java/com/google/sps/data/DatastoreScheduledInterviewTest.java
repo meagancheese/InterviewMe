@@ -106,8 +106,8 @@ public class DatastoreScheduledInterviewTest {
         ScheduledInterview.create(
             storedScheduledInterview.id(),
             scheduledInterview1.when(),
-            scheduledInterview1.interviewerEmail(),
-            scheduledInterview1.intervieweeEmail());
+            scheduledInterview1.interviewerId(),
+            scheduledInterview1.intervieweeId());
     Assert.assertEquals(copyScheduledInterview1, storedScheduledInterview);
   }
 
@@ -117,19 +117,19 @@ public class DatastoreScheduledInterviewTest {
     dao.create(scheduledInterview1);
     dao.create(scheduledInterview2);
     dao.create(scheduledInterview3);
-    List<ScheduledInterview> result = dao.getForPerson(scheduledInterview1.interviewerEmail());
+    List<ScheduledInterview> result = dao.getForPerson(scheduledInterview1.interviewerId());
     ScheduledInterview copyScheduledInterview1 =
         ScheduledInterview.create(
             result.get(0).id(),
             scheduledInterview1.when(),
-            scheduledInterview1.interviewerEmail(),
-            scheduledInterview1.intervieweeEmail());
+            scheduledInterview1.interviewerId(),
+            scheduledInterview1.intervieweeId());
     ScheduledInterview copyScheduledInterview2 =
         ScheduledInterview.create(
             result.get(1).id(),
             scheduledInterview2.when(),
-            scheduledInterview2.interviewerEmail(),
-            scheduledInterview2.intervieweeEmail());
+            scheduledInterview2.interviewerId(),
+            scheduledInterview2.intervieweeId());
     List<ScheduledInterview> expected = new ArrayList<ScheduledInterview>();
     expected.add(copyScheduledInterview1);
     expected.add(copyScheduledInterview2);
@@ -149,8 +149,8 @@ public class DatastoreScheduledInterviewTest {
         ScheduledInterview.create(
             storedScheduledInterview.id(),
             scheduledInterview2.when(),
-            scheduledInterview2.interviewerEmail(),
-            scheduledInterview2.intervieweeEmail());
+            scheduledInterview2.interviewerId(),
+            scheduledInterview2.intervieweeId());
     Assert.assertEquals(copyScheduledInterview2, storedScheduledInterview);
   }
 
@@ -164,8 +164,8 @@ public class DatastoreScheduledInterviewTest {
         ScheduledInterview.create(
             previousStoredScheduledInterview.id(),
             scheduledInterview2.when(),
-            scheduledInterview2.interviewerEmail(),
-            scheduledInterview2.intervieweeEmail());
+            scheduledInterview2.interviewerId(),
+            scheduledInterview2.intervieweeId());
     dao.update(updatedStoredScheduledInterview);
     Entity updatedEntity = datastore.prepare(new Query("ScheduledInterview")).asSingleEntity();
     ScheduledInterview updatedScheduledInterview = dao.entityToScheduledInterview(updatedEntity);
@@ -184,8 +184,8 @@ public class DatastoreScheduledInterviewTest {
         ScheduledInterview.create(
             storedScheduledInterview.id(),
             scheduledInterview1.when(),
-            scheduledInterview1.interviewerEmail(),
-            scheduledInterview1.intervieweeEmail());
+            scheduledInterview1.interviewerId(),
+            scheduledInterview1.intervieweeId());
     Optional<ScheduledInterview> expectedScheduledInterviewOptional =
         Optional.of(expectedScheduledInterview);
     Assert.assertEquals(expectedScheduledInterviewOptional, actualScheduledInterviewOptional);
@@ -208,7 +208,7 @@ public class DatastoreScheduledInterviewTest {
     dao.create(scheduledInterview5);
     List<ScheduledInterview> result =
         dao.getScheduledInterviewsInRangeForUser(
-            scheduledInterview1.interviewerEmail(),
+            scheduledInterview1.interviewerId(),
             scheduledInterview2.when().start(),
             scheduledInterview4.when().end());
     List<Entity> entities =
@@ -223,15 +223,15 @@ public class DatastoreScheduledInterviewTest {
         ScheduledInterview.create(
             scheduledInterviews.get(1).id(),
             scheduledInterview2.when(),
-            scheduledInterview2.interviewerEmail(),
-            scheduledInterview2.intervieweeEmail());
+            scheduledInterview2.interviewerId(),
+            scheduledInterview2.intervieweeId());
 
     ScheduledInterview expectedScheduledInterview2 =
         ScheduledInterview.create(
             scheduledInterviews.get(3).id(),
             scheduledInterview4.when(),
-            scheduledInterview4.interviewerEmail(),
-            scheduledInterview4.intervieweeEmail());
+            scheduledInterview4.interviewerId(),
+            scheduledInterview4.intervieweeId());
     List<ScheduledInterview> expected = new ArrayList<ScheduledInterview>();
     expected.add(expectedScheduledInterview1);
     expected.add(expectedScheduledInterview2);

@@ -97,28 +97,30 @@ public final class AvailabilityServletTest {
   public void updates() throws IOException {
     AvailabilityServlet availabilityServlet = new AvailabilityServlet();
     availabilityServlet.init(availabilityDao, scheduledInterviewDao);
-    helper.setEnvIsLoggedIn(true).setEnvEmail("user@gmail.com").setEnvAuthDomain("auth");
+    String email = "user@gmail.com";
+    helper.setEnvIsLoggedIn(true).setEnvEmail(email).setEnvAuthDomain("auth");
     MockHttpServletRequest putRequest = new MockHttpServletRequest();
     String jsonString =
         "{\"firstSlot\":\"2020-07-14T12:00:00Z\",\"lastSlot\":\"2020-07-20T23:45:00Z\",\"markedSlots\":[\"2020-07-15T13:15:00Z\",\"2020-07-16T14:30:00Z\"]}";
     putRequest.setContent(jsonString.getBytes(StandardCharsets.UTF_8));
     MockHttpServletResponse putResponse = new MockHttpServletResponse();
     availabilityServlet.doPut(putRequest, putResponse);
+
+    String userId = String.format("%d", email.hashCode());
+
     List<Availability> actual =
         availabilityDao.getInRangeForUser(
-            "user@gmail.com",
-            Instant.parse("2020-07-15T13:15:00Z"),
-            Instant.parse("2020-07-16T14:45:00Z"));
+            userId, Instant.parse("2020-07-15T13:15:00Z"), Instant.parse("2020-07-16T14:45:00Z"));
     Availability expectedAvailabilityOne =
         Availability.create(
-            "user@gmail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-15T13:15:00Z"), Instant.parse("2020-07-15T13:30:00Z")),
             actual.get(0).id(),
             false);
     Availability expectedAvailabilityTwo =
         Availability.create(
-            "user@gmail.com",
+            userId,
             new TimeRange(
                 Instant.parse("2020-07-16T14:30:00Z"), Instant.parse("2020-07-16T14:45:00Z")),
             actual.get(1).id(),

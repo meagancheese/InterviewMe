@@ -48,10 +48,12 @@ import com.google.gson.JsonSyntaxException;
 public final class ScheduledInterviewServletTest {
   LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalCapabilitiesServiceTestConfig());
+  private FakeScheduledInterviewDao scheduledInterviewDao;
 
   @Before
   public void setUp() {
     helper.setUp();
+    scheduledInterviewDao = new FakeScheduledInterviewDao();
   }
 
   @After
@@ -69,8 +71,8 @@ public final class ScheduledInterviewServletTest {
     MockHttpServletResponse postResponse = new MockHttpServletResponse();
     postRequest.addParameter("startTime", "2020-07-05T18:00:00Z");
     postRequest.addParameter("endTime", "2020-07-05T19:00:10Z");
-    postRequest.addParameter("interviewer", "user@company.org");
-    postRequest.addParameter("interviewee", "user@gmail.com");
+    postRequest.addParameter("interviewer", emailToId("user@company.org"));
+    postRequest.addParameter("interviewee", emailToId("user@gmail.com"));
 
     scheduledInterviewServlet.doPost(postRequest, postResponse);
     Assert.assertEquals(200, postResponse.getStatus());
@@ -121,23 +123,23 @@ public final class ScheduledInterviewServletTest {
 
     postRequest.addParameter("startTime", "2020-07-05T18:00:00Z");
     postRequest.addParameter("endTime", "2020-07-05T19:00:00Z");
-    postRequest.addParameter("interviewer", "user@company.org");
-    postRequest.addParameter("interviewee", "user@gmail.com");
+    postRequest.addParameter("interviewer", emailToId("user@company.org"));
+    postRequest.addParameter("interviewee", emailToId("user@gmail.com"));
     scheduledInterviewServlet.doPost(postRequest, new MockHttpServletResponse());
 
     postRequest.setParameter("startTime", "2020-07-05T20:00:00Z");
     postRequest.setParameter("endTime", "2020-07-05T21:00:00Z");
-    postRequest.setParameter("interviewer", "user2@company.org");
-    postRequest.setParameter("interviewee", "user@gmail.com");
+    postRequest.setParameter("interviewer", emailToId("user2@company.org"));
+    postRequest.setParameter("interviewee", emailToId("user@gmail.com"));
     scheduledInterviewServlet.doPost(postRequest, new MockHttpServletResponse());
 
     postRequest.setParameter("startTime", "2020-07-05T18:00:00Z");
     postRequest.setParameter("endTime", "2020-07-05T19:00:00Z");
-    postRequest.setParameter("interviewer", "user2@company.org");
-    postRequest.setParameter("interviewee", "user1@gmail.com");
+    postRequest.setParameter("interviewer", emailToId("user2@company.org"));
+    postRequest.setParameter("interviewee", emailToId("user1@gmail.com"));
     scheduledInterviewServlet.doPost(postRequest, new MockHttpServletResponse());
 
-    getRequest.addParameter("userEmail", "user@gmail.com");
+    getRequest.addParameter("userEmail", emailToId("user@gmail.com"));
     scheduledInterviewServlet.doGet(getRequest, getResponse);
 
     Type scheduledInterviewListType =
@@ -150,15 +152,15 @@ public final class ScheduledInterviewServletTest {
             actual.get(0).getId(),
             new TimeRange(
                 Instant.parse("2020-07-05T18:00:00Z"), Instant.parse("2020-07-05T19:00:00Z")),
-            "user@company.org",
-            "user@gmail.com");
+            emailToId("user@company.org"),
+            emailToId("user@gmail.com"));
     ScheduledInterviewRequest scheduledInterview2 =
         new ScheduledInterviewRequest(
             actual.get(1).getId(),
             new TimeRange(
                 Instant.parse("2020-07-05T20:00:00Z"), Instant.parse("2020-07-05T21:00:00Z")),
-            "user2@company.org",
-            "user@gmail.com");
+            emailToId("user2@company.org"),
+            emailToId("user@gmail.com"));
 
     List<ScheduledInterviewRequest> expected = new ArrayList<ScheduledInterviewRequest>();
     expected.add(scheduledInterview1);
@@ -176,10 +178,14 @@ public final class ScheduledInterviewServletTest {
     MockHttpServletResponse postResponse = new MockHttpServletResponse();
     postRequest.addParameter("startTime", "2020-07-0518:00:00Z");
     postRequest.addParameter("endTime", "2020-07-0519:00:10Z");
-    postRequest.addParameter("interviewer", "user@company.org");
-    postRequest.addParameter("interviewee", "user@gmail.com");
+    postRequest.addParameter("interviewer", emailToId("user@company.org"));
+    postRequest.addParameter("interviewee", emailToId("user@gmail.com"));
 
     scheduledInterviewServlet.doPost(postRequest, postResponse);
     Assert.assertEquals(400, postResponse.getStatus());
+  }
+
+  private String emailToId(String email) {
+    return String.format("%d", email.hashCode());
   }
 }

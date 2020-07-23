@@ -79,7 +79,7 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
 
   static Entity availabilityToNewEntity(Availability avail) {
     Entity availabilityEntity = new Entity("Availability");
-    availabilityEntity.setProperty("email", avail.email());
+    availabilityEntity.setProperty("userId", avail.userId());
     availabilityEntity.setProperty("startTime", avail.when().start().toEpochMilli());
     availabilityEntity.setProperty("endTime", avail.when().end().toEpochMilli());
     availabilityEntity.setProperty("scheduled", avail.scheduled());
@@ -88,7 +88,7 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
 
   static Entity availabilityToUpdatedEntity(Availability avail) {
     Entity availabilityEntity = new Entity("Availability", avail.id());
-    availabilityEntity.setProperty("email", avail.email());
+    availabilityEntity.setProperty("userId", avail.userId());
     availabilityEntity.setProperty("startTime", avail.when().start().toEpochMilli());
     availabilityEntity.setProperty("endTime", avail.when().end().toEpochMilli());
     availabilityEntity.setProperty("scheduled", avail.scheduled());
@@ -97,7 +97,7 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
 
   static Availability entityToAvailability(Entity availabilityEntity) {
     return Availability.create(
-        (String) availabilityEntity.getProperty("email"),
+        (String) availabilityEntity.getProperty("userId"),
         TimeRange.fromStartEnd(
             Instant.ofEpochMilli((long) availabilityEntity.getProperty("startTime")),
             Instant.ofEpochMilli((long) availabilityEntity.getProperty("endTime"))),
@@ -107,8 +107,8 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
 
   // Deletes all Availability entities for a user ranging from minTime to maxTime.
   @Override
-  public void deleteInRangeForUser(String email, Instant minTime, Instant maxTime) {
-    Filter userFilter = new FilterPredicate("email", FilterOperator.EQUAL, email);
+  public void deleteInRangeForUser(String userId, Instant minTime, Instant maxTime) {
+    Filter userFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
     List<Entity> entities = getEntitiesInRange(minTime, maxTime, Optional.of(userFilter));
     List<Key> keyList = new ArrayList<>();
     for (Entity entity : entities) {
@@ -125,8 +125,8 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
   // Returns a sorted (by ascending start times) list of all Availabilities ranging from
   // minTime to maxTime of a user.
   @Override
-  public List<Availability> getInRangeForUser(String email, Instant minTime, Instant maxTime) {
-    Filter userFilter = new FilterPredicate("email", FilterOperator.EQUAL, email);
+  public List<Availability> getInRangeForUser(String userId, Instant minTime, Instant maxTime) {
+    Filter userFilter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
     List<Entity> entities = getEntitiesInRange(minTime, maxTime, Optional.of(userFilter));
     List<Availability> availability = new ArrayList<Availability>();
     for (Entity entity : entities) {
