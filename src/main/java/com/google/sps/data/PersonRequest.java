@@ -16,7 +16,6 @@ package com.google.sps.data;
 
 /** Represents the data sent in a put or post request to the Person Servlet. */
 public class PersonRequest {
-  private String email;
   private String firstName;
   private String lastName;
   private String company;
@@ -24,22 +23,12 @@ public class PersonRequest {
   private String linkedin;
 
   public PersonRequest(
-      String email,
-      String firstName,
-      String lastName,
-      String company,
-      String job,
-      String linkedin) {
-    this.email = email;
+      String firstName, String lastName, String company, String job, String linkedin) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.company = company;
     this.job = job;
     this.linkedin = linkedin;
-  }
-
-  public String getEmail() {
-    return email;
   }
 
   public String getFirstName() {
@@ -64,10 +53,8 @@ public class PersonRequest {
 
   public String toString() {
     return String.format(
-        "%s= %s:%s, %s:%s, %s:%s, %s:%s, %s:%s, %s:%s",
+        "%s= %s:%s, %s:%s, %s:%s, %s:%s, %s:%s",
         "PutPersonRequest",
-        "email",
-        email,
         "firstName",
         firstName,
         "lastName",

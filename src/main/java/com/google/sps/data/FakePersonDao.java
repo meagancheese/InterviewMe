@@ -14,39 +14,41 @@
 
 package com.google.sps.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 /** Mimics accessing Datastore to support managing Person entities. */
 public class FakePersonDao implements PersonDao {
-  // @param datastore the fake database.
-  private HashMap<String, Person> datastore;
+  private HashMap<String, Person> storedObjects;
 
   /** Initializes the fields for PersonDatastoreDAO. */
   public FakePersonDao() {
-    datastore = new HashMap<String, Person>();
+    storedObjects = new HashMap<String, Person>();
   }
 
-  /** We put person into datastore with email as the key. */
+  /** We put person into storedObjects . */
   @Override
   public void create(Person person) {
-    datastore.put(person.email(), person);
+    storedObjects.put(person.id(), person);
   }
 
-  /** We update person in datastore with email as the key. */
+  /** We update person in storedObjects. */
   @Override
   public void update(Person person) {
-    datastore.put(person.email(), person);
+    storedObjects.put(person.id(), person);
   }
 
   /**
-   * Retrieve the person from datastore from their email and wrap it in an Optional. If they aren't
+   * Retrieve the person from storedObjects from their id and wrap it in an Optional. If they aren't
    * in datastore, the Optional is empty.
    */
   @Override
-  public Optional<Person> get(String email) {
-    if (datastore.containsKey(email)) {
-      return Optional.of(datastore.get(email));
+  public Optional<Person> get(String id) {
+    if (storedObjects.containsKey(id)) {
+      return Optional.of(storedObjects.get(id));
     }
     return Optional.empty();
   }

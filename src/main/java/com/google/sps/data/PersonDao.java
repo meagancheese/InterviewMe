@@ -18,12 +18,12 @@ import java.util.Optional;
 
 /** PersonDao includes the basic methods anything managing Person entities must support. */
 public interface PersonDao {
-  // Returns a Person object from storage, with email as the key.
-  public Optional<Person> get(String email);
+  // Returns a Person object from storage, with the specified id.
+  public Optional<Person> get(String id);
 
-  // Adds a Person object into storage, with email as the key.
+  // Adds a Person object into storage.
   public void create(Person person);
 
-  // Updates a Person object in storage, with email as the key.
+  // Updates a Person object in storage.
   public void update(Person person);
 }

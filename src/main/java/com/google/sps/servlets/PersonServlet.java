@@ -34,6 +34,7 @@ import java.util.Optional;
 public class PersonServlet extends HttpServlet {
 
   private PersonDao personDao;
+  private final UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void init() {
@@ -55,11 +56,14 @@ public class PersonServlet extends HttpServlet {
       response.sendError(400);
       return;
     }
-    if (!authenticateRequest(personRequest)) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
+    String id = userService.getCurrentUser().getUserId();
+    String email = userService.getCurrentUser().getEmail();
+    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
+    // replaced with this hashcode.
+    if (id == null) {
+      id = String.format("%d", email.hashCode());
     }
-    personDao.update(Person.create(personRequest));
+    personDao.create(Person.createFromRequest(id, email, personRequest));
   }
 
   // Updates Datastore with the Person information in request. Sends a 400 error if
@@ -73,11 +77,14 @@ public class PersonServlet extends HttpServlet {
       response.sendError(400);
       return;
     }
-    if (!authenticateRequest(personRequest)) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
+    String id = userService.getCurrentUser().getUserId();
+    String email = userService.getCurrentUser().getEmail();
+    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
+    // replaced with this hashcode.
+    if (id == null) {
+      id = String.format("%d", email.hashCode());
     }
-    personDao.update(Person.create(personRequest));
+    personDao.update(Person.createFromRequest(id, email, personRequest));
   }
 
   // Get Json from request body.
@@ -90,21 +97,17 @@ public class PersonServlet extends HttpServlet {
     return buffer.toString();
   }
 
-  // Ensure person logged in == person being requested.
-  private static boolean authenticateRequest(PersonRequest request) {
-    return request.getEmail().equals(LogInServlet.getLoginInfo("/").email);
-  }
-
-  // Returns the person the request's email belongs to. If they aren't in Datastore, redirects to
-  // registration page. If the requestee is not the logged in user, throws a
+  // Returns the person currently logged in. If they aren't in Datastore, redirects to
+  // registration page.
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String requesteeEmail = request.getParameter("email");
-    if (!requesteeEmail.equals(LogInServlet.getLoginInfo("/").email)) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
+    String id = userService.getCurrentUser().getUserId();
+    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
+    // replaced with this hashcode.
+    if (id == null) {
+      id = String.format("%d", userService.getCurrentUser().getEmail().hashCode());
     }
-    Optional<Person> personOpt = personDao.get(requesteeEmail);
+    Optional<Person> personOpt = personDao.get(id);
     if (!personOpt.isPresent()) {
       response.sendRedirect("/register.html");
       return;

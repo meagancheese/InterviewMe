@@ -28,7 +28,7 @@ function getLoginInfo() {
 // Returns a Person if they registered in the past. If not, redirect to  
 // registration page.
 function getUserOrRedirectRegistration(loginInfo){
-  return fetch(`/person?email=${loginInfo.email}`)
+  return fetch('/person')
     .then(response => {
       if (response.redirected) {
         window.location.href = response.url;
