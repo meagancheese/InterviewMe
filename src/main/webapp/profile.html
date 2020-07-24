@@ -40,7 +40,8 @@
       </nav>
       <br>
       <h1 class="text-center">Your Profile</h1>
-      <form class="needs-validation" novalidate action="/person" method="POST">
+      <form class="needs-validation" id="profile-form" novalidate 
+          onsubmit="event.preventDefault(); submitProfileForm('PUT','/profile.html');">
         <div class="form-row">
           <div class="col-md-12 mb-3">
             <label for="user-email">Email</label>
@@ -93,8 +94,7 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-10">
-            <button class="btn btn-primary" id="update-button" type="button" 
-                onclick="submitProfileForm('PUT','/profile.html')" hidden>
+            <button class="btn btn-primary" id="update-button" type="submit" hidden>
               Update Profile
             </button>
             <button type="button" id="edit-button" onclick="makeEditable()" 
