@@ -14,41 +14,41 @@
 
 package com.google.sps.data;
 
-/** Represents the data sent in a put or post request to the Person Servlet. */
+/** Represents the data sent from a get request to the ScheduledInterview Servlet. */
 public class ScheduledInterviewRequest {
   private long id;
-  private TimeRange when;
-  private String interviewerId;
-  private String intervieweeId;
+  private String dateString;
+  private String interviewer;
+  private String interviewee;
+  private String role;
 
   public ScheduledInterviewRequest(
-      long id, TimeRange when, String interviewerId, String intervieweeId) {
+      long id, String dateString, String interviewer, String interviewee, String role) {
     this.id = id;
-    this.when = when;
-    this.interviewerId = interviewerId;
-    this.intervieweeId = intervieweeId;
+    this.dateString = dateString;
+    this.interviewer = interviewer;
+    this.interviewee = interviewee;
+    this.role = role;
   }
 
   public long getId() {
     return id;
   }
 
-  public TimeRange getWhen() {
-    return when;
+  public String getDateString() {
+    return dateString;
   }
 
-  public String getInterviewerId() {
-    return interviewerId;
+  public String getInterviewer() {
+    return interviewer;
   }
 
-  public String getIntervieweeId() {
-    return intervieweeId;
+  public String getInterviewee() {
+    return interviewee;
   }
 
-  public String toString() {
-    return String.format(
-        "{%s:%s, %s:%s, %s:%s, %s:%s}",
-        "id", id, "when", when, "interviewerId", interviewerId, "intervieweeId", intervieweeId);
+  public String getRole() {
+    return role;
   }
 
   public boolean equals(Object o) {
@@ -58,10 +58,26 @@ public class ScheduledInterviewRequest {
     if (o instanceof ScheduledInterviewRequest) {
       ScheduledInterviewRequest that = (ScheduledInterviewRequest) o;
       return this.getId() == that.getId()
-          && this.getWhen().equals(that.getWhen())
-          && this.getInterviewerId().equals(that.getInterviewerId())
-          && this.getIntervieweeId().equals(that.getIntervieweeId());
+          && this.getDateString().equals(that.getDateString())
+          && this.getInterviewer().equals(that.getInterviewer())
+          && this.getInterviewee().equals(that.getInterviewee())
+          && this.getRole().equals(that.getRole());
     }
     return false;
+  }
+
+  public String toString() {
+    return String.format(
+        "{%s:%s, %s:%s, %s:%s, %s:%s, %s:%s}",
+        "id",
+        id,
+        "dateString",
+        dateString,
+        "interviewer",
+        interviewer,
+        "interviewee",
+        interviewee,
+        "role",
+        role);
   }
 }

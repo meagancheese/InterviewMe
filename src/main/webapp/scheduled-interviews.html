@@ -38,32 +38,8 @@
       </nav>
       <br>
       <h1 class="text-center">Scheduled Interviews</h1>
-      <!-- TODO: Render all scheduled events using Datastore information and Javascript, remove hardcoded ones. -->
       <section id="scheduled-interviews-cards">
-        <div class="row">
-          <div class="card w-75 scheduled-interview-card">
-            <div class="card-body">
-              <h5 class="card-title">Your role: Interviewer</h5>
-              <p class="card-text">July 17, 2020 @ 3:00PM - 4:00PM EST</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Interviewee Email: alice@gmail.com</li>
-              <li class="list-group-item">Interviewer Email: tess@gmail.com</li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="card w-75 scheduled-interview-card">
-            <div class="card-body">
-              <h5 class="card-title">Your role: Interviewee</h5>
-              <p class="card-text">July 20, 2020 @ 2:30PM - 3:30PM EST</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Interviewee Email: tess@gmail.com</li>
-              <li class="list-group-item">Interviewer Email: bob@gmail.com</li>
-            </ul>
-          </div>
-        </div>
+      <!-- For each scheduled interview in the returned request, generate jsp scheduledInterviewCard.-->
       </section>
       <br><br><br>
     </div>

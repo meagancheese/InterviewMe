@@ -16,4 +16,17 @@ function onScheduledInterviewsLoad() {
   const loginInfo = getLoginInfo();
   loginInfo.then(supplyLogoutLinkOrRedirectHome); 
   loginInfo.then(getUserOrRedirectRegistration);
+  loadScheduledInterviewCards(); 
+}
+
+function getBrowserTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone; 
+}
+
+function loadScheduledInterviewCards() {
+  fetch(`/scheduled-interviews?timeZone=${getBrowserTimeZone()}`)
+    .then(response => response.text())
+    .then(listOfCards => {
+      document.getElementById('scheduled-interviews-cards').innerHTML = listOfCards;
+    });
 }
