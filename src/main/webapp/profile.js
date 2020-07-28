@@ -76,4 +76,9 @@ function makeEditable() {
   currentJob.setAttribute('hidden', true);
   const jobField = document.getElementById('job-field');
   jobField.removeAttribute('hidden');
+  
+  const checkboxes = document.getElementsByClassName('check-editable');
+  Array.from(checkboxes).forEach(function(checkbox) {
+    checkbox.removeAttribute('disabled');
+  });
 }
