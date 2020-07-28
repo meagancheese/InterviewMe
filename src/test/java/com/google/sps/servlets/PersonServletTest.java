@@ -14,7 +14,7 @@
 
 package com.google.sps.servlets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
@@ -24,7 +24,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.FakePersonDao;
+import com.google.sps.data.Job;
+import com.google.sps.data.Person;
 import com.google.sps.servlets.PersonServlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +41,9 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import java.util.stream.Collectors;
+import java.util.EnumSet;
+import java.util.List;
 
 /** Tests PersonServlet. */
 @RunWith(JUnit4.class)
@@ -58,9 +64,22 @@ public final class PersonServletTest {
   @Test
   public void getOneOutOfTwo() throws IOException, UnsupportedEncodingException {
     String personA =
-        "{\"email\": \"a@gmail.com\", \"firstName\": \"a\", \"lastName\": \"a\", \"company\": \"\", \"job\": \"\", \"linkedin\": \"\"}";
+        new Gson()
+            .toJson(
+                Person.create(
+                    "id_a",
+                    "a@gmail.com",
+                    "a",
+                    "a",
+                    "",
+                    "",
+                    "",
+                    EnumSet.of(Job.SOFTWARE_ENGINEER, Job.NETWORK_ENGINEER)));
     String personB =
-        "{\"email\": \"b@gmail.com\", \"firstName\": \"b\", \"lastName\": \"b\", \"company\": \"\", \"job\": \"\", \"linkedin\": \"\"}";
+        new Gson()
+            .toJson(
+                Person.create(
+                    "id_b", "b@gmail.com", "b", "b", "", "", "", EnumSet.allOf(Job.class)));
 
     // a is logged in.
     helper.setEnvIsLoggedIn(true).setEnvEmail("a@gmail.com").setEnvAuthDomain("auth");
@@ -88,14 +107,20 @@ public final class PersonServletTest {
     assertEquals(person.get("email").getAsString(), "b@gmail.com");
     assertEquals(person.get("firstName").getAsString(), "b");
     assertEquals(person.get("lastName").getAsString(), "b");
+    assertEquals(
+        new Gson()
+            .fromJson(person.get("qualifiedJobs"), new TypeToken<EnumSet<Job>>() {}.getType()),
+        EnumSet.allOf(Job.class));
   }
 
   // Get updated info.
   @Test
   public void getUpdatedInfo() throws IOException, UnsupportedEncodingException {
     String personA =
-        "{\"email\": \"a@gmail.com\", \"firstName\": \"old\", \"lastName\": \"old\", \"company\": \"\", \"job\": \"\", \"linkedin\": \"\"}";
-
+        new Gson()
+            .toJson(
+                Person.create(
+                    "id_a", "a@gmail.com", "old", "old", "", "", "", EnumSet.noneOf(Job.class)));
     // a is logged in.
     helper.setEnvIsLoggedIn(true).setEnvEmail("a@gmail.com").setEnvAuthDomain("auth");
 
@@ -108,7 +133,10 @@ public final class PersonServletTest {
 
     // Update person a.
     personA =
-        "{\"email\": \"a@gmail.com\", \"firstName\": \"new\", \"lastName\": \"new\", \"company\": \"\", \"job\": \"\", \"linkedin\": \"\"}";
+        new Gson()
+            .toJson(
+                Person.create(
+                    "id_a", "a@gmail.com", "new", "new", "", "", "", EnumSet.noneOf(Job.class)));
     MockHttpServletRequest putRequest =
         put("/person").content(personA).buildRequest(new MockServletContext());
     personServlet.doPut(putRequest, new MockHttpServletResponse());

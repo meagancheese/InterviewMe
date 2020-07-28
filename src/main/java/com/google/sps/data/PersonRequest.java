@@ -14,21 +14,30 @@
 
 package com.google.sps.data;
 
+import java.util.EnumSet;
+
 /** Represents the data sent in a put or post request to the Person Servlet. */
 public class PersonRequest {
   private String firstName;
   private String lastName;
   private String company;
   private String job;
-  private String linkedin;
+  private String linkedIn;
+  private EnumSet<Job> qualifiedJobs;
 
   public PersonRequest(
-      String firstName, String lastName, String company, String job, String linkedin) {
+      String firstName,
+      String lastName,
+      String company,
+      String job,
+      String linkedIn,
+      EnumSet<Job> qualifiedJobs) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.company = company;
     this.job = job;
-    this.linkedin = linkedin;
+    this.linkedIn = linkedIn;
+    this.qualifiedJobs = qualifiedJobs;
   }
 
   public String getFirstName() {
@@ -48,22 +57,36 @@ public class PersonRequest {
   }
 
   public String getLinkedIn() {
-    return linkedin;
+    return linkedIn;
+  }
+
+  public EnumSet<Job> getQualifiedJobs() {
+    return qualifiedJobs;
   }
 
   public String toString() {
     return String.format(
-        "%s= %s:%s, %s:%s, %s:%s, %s:%s, %s:%s",
-        "PutPersonRequest",
-        "firstName",
-        firstName,
-        "lastName",
-        lastName,
-        "company",
-        company,
-        "job",
-        job,
-        "linkedin",
-        linkedin);
+            "%s= %s:%s, %s:%s, %s:%s, %s:%s, %s:%s, %s: \n",
+            "PutPersonRequest",
+            "firstName",
+            firstName,
+            "lastName",
+            lastName,
+            "company",
+            company,
+            "job",
+            job,
+            "linkedIn",
+            linkedIn,
+            "qualifiedJobs")
+        + qualifiedJobsToString();
+  }
+
+  private String qualifiedJobsToString() {
+    StringBuilder sb = new StringBuilder();
+    for (Job job : qualifiedJobs) {
+      sb.append(job.toString() + " ");
+    }
+    return sb.toString();
   }
 }

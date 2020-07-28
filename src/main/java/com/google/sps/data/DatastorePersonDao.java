@@ -30,6 +30,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,18 +56,6 @@ public class DatastorePersonDao implements PersonDao {
     datastore.put(personToEntity(person));
   }
 
-  private static Entity personToEntity(Person person) {
-    Entity personEntity = new Entity("Person", person.id());
-    personEntity.setProperty("id", person.id());
-    personEntity.setProperty("email", person.email());
-    personEntity.setProperty("firstName", person.firstName());
-    personEntity.setProperty("lastName", person.lastName());
-    personEntity.setProperty("company", person.company());
-    personEntity.setProperty("job", person.job());
-    personEntity.setProperty("linkedIn", person.linkedIn());
-    return personEntity;
-  }
-
   /**
    * Retrieve the person from Datastore from their id and wrap it in an Optional. If they aren't in
    * Datastore, the Optional is empty.
@@ -83,7 +72,16 @@ public class DatastorePersonDao implements PersonDao {
     return Optional.of(entityToPerson(personEntity));
   }
 
-  private static Person entityToPerson(Entity personEntity) {
+  // Returns the job qualification booleans in personEntity as an EnumSet.
+  private static EnumSet<Job> entityBooleansToEnumSet(Entity personEntity) {
+    List<Job> qualifiedJobs = new ArrayList<>();
+    for (Job job : Job.values()) {
+      if ((boolean) personEntity.getProperty(job.toString())) qualifiedJobs.add(job);
+    }
+    return EnumSet.copyOf(qualifiedJobs);
+  }
+
+  public static Person entityToPerson(Entity personEntity) {
     return Person.create(
         (String) personEntity.getProperty("id"),
         (String) personEntity.getProperty("email"),
@@ -91,6 +89,25 @@ public class DatastorePersonDao implements PersonDao {
         (String) personEntity.getProperty("lastName"),
         (String) personEntity.getProperty("company"),
         (String) personEntity.getProperty("job"),
-        (String) personEntity.getProperty("linkedIn"));
+        (String) personEntity.getProperty("linkedIn"),
+        entityBooleansToEnumSet(personEntity));
+  }
+
+  public static Entity personToEntity(Person person) {
+    Entity personEntity = new Entity("Person", person.id());
+    personEntity.setProperty("id", person.id());
+    personEntity.setProperty("email", person.email());
+    personEntity.setProperty("firstName", person.firstName());
+    personEntity.setProperty("lastName", person.lastName());
+    personEntity.setProperty("company", person.company());
+    personEntity.setProperty("job", person.job());
+    personEntity.setProperty("linkedIn", person.linkedIn());
+    for (Job job : person.qualifiedJobs()) {
+      personEntity.setProperty(job.toString(), true);
+    }
+    for (Job job : EnumSet.complementOf(person.qualifiedJobs())) {
+      personEntity.setProperty(job.toString(), false);
+    }
+    return personEntity;
   }
 }
