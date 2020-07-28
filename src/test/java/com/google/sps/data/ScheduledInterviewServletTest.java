@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.FakePersonDao;
+import com.google.sps.data.Job;
 import com.google.sps.data.Person;
 import com.google.sps.servlets.ScheduledInterviewServlet;
 import com.google.sps.data.PutAvailabilityRequest;
@@ -34,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.EnumSet;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -74,7 +76,8 @@ public final class ScheduledInterviewServletTest {
           "Subject",
           "Google",
           "SWE",
-          "linkedIn");
+          "linkedIn",
+          EnumSet.noneOf(Job.class));
 
   private final Person interviewee =
       Person.create(
@@ -84,7 +87,8 @@ public final class ScheduledInterviewServletTest {
           "Subject",
           "Google",
           "SWE",
-          "linkedIn");
+          "linkedIn",
+          EnumSet.noneOf(Job.class));
 
   private final Person interviewer1 =
       Person.create(
@@ -94,7 +98,8 @@ public final class ScheduledInterviewServletTest {
           "Subject",
           "Google",
           "SWE",
-          "linkedIn");
+          "linkedIn",
+          EnumSet.noneOf(Job.class));
 
   // Tests whether a scheduledInterview object was added to datastore.
   @Test
