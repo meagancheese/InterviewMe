@@ -1,0 +1,19 @@
+indexes:
+- kind: "Availability"
+  properties:
+  - name: "userId"
+    direction: asc
+  - name: "startTime"
+    direction: asc
+- kind: "ScheduledInterview"
+  properties:
+  - name: "interviewer"
+    direction: asc
+  - name: "startTime"
+    direction: asc
+- kind: "ScheduledInterview"
+  properties:
+  - name: "interviewee"
+    direction: asc
+  - name: "startTime"
+    direction: asc
