@@ -1,16 +1,18 @@
-TODO: Add more specifications and refine. (This is just the first draft)
+Hello {{interviewer_first_name}},
 
-You have been registered for an interview on {{formatted_date}}. You are the interviewer. You will be mock interviewing {{interviewee_full_name}} ({{interviewee_email}}) for the position of: {{position}}.
+You have been registered for a mock interview on {{formatted_date}}. You are the interviewer. You will be interviewing {{interviewee_first_name}} for the position of: {{position}}.
 
-Before the interviewer, you will need to:
-Prepare {{questions_amount}} questions for the interviewer. You may not use all {{questions_amount}} but it is best to be prepared.
+Before the interview, you will need to:
+  - Think about the distribution of questions you need. How many technical questions? How many behavioral questions? Prepare more than enough.
+  - Reflect and/or study up on how a real life interview for a {{position}} position would go. Try to model the mock interview after a real one.
+  - Prepare the appropriate interview attire for a {{position}} interview.   
 
 Be sure to follow these general guidelines when interviewing:
-Keep the time in mind??
-
+  - Keep the time in mind. The interview lasts an hour, but leave about 15 minutes at the end to give your interviewee feedback. Note that this post-interview feedback is something done in a mock interview but not a real life interview.
+  - Treat this as an actual interview. This is how you will get the most out of your InterviewMe experience.
+  
 After interviewing:
-Send the interviewee feedback through this form: [TODO].
-Remember:
-Treat this as an actual interview. Be professional.
+ - Your interviewee will write up a feedback report. Expect to see this in your inbox shortly.
+ - Send the interviewee feedback through this form: {{form_link}}.
 
-A Google Calendar event titled "InterviewMe Interview {{interviewer_full_name}} / {{interviewee_full_name}}" was added to your Google Calendar. Please reach out if you have any questions.
+A Google Calendar event titled "InterviewMe Interview {{interviewer_first_name}} / {{interviewee_first_name}}" was added to your Google Calendar. Please reach out to interviewme.business@gmail.com if you have any questions.
