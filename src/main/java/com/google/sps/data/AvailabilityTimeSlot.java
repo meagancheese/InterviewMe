@@ -48,6 +48,17 @@ public abstract class AvailabilityTimeSlot {
         .build();
   }
 
+  public String getClassList() {
+    String classList = "";
+    if (selected() && scheduled()) {
+      classList = "table-danger scheduled-time-slot";
+    }
+    if (selected() && !scheduled()) {
+      classList = "table-success selected-time-slot";
+    }
+    return classList;
+  }
+
   static Builder builder() {
     return new AutoValue_AvailabilityTimeSlot.Builder();
   }

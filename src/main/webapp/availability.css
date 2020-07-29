@@ -1,18 +1,17 @@
-.form-row {
-  width: 100%;
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.form-labels {
-  margin-top: 5px;
-  margin-bottom: 0;
-}
-
-.end-time {
-  margin-left: 8px;
-}
-
 #submit-button-container {
   text-align: center;
+}
+
+#page-buttons {
+  text-align: center;
+}
+
+#back-button {
+  width: 130px;
+  margin-right: 5px;
+}
+
+#forward-button {
+  margin-left: 5px;
+  width: 130px;
 }

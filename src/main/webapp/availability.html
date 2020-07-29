@@ -39,10 +39,16 @@
       </nav>
       <br>
       <h1 class="text-center">Availability</h1>
-      <h5 class="text-center lead">Update your availability to be an Interviewer for this week below:</h5>
+      <h5 class="text-center lead">
+        Update your availability to be an Interviewer for the week below. Remember that an interview
+        lasts for an hour.
+      </h5>
       <br>
-      <!--TODO: Check inputs for correctness: end is after start, at least an hour long;
-         Add pagination-->
+      <div id="page-buttons">
+        <button id="back-button" class="btn btn-secondary mb-2 btn-sm" onclick="goBack()">&lt Previous Week</button>
+        <button id="forward-button" class="btn btn-secondary mb-2 btn-sm" onclick="goForward()">Next Week &gt</button>
+      </div>
+      <br>
       <!-- This table-container is filled with a JSP page onload.-->
       <div id="table-container">
         <!-- This is a place holder for when the page is slow to load.-->

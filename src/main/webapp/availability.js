@@ -33,7 +33,7 @@ function toggleTile(tile) {
 }
 
 function loadAvailabilityTable(tableDiv, timezoneOffset) {
-  fetch(`/availabilityTable.jsp?timeZoneOffset=${timezoneOffset}`)
+  fetch(`/availabilityTable.jsp?timeZoneOffset=${timezoneOffset}&page=${page}`)
     .then(response => response.text())
     .then(tableContents => {
       tableDiv.innerHTML = tableContents;
@@ -65,4 +65,25 @@ function updateAvailability() {
   let requestBody = JSON.stringify(requestObject);
   let request = new Request('/availability', {method: 'PUT', body: requestBody});
   fetch(request).then(unused => {loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset())});
+}
+
+let page = 0;
+const maxWeeksAhead = 3;
+
+function goBack() {
+  if (page <= 0) {
+    page = 0;
+    return;
+  }
+  page -= 1;
+  loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
+}
+
+function goForward() {
+  if (page >= maxWeeksAhead) {
+    page = maxWeeksAhead;
+    return;
+  }
+  page += 1;
+  loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }
