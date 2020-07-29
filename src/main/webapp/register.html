@@ -66,12 +66,13 @@
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <label for="company-field">Company</label>
-            <input type="text" class="form-control" id="company-field" placeholder="Google" 
+            <input type="text" class="form-control" id="company-field" placeholder="Company"
                 value="" name="company">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label for="job-field">Job</label>
             <select class="form-control" id="job-field" name="job">
+              <option></option>
               <option>Software Engineer</option>
               <option>Product Manager</option>
               <option>Business Analyst</option>
@@ -84,11 +85,79 @@
             </select>
           </div>
         </div>
+        <br>        
+        <div id="qualified-positions-container">
+          <p><strong>Positions Qualified to Give an Interview</strong></p>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="software-engineer-check" data-enum-name="SOFTWARE_ENGINEER">
+            <label class="form-check-label" for="software-engineer-check">
+              Software Engineer
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="product-manager-check" data-enum-name="PRODUCT_MANAGER">
+            <label class="form-check-label" for="product-manager-check">
+              Product Manager
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="business-analyst-check" data-enum-name="BUSINESS_ANALYST">
+            <label class="form-check-label" for="business-analyst-check">
+              Business Analyst
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="technical-consultant-check" data-enum-name="TECHNICAL_CONSULTANT">
+            <label class="form-check-label" for="technical-consultant-check">
+              Technical Consultant
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="software-tester-check" data-enum-name="SOFTWARE_TESTER">
+            <label class="form-check-label" for="software-tester-check">
+              Software Tester
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="technical-sales-check" data-enum-name="TECHNICAL_SALES">
+            <label class="form-check-label" for="technical-sales-check">
+              Technical Sales
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="network-engineer-check" data-enum-name="NETWORK_ENGINEER">
+            <label class="form-check-label" for="network-engineer-check">
+              Network Engineer
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="systems-analyst-check" data-enum-name="SYSTEMS_ANALYST">
+            <label class="form-check-label" for="systems-analyst-check">
+              Systems Analyst
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="qualification form-check-input check-editable" type="checkbox" 
+                id="technical-support-check" data-enum-name="TECHNICAL_SUPPORT">
+            <label class="form-check-label" for="technical-support-check">
+              Technical Support
+            </label>
+          </div>
+        </div>
+        <br>
         <div class="form-row">
           <div class="col-md-12 mb-3">
             <label for="linkedin-field">LinkedIn URL</label>
-            <input type="text" class="form-control" id="linkedin-field" 
-                placeholder="https://www.linkedin.com/" value="" name="linkedin">
+            <input type="text" class="form-control" id="linkedin-field" placeholder="LinkedIn"
+                value="" name="linkedin">
           </div>
         </div>
         <div class="form-group row d-flex justify-content-center">

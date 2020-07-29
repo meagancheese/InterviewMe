@@ -24,18 +24,28 @@ function onProfileLoad() {
 function submitProfileForm(methodType, redirectUrl) {
   if(!validateProfileForm()) {
     return;
-  } 
+  }
+  document.getElementById('company-field').placeholder = '';
+  document.getElementById('linkedin-field').placeholder = '';
+  let possibleQualifiedJobs = document.getElementsByClassName('qualification');
+  let qualifiedJobs = [];
+  for (let job of possibleQualifiedJobs) {
+    if (job.checked) {
+      qualifiedJobs.push(job.getAttribute('data-enum-name'));
+    }
+  }
   const personJson = {
     firstName: $('#first-name-field').val(),
     lastName: $('#last-name-field').val(),
     company: $('#company-field').val(),
     job: $('#job-field').val(),
-    linkedin: $('#linkedin-field').val()
+    linkedIn: $('#linkedin-field').val(),
+    qualifiedJobs: qualifiedJobs
   };
   fetch('/person',{
     method: methodType,
     body: JSON.stringify(personJson)
-  }).then(window.location.replace(redirectUrl))
+  }).then(() => window.location.replace(redirectUrl))
     .catch((error) => {
       alert('Error: ' + error + '\nThere was an error submitting your information.' +
       ' Please try again.');
@@ -54,8 +64,16 @@ function autofillForm(person) {
   document.getElementById('first-name-field').value = person.firstName;
   document.getElementById('last-name-field').value = person.lastName;
   document.getElementById('company-field').value = person.company;
+  document.getElementById('current-job').textContent = person.job;
   document.getElementById('job-field').value = person.job;
-  document.getElementById('linkedin-field').value = person.linkedIn;    
+  document.getElementById('linkedin-field').value = person.linkedIn;
+  for (let qualifiedJob of person.qualifiedJobs) {
+    document.getElementById(enumNameToId(qualifiedJob)).checked = true;
+  }
+}
+
+function enumNameToId(enumName) {
+  return enumName.toLowerCase().replace('_', '-').concat('-check');
 }
 
 // Allows certain fields in the profile to be edited, hides edit button, and displays update button. 
@@ -71,6 +89,9 @@ function makeEditable() {
     editableField.classList.remove('form-control-plaintext');
     editableField.classList.add('form-control');
   });
+  
+  document.getElementById('company-field').placeholder = 'Company';
+  document.getElementById('linkedin-field').placeholder = 'LinkedIn';
   
   const currentJob = document.getElementById('current-job');
   currentJob.setAttribute('hidden', true);
