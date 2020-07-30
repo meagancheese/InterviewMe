@@ -78,6 +78,9 @@ public class DatastorePersonDao implements PersonDao {
     for (Job job : Job.values()) {
       if ((boolean) personEntity.getProperty(job.toString())) qualifiedJobs.add(job);
     }
+    if (qualifiedJobs.isEmpty()) {
+      return EnumSet.noneOf(Job.class);
+    }
     return EnumSet.copyOf(qualifiedJobs);
   }
 
