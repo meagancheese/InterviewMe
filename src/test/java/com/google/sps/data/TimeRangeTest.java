@@ -23,7 +23,7 @@ import org.junit.runners.JUnit4;
 /** */
 @RunWith(JUnit4.class)
 public final class TimeRangeTest {
-  Instant TIME_430PM = Instant.parse("2020-07-06T17:00:10Z");
+  Instant TIME_430PM = Instant.parse("2020-07-06T16:30:10Z");
   Instant TIME_5PM = Instant.parse("2020-07-06T17:00:10Z");
   Instant TIME_530PM = Instant.parse("2020-07-06T17:30:10Z");
   Instant TIME_6PM = Instant.parse("2020-07-06T18:00:10Z");
