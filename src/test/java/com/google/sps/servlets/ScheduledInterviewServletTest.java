@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
+package com.google.sps.servlets;
 
 import com.google.appengine.tools.development.testing.LocalCapabilitiesServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -23,8 +23,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+import com.google.sps.data.Availability;
+import com.google.sps.data.FakeAvailabilityDao;
 import com.google.sps.data.FakePersonDao;
+import com.google.sps.data.FakeScheduledInterviewDao;
+import com.google.sps.data.ScheduledInterview;
+import com.google.sps.data.ScheduledInterviewRequest;
+import com.google.sps.data.TimeRange;
+import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.Job;
 import com.google.sps.data.Person;
 import com.google.sps.servlets.ScheduledInterviewServlet;
