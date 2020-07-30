@@ -18,7 +18,7 @@ import com.google.auto.value.AutoValue;
 
 /**
  * A PossibleInterviewSlot represents a 1 hour chunk of time with a utcEncoding and readable date
- * and time strings.
+ * and time strings. This class is used for frontend generation only.
  */
 @AutoValue
 public abstract class PossibleInterviewSlot {

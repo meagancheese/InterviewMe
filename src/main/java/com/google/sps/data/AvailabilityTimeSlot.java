@@ -22,7 +22,8 @@ import com.google.common.annotations.VisibleForTesting;
  * expressed as readable date and time fields as well as a more all-encompassing utcEncoding. It
  * also has two booleans that tells whether or not the time slot has been selected (marked as a time
  * when the user is available to be an interviewer) and whether or not the time slot has been
- * scheduled (the user is already scheduled to conduct an interview during that time).
+ * scheduled (the user is already scheduled to conduct an interview during that time). This class is
+ * used for frontend generation only.
  */
 @AutoValue
 public abstract class AvailabilityTimeSlot {

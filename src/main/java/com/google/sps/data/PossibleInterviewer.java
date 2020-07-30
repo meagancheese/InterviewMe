@@ -16,7 +16,10 @@ package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
 
-/** A PossibleInterviewer has a company and a job, and nothing else. */
+/**
+ * A PossibleInterviewer has a company and a job, and nothing else. This class is used for frontend
+ * generation only.
+ */
 @AutoValue
 public abstract class PossibleInterviewer {
   public abstract String company();
@@ -24,6 +27,12 @@ public abstract class PossibleInterviewer {
   public abstract String job();
 
   public static PossibleInterviewer create(String company, String job) {
+    if (company.equals("")) {
+      company = "<Not specified>";
+    }
+    if (job.equals("")) {
+      job = "<Not specified>";
+    }
     return builder().setCompany(company).setJob(job).build();
   }
 
