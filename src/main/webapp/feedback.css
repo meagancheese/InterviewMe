@@ -1,0 +1,15 @@
+#content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+}
+
+input {
+  width: 10% !important; 
+}
+
+label {
+  padding-top: 10px; 
+  padding-bottom: 10px; 
+  padding-right: 10px; 
+}

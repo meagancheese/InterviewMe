@@ -213,6 +213,7 @@ public final class ScheduledInterviewServletTest {
             googleSWE2.id(),
             googlePM.id()));
     getRequest.addParameter("timeZone", "America/New_York");
+    getRequest.addParameter("userTime", "2020-07-05T22:00:00Z");
     scheduledInterviewServlet.doGet(getRequest, getResponse);
     List<ScheduledInterviewRequest> actual =
         (List<ScheduledInterviewRequest>) getRequest.getAttribute("scheduledInterviews");
@@ -222,7 +223,8 @@ public final class ScheduledInterviewServletTest {
             "Sunday, July 5, 2020 from 2:00 PM to 3:00 PM",
             googleSWE1.firstName(),
             googleSWE2.firstName(),
-            "Interviewer");
+            "Interviewer",
+            true);
     List<ScheduledInterviewRequest> expected = new ArrayList<ScheduledInterviewRequest>();
     expected.add(expectedInterview);
     Assert.assertEquals(expected, actual);
@@ -254,6 +256,7 @@ public final class ScheduledInterviewServletTest {
             googleSWE1.id(),
             googleSWE2.id()));
     getRequest.addParameter("timeZone", "Etc/UCT");
+    getRequest.addParameter("userTime", "2020-07-05T22:00:00Z");
     scheduledInterviewServlet.doGet(getRequest, getResponse);
     List<ScheduledInterviewRequest> actual =
         (List<ScheduledInterviewRequest>) getRequest.getAttribute("scheduledInterviews");
@@ -263,14 +266,16 @@ public final class ScheduledInterviewServletTest {
             "Sunday, July 5, 2020 from 6:00 PM to 7:00 PM",
             googleSWE1.firstName(),
             googleSWE2.firstName(),
-            "Interviewer");
+            "Interviewer",
+            true);
     ScheduledInterviewRequest scheduledInterview2 =
         new ScheduledInterviewRequest(
             actual.get(1).getId(),
             "Sunday, July 5, 2020 from 8:00 PM to 9:00 PM",
             googleSWE1.firstName(),
             googleSWE2.firstName(),
-            "Interviewer");
+            "Interviewer",
+            true);
     List<ScheduledInterviewRequest> expected = new ArrayList<ScheduledInterviewRequest>();
     expected.add(scheduledInterview1);
     expected.add(scheduledInterview2);

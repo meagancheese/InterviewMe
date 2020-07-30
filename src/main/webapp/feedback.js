@@ -12,17 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function onScheduledInterviewsLoad() {
+function onFeedbackLoad() {
   const loginInfo = getLoginInfo();
   loginInfo.then(supplyLogoutLinkOrRedirectHome); 
   loginInfo.then(getUserOrRedirectRegistration);
-  loadScheduledInterviewCards(); 
+  loadFeedback(); 
 }
 
-function loadScheduledInterviewCards() {
-  fetch(`/scheduled-interviews?timeZone=${getBrowserTimeZone()}&userTime=${getCurrentTime()}`)
+// Calls the feedback servlet which determines whether or not the feedback form is submitted or not.
+function loadFeedback() {
+  fetch(`/feedback?timeZone=${getBrowserTimeZone()}&userTime=${getCurrentTime()}&interview=${getScheduledInterviewId()}&role=${getRole()}`)
     .then(response => response.text())
-    .then(listOfCards => {
-      document.getElementById('scheduled-interviews-cards').innerHTML = listOfCards;
-    });
+    .then(form => {
+      document.getElementById('feedBackForm').innerHTML = form;
+    }); 
+}
+
+// Returns the id of the interview that feedback is for.
+function getScheduledInterviewId() {
+  return new URLSearchParams(window.location.search).get('interview');  
+}
+
+// Returns the role of a particular user. 
+function getRole() {
+  return new URLSearchParams(window.location.search).get('role'); 
 }

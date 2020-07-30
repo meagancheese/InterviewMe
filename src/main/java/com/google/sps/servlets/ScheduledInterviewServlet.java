@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,11 +78,13 @@ public class ScheduledInterviewServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String timeZoneId = request.getParameter("timeZone");
+    String userTime = request.getParameter("userTime");
     String userEmail = userService.getCurrentUser().getEmail();
     String userId = getUserId();
 
     List<ScheduledInterviewRequest> scheduledInterviews =
-        scheduledInterviewsToRequestObjects(scheduledInterviewDao.getForPerson(userId), timeZoneId);
+        scheduledInterviewsToRequestObjects(
+            scheduledInterviewDao.getForPerson(userId), timeZoneId, userTime);
     request.setAttribute("scheduledInterviews", scheduledInterviews);
     RequestDispatcher rd = request.getRequestDispatcher("/scheduled-interviews.jsp");
     try {
@@ -172,11 +175,14 @@ public class ScheduledInterviewServlet extends HttpServlet {
   }
 
   public List<ScheduledInterviewRequest> scheduledInterviewsToRequestObjects(
-      List<ScheduledInterview> scheduledInterviews, String timeZoneIdString) {
+      List<ScheduledInterview> scheduledInterviews,
+      String timeZoneIdString,
+      String userTimeString) {
     ZoneId timeZoneId = ZoneId.of(timeZoneIdString);
+    Instant userTime = Instant.parse(userTimeString);
     List<ScheduledInterviewRequest> requestObjects = new ArrayList<ScheduledInterviewRequest>();
     for (ScheduledInterview scheduledInterview : scheduledInterviews) {
-      requestObjects.add(makeScheduledInterviewRequest(scheduledInterview, timeZoneId));
+      requestObjects.add(makeScheduledInterviewRequest(scheduledInterview, timeZoneId, userTime));
     }
     return requestObjects;
   }
@@ -191,11 +197,10 @@ public class ScheduledInterviewServlet extends HttpServlet {
   }
 
   private ScheduledInterviewRequest makeScheduledInterviewRequest(
-      ScheduledInterview scheduledInterview, ZoneId timeZoneId) {
+      ScheduledInterview scheduledInterview, ZoneId timeZoneId, Instant userTime) {
     String userEmail = userService.getCurrentUser().getEmail();
     String userId = getUserId();
     String date = getDateString(scheduledInterview.when(), timeZoneId);
-    String role = getUserRole(scheduledInterview, userId);
     String interviewer =
         personDao
             .get(scheduledInterview.interviewerId())
@@ -206,9 +211,12 @@ public class ScheduledInterviewServlet extends HttpServlet {
             .get(scheduledInterview.intervieweeId())
             .map(Person::firstName)
             .orElse("Nonexistent User");
+    String role = getUserRole(scheduledInterview, userId);
+    boolean hasStarted =
+        scheduledInterview.when().start().minus(5, ChronoUnit.MINUTES).isBefore(userTime);
 
     return new ScheduledInterviewRequest(
-        scheduledInterview.id(), date, interviewer, interviewee, role);
+        scheduledInterview.id(), date, interviewer, interviewee, role, hasStarted);
   }
 
   static String getUserRole(ScheduledInterview scheduledInterview, String userId) {
