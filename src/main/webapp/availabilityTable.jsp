@@ -1,8 +1,8 @@
 <%@ page import="com.google.sps.data.AvailabilityTimeSlotGenerator" %>
 <%@ page import="com.google.sps.data.AvailabilityTimeSlot" %>
-<%@ page import="com.google.sps.data.DatastoreAvailabilityDao" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.Instant" %>
+<%@ page import="com.google.sps.data.DatastoreAvailabilityDao" %>
 <%@ page import="java.time.temporal.ChronoUnit" %>
 <%@ page import="java.lang.Integer" %>
 <%

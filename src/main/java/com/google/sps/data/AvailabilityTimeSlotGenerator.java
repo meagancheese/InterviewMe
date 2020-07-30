@@ -40,6 +40,8 @@ public class AvailabilityTimeSlotGenerator {
   private static final int LATEST_HOUR = 19;
   // A list of hours and minutes representing permitted time slots.
   private static final ImmutableList<HoursAndMinutes> ALL_HOURS_AND_MINUTES = allHoursAndMinutes();
+  private static final int maxTimezoneOffsetMinutes = 720;
+  private static final int maxTimezoneOffsetHours = 12;
 
   @AutoValue
   abstract static class HoursAndMinutes {
@@ -78,15 +80,17 @@ public class AvailabilityTimeSlotGenerator {
   public static List<List<AvailabilityTimeSlot>> timeSlotsForWeek(
       Instant instant, int timezoneOffsetMinutes, AvailabilityDao availabilityDao) {
     Preconditions.checkArgument(
-        Math.abs(timezoneOffsetMinutes) <= 720,
-        "Offset greater than 720 minutes (12 hours): %s",
+        Math.abs(timezoneOffsetMinutes) <= maxTimezoneOffsetMinutes,
+        "Offset greater than %d minutes (%d hours): %d",
+        maxTimezoneOffsetMinutes,
+        maxTimezoneOffsetHours,
         timezoneOffsetMinutes);
     List<Instant> startAndEndOfWeek = getStartAndEndOfWeek(instant, timezoneOffsetMinutes);
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
     String userId = userService.getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
+    // Since Users returned from the LocalUserService (in tests) do not have userIds, here we set
+    // the userId equal to a hashcode.
     if (userId == null) {
       userId = String.format("%d", email.hashCode());
     }
@@ -196,8 +200,7 @@ public class AvailabilityTimeSlotGenerator {
     return instant.atZone(ZoneId.ofOffset("UTC", convertIntToOffset(timezoneOffsetMinutes)));
   }
 
-  // This method takes the timezoneOffsetMinutes int and converts it
-  // into a proper ZoneOffset instance.
+  // Converts the timezoneOffsetMinutes int into a proper ZoneOffset instance.
   private static ZoneOffset convertIntToOffset(int timezoneOffsetMinutes) {
     return ZoneOffset.ofHoursMinutes((timezoneOffsetMinutes / 60), (timezoneOffsetMinutes % 60));
   }
@@ -207,7 +210,7 @@ public class AvailabilityTimeSlotGenerator {
     return String.format("%s %d/%d", dayOfWeek, month, dayOfMonth);
   }
 
-  // This method tells whether or not a time slot has already been selected (Whether or not
+  // Tells whether or not a time slot has already been selected (Whether or not
   // it is already in datastore).
   private static boolean getSelectedStatus(
       String utcEncoding, Map<Instant, Availability> userAvailabilityForWeek) {
@@ -218,7 +221,7 @@ public class AvailabilityTimeSlotGenerator {
     return true;
   }
 
-  // This methods tells whether or not a time slot has already been scheduled over.
+  // Tells whether or not a time slot has already been scheduled over.
   private static boolean getScheduledStatus(
       String utcEncoding, Map<Instant, Availability> userAvailabilityForWeek) {
     if (!getSelectedStatus(utcEncoding, userAvailabilityForWeek)) {

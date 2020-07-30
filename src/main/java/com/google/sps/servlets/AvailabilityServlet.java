@@ -76,8 +76,8 @@ public class AvailabilityServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
     String userId = userService.getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
+    // Since Users returned from the LocalUserService (in tests) do not have userIds, here we set
+    // the userId equal to a hashcode.
     if (userId == null) {
       userId = String.format("%d", email.hashCode());
     }

@@ -40,11 +40,6 @@ function loadAvailabilityTable(tableDiv, timezoneOffset) {
     });
 }
 
-function browserTimezoneOffset() {
-  let date = new Date();
-  return (-1) * date.getTimezoneOffset();
-}
-
 function availabilityTableDiv() {
   return document.getElementById('table-container');
 }

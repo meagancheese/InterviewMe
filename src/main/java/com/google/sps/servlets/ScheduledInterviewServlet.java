@@ -17,8 +17,12 @@ package com.google.sps.servlets;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.Availability;
+import com.google.sps.data.AvailabilityDao;
+import com.google.sps.data.DatastoreAvailabilityDao;
 import com.google.sps.data.DatastorePersonDao;
 import com.google.sps.data.DatastoreScheduledInterviewDao;
+import com.google.sps.data.InterviewPostRequest;
 import com.google.sps.data.Person;
 import com.google.sps.data.PersonDao;
 import com.google.sps.data.ScheduledInterview;
@@ -26,6 +30,8 @@ import com.google.sps.data.ScheduledInterviewDao;
 import com.google.sps.data.ScheduledInterviewRequest;
 import com.google.sps.data.TimeRange;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.Instant;
@@ -46,29 +52,34 @@ import java.time.format.DateTimeParseException;
 public class ScheduledInterviewServlet extends HttpServlet {
 
   private ScheduledInterviewDao scheduledInterviewDao;
+  private AvailabilityDao availabilityDao;
   private PersonDao personDao;
+  private final UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void init() {
-    init(new DatastoreScheduledInterviewDao(), new DatastorePersonDao());
+    init(
+        new DatastoreScheduledInterviewDao(),
+        new DatastoreAvailabilityDao(),
+        new DatastorePersonDao());
   }
 
-  public void init(ScheduledInterviewDao scheduledInterviewDao, PersonDao personDao) {
+  public void init(
+      ScheduledInterviewDao scheduledInterviewDao,
+      AvailabilityDao availabilityDao,
+      PersonDao personDao) {
     this.scheduledInterviewDao = scheduledInterviewDao;
+    this.availabilityDao = availabilityDao;
     this.personDao = personDao;
   }
 
-  // Gets the current user's email from request and returns the ScheduledInterviews for that person.
+  // Gets the current user's email and returns the ScheduledInterviews for that person.
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String timeZoneId = request.getParameter("timeZone");
-    String userEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
-    String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (userId == null) {
-      userId = String.format("%d", userEmail.hashCode());
-    }
+    String userEmail = userService.getCurrentUser().getEmail();
+    String userId = getUserId();
+
     List<ScheduledInterviewRequest> scheduledInterviews =
         scheduledInterviewsToRequestObjects(scheduledInterviewDao.getForPerson(userId), timeZoneId);
     request.setAttribute("scheduledInterviews", scheduledInterviews);
@@ -83,36 +94,81 @@ public class ScheduledInterviewServlet extends HttpServlet {
   // Send the request's contents to Datastore in the form of a new ScheduledInterview object.
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String requestedInterviewerId = request.getParameter("interviewer");
-    String requestedIntervieweeId = request.getParameter("interviewee");
-    String userEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
-    String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (userId == null) {
-      userId = String.format("%d", userEmail.hashCode());
-    }
-    // The default key for a scheduledInterview being stored in datastore
-    long defaultKey = -1;
-    if ((!requestedInterviewerId.equals(userId)) && (!requestedIntervieweeId.equals(userId))) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
-    }
+    String intervieweeEmail = userService.getCurrentUser().getEmail();
+    String intervieweeId = getUserId();
+
+    InterviewPostRequest postRequest;
     try {
-      ScheduledInterview scheduledInterview =
-          ScheduledInterview.create(
-              defaultKey,
-              new TimeRange(
-                  Instant.parse(request.getParameter("startTime")),
-                  Instant.parse(request.getParameter("endTime"))),
-              requestedInterviewerId,
-              requestedIntervieweeId);
-      scheduledInterviewDao.create(scheduledInterview);
+      postRequest = new Gson().fromJson(getJsonString(request), InterviewPostRequest.class);
+    } catch (Exception JsonSyntaxException) {
+      response.sendError(400);
       return;
+    }
+    if (!postRequest.allFieldsPopulated()) {
+      response.sendError(400);
+      return;
+    }
+
+    String interviewerCompany = postRequest.getCompany();
+    String interviewerJob = postRequest.getJob();
+    String utcStartTime = postRequest.getUtcStartTime();
+    TimeRange range;
+
+    try {
+      range =
+          new TimeRange(
+              Instant.parse(utcStartTime), Instant.parse(utcStartTime).plus(1, ChronoUnit.HOURS));
     } catch (DateTimeParseException e) {
       response.sendError(400, e.getMessage());
       return;
     }
+
+    List<Availability> availabilitiesInRange =
+        availabilityDao.getInRangeForAll(range.start(), range.end());
+    List<Person> allAvailableInterviewers =
+        ShowInterviewersServlet.getPossiblePeople(
+            personDao, availabilityDao, availabilitiesInRange, range);
+    List<String> possibleInterviewers =
+        getPossibleInterviewerIds(allAvailableInterviewers, interviewerCompany, interviewerJob);
+
+    int randomNumber = (int) (Math.random() * possibleInterviewers.size());
+    String interviewerId = possibleInterviewers.get(randomNumber);
+
+    scheduledInterviewDao.create(
+        ScheduledInterview.create(-1, range, interviewerId, intervieweeId));
+
+    // Since an interview was scheduled, both parties' availabilities must be updated
+    List<Availability> affectedAvailability = new ArrayList<Availability>();
+    List<Availability> intervieweeAffectedAvailability =
+        availabilityDao.getInRangeForUser(intervieweeId, range.start(), range.end());
+    List<Availability> interviewerAffectedAvailability =
+        availabilityDao.getInRangeForUser(interviewerId, range.start(), range.end());
+    affectedAvailability.addAll(intervieweeAffectedAvailability);
+    affectedAvailability.addAll(interviewerAffectedAvailability);
+
+    for (Availability avail : affectedAvailability) {
+      availabilityDao.update(avail.withScheduled(true));
+    }
+  }
+
+  // Get Json from request body.
+  private static String getJsonString(HttpServletRequest request) throws IOException {
+    BufferedReader reader = request.getReader();
+    StringBuffer buffer = new StringBuffer();
+    String payloadLine = null;
+
+    while ((payloadLine = reader.readLine()) != null) buffer.append(payloadLine);
+    return buffer.toString();
+  }
+
+  List<String> getPossibleInterviewerIds(List<Person> availablePeople, String company, String job) {
+    List<String> possibleInterviewerIds = new ArrayList<String>();
+    for (Person person : availablePeople) {
+      if (person.company().equals(company) && person.job().equals(job)) {
+        possibleInterviewerIds.add(person.id());
+      }
+    }
+    return possibleInterviewerIds;
   }
 
   public List<ScheduledInterviewRequest> scheduledInterviewsToRequestObjects(
@@ -136,13 +192,8 @@ public class ScheduledInterviewServlet extends HttpServlet {
 
   private ScheduledInterviewRequest makeScheduledInterviewRequest(
       ScheduledInterview scheduledInterview, ZoneId timeZoneId) {
-    String userEmail = UserServiceFactory.getUserService().getCurrentUser().getEmail();
-    String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (userId == null) {
-      userId = String.format("%d", userEmail.hashCode());
-    }
+    String userEmail = userService.getCurrentUser().getEmail();
+    String userId = getUserId();
     String date = getDateString(scheduledInterview.when(), timeZoneId);
     String role = getUserRole(scheduledInterview, userId);
     String interviewer =
@@ -168,5 +219,15 @@ public class ScheduledInterviewServlet extends HttpServlet {
       return "Interviewee";
     }
     return "unknown";
+  }
+
+  private String getUserId() {
+    String userId = userService.getCurrentUser().getUserId();
+    // Since Users returned from the LocalUserService (in tests) do not have userIds, here we set
+    // the userId equal to a hashcode.
+    if (userId == null) {
+      userId = String.format("%d", userService.getCurrentUser().getEmail().hashCode());
+    }
+    return userId;
   }
 }

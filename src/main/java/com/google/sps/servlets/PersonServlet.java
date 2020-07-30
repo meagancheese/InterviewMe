@@ -56,14 +56,9 @@ public class PersonServlet extends HttpServlet {
       response.sendError(400);
       return;
     }
-    String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (id == null) {
-      id = String.format("%d", email.hashCode());
-    }
-    personDao.create(Person.createFromRequest(id, email, personRequest));
+    String userId = getUserId();
+    personDao.create(Person.createFromRequest(userId, email, personRequest));
   }
 
   // Updates Datastore with the Person information in request. Sends a 400 error if
@@ -77,14 +72,9 @@ public class PersonServlet extends HttpServlet {
       response.sendError(400);
       return;
     }
-    String id = userService.getCurrentUser().getUserId();
     String email = userService.getCurrentUser().getEmail();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (id == null) {
-      id = String.format("%d", email.hashCode());
-    }
-    personDao.update(Person.createFromRequest(id, email, personRequest));
+    String userId = getUserId();
+    personDao.update(Person.createFromRequest(userId, email, personRequest));
   }
 
   // Get Json from request body.
@@ -101,18 +91,23 @@ public class PersonServlet extends HttpServlet {
   // registration page.
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String id = userService.getCurrentUser().getUserId();
-    // Since UserId does not have a valid Mock, if the id is null (as when testing), it will be
-    // replaced with this hashcode.
-    if (id == null) {
-      id = String.format("%d", userService.getCurrentUser().getEmail().hashCode());
-    }
-    Optional<Person> personOpt = personDao.get(id);
+    String userId = getUserId();
+    Optional<Person> personOpt = personDao.get(userId);
     if (!personOpt.isPresent()) {
       response.sendRedirect("/register.html");
       return;
     }
     response.setContentType("application/json;");
     response.getWriter().println(new Gson().toJson(personOpt.get()));
+  }
+
+  private String getUserId() {
+    String userId = userService.getCurrentUser().getUserId();
+    // Since Users returned from the LocalUserService (in tests) do not have userIds, here we set
+    // the userId equal to a hashcode.
+    if (userId == null) {
+      userId = String.format("%d", userService.getCurrentUser().getEmail().hashCode());
+    }
+    return userId;
   }
 }

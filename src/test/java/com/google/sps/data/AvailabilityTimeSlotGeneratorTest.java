@@ -867,15 +867,15 @@ public final class AvailabilityTimeSlotGeneratorTest {
             userId,
             new TimeRange(
                 Instant.parse("2020-07-07T12:00:00Z"), Instant.parse("2020-07-07T12:15:00Z")),
-            -1,
-            true));
+            /*id=*/ -1,
+            /*scheduled=*/ true));
     dao.create(
         Availability.create(
             userId,
             new TimeRange(
                 Instant.parse("2020-07-09T12:00:00Z"), Instant.parse("2020-07-09T12:15:00Z")),
-            -1,
-            false));
+            /*id=*/ -1,
+            /*scheduled=*/ false));
     List<List<AvailabilityTimeSlot>> actual =
         AvailabilityTimeSlotGenerator.timeSlotsForWeek(instant, timezoneOffsetMinutes, dao);
 

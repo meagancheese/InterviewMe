@@ -17,10 +17,12 @@ package com.google.sps.data;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 /** Mimics accessing Datastore to support managing Availability entities. */
 public class FakeAvailabilityDao implements AvailabilityDao {
@@ -118,5 +120,18 @@ public class FakeAvailabilityDao implements AvailabilityDao {
           return 1;
         });
     return inRangeAvailability;
+  }
+
+  /** Returns the ids of all users that have availabilities within the specified time range. */
+  public Set<String> getUsersAvailableInRange(Instant minTime, Instant maxTime) {
+    Set<String> userIds = new HashSet<String>();
+    TimeRange range = new TimeRange(minTime, maxTime);
+    List<Availability> allAvailability = new ArrayList<Availability>(storedObjects.values());
+    for (Availability avail : allAvailability) {
+      if (range.contains(avail.when())) {
+        userIds.add(avail.userId());
+      }
+    }
+    return userIds;
   }
 }

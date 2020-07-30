@@ -27,12 +27,12 @@ public interface ScheduledInterviewDao {
   public Optional<ScheduledInterview> get(long id);
 
   // Returns a list of the ScheduledInterview objects that the user participates in.
-  public List<ScheduledInterview> getForPerson(String email);
+  public List<ScheduledInterview> getForPerson(String userId);
 
   // Returns a list of all scheduled ScheduledInterview objects ranging from minTim to maxTime of a
-  // user. minTime and maxTime are in milliseconds.
+  // user.
   public List<ScheduledInterview> getScheduledInterviewsInRangeForUser(
-      String email, Instant minTime, Instant maxTime);
+      String userId, Instant minTime, Instant maxTime);
 
   // Creates a ScheduledInterview entity.
   public void create(ScheduledInterview scheduledInterview);

@@ -42,6 +42,11 @@ public abstract class Availability {
     return toBuilder().setId(id).build();
   }
 
+  // Returns a new Availability with the old information with an updated scheduled status.
+  public Availability withScheduled(boolean scheduled) {
+    return toBuilder().setScheduled(scheduled).build();
+  }
+
   public static Builder builder() {
     return new AutoValue_Availability.Builder();
   }

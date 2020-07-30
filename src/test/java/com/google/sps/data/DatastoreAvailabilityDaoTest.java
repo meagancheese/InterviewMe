@@ -27,8 +27,10 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,35 +50,39 @@ public class DatastoreAvailabilityDaoTest {
 
   private final Availability availabilityOne =
       Availability.create(
-          "user1",
+          /*userId*/ "user1",
           new TimeRange(
               Instant.parse("2020-07-07T12:00:00Z"), Instant.parse("2020-07-07T12:15:00Z")),
-          (long) -1,
-          true);
-
+          /*id=*/ -1,
+          /*scheduled=*/ true);
   private final Availability availabilityTwo =
       Availability.create(
-          "user1",
+          /*userId*/ "user1",
           new TimeRange(
               Instant.parse("2020-07-07T15:45:00Z"), Instant.parse("2020-07-07T16:00:00Z")),
-          (long) -1,
-          false);
-
+          /*id=*/ -1,
+          /*scheduled=*/ false);
   private final Availability availabilityThree =
       Availability.create(
-          "user2",
+          /*userId*/ "user2",
           new TimeRange(
               Instant.parse("2020-07-07T17:30:00Z"), Instant.parse("2020-07-07T17:45:00Z")),
-          (long) -1,
-          true);
-
+          /*id=*/ -1,
+          /*scheduled=*/ true);
   private final Availability availabilityFour =
       Availability.create(
-          "user1",
+          /*userId*/ "user1",
           new TimeRange(
               Instant.parse("2020-07-07T22:30:00Z"), Instant.parse("2020-07-07T22:45:00Z")),
-          (long) -1,
-          true);
+          /*id=*/ -1,
+          /*scheduled=*/ true);
+  private final Availability availabilityFive =
+      Availability.create(
+          /*userId*/ "user3",
+          new TimeRange(
+              Instant.parse("2020-07-07T22:30:00Z"), Instant.parse("2020-07-07T22:45:00Z")),
+          /*id=*/ -1,
+          /*scheduled=*/ true);
 
   @Before
   public void setUp() {
@@ -342,5 +348,23 @@ public class DatastoreAvailabilityDaoTest {
     expectedAvailabilities.add(expectedAvailabilityTwo);
     expectedAvailabilities.add(expectedAvailabilityThree);
     Assert.assertEquals(expectedAvailabilities, actual);
+  }
+
+  // Checks that the userIds of the Availabilities in range are returned.
+  @Test
+  public void userIdsInRangeReturned() {
+    dao.create(availabilityFour);
+    dao.create(availabilityThree);
+    dao.create(availabilityTwo);
+    dao.create(availabilityOne);
+    dao.create(availabilityFive);
+
+    Set<String> actual =
+        dao.getUsersAvailableInRange(
+            availabilityOne.when().start(), availabilityThree.when().end());
+    Set<String> expected = new HashSet<String>();
+    expected.add("user1");
+    expected.add("user2");
+    Assert.assertEquals(expected, actual);
   }
 }

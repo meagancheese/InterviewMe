@@ -15,6 +15,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="search-interview.js"></script>
     <script src="authentication.js"></script>
+    <script src="timezone-offset.js"></script>
   </head>
   <body onload="onSearchInterviewLoad()">
     <div id="content">
@@ -44,7 +45,9 @@
       <form>
         <div class="form-group">
           <!-- TODO: add parameters for this form. -->
-          <button type="button" class="btn btn-primary" onclick="loadInterviews()">Search</button>
+          <div id="search-button-container">
+            <button type="button" class="btn btn-primary mb-2" onclick="loadInterviews()">Search</button>
+          </div>
         </div>
       </form>
       <br>      
@@ -52,78 +55,8 @@
         <h1 class="text-center">Available Interview Times</h1>
         <h5 class="text-center lead">Select the time you want from the dropdown on the day you want. </h5>
         <br>
-        <!--TODO: Include Timezone consideration; Add pagination-->
-        <form>
-          <div class="form-row">
-            <div class="col-3 date-label">
-              <label>Monday 6/29</label>
-            </div>
-            <div class="col-5">
-              <select class="form-control">
-                <option>8:15 AM - 9:15 AM</option>
-                <option>10:30 AM - 11:30 AM</option>
-                <option>1:00 PM - 2:00 PM</option>
-              </select>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary mb-2">Select</button>
-            </div>
-          </div>
-        </form>
-        <br>
-        <form>
-          <div class="form-row">
-            <div class="col-3 date-label">
-              <label>Wednesday 7/1</label>
-            </div>
-            <div class="col-5">
-              <select class="form-control">
-                <option>6:30 PM - 7:30 PM</option>
-              </select>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary mb-2">Select</button>
-            </div>
-          </div>
-        </form>
-        <br>     
-        <form>
-          <div class="form-row">
-            <div class="col-3 date-label">
-              <label>Thursday 7/2</label>
-            </div>
-            <div class="col-5">
-              <select class="form-control">
-                <option>9:30 AM - 10:30 AM</option>
-                <option>6:30 PM - 7:30 PM</option>
-              </select>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary mb-2">Select</button>
-            </div>
-          </div>
-        </form>
-        <br>  
-        <form>
-          <!-- TODO: Dynamically generate these with Sunday as the model. -->
-          <!-- TODO: Make the week Sunday - Saturday. -->
-          <div class="form-row">
-            <div class="col-3 date-label">
-              <label>Sunday 7/5</label>
-            </div>
-            <div class="col-5">
-              <select class="form-control" id="7/5/2020-options">
-                <option>9:30 AM - 10:30 AM</option>
-                <option>6:30 PM - 7:30 PM</option>
-              </select>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary mb-2" 
-                onclick="showInterviewers(this)" id="7/5/2020">Select</button>
-            </div>
-          </div>
-        </form>
-        <br>  
+        <!-- This div is loaded with the available interview times for the week from a jsp page.-->
+        <div id = "interview-times-container"></div>
       </section>
       <div class="modal fade" id="interviewer-modal" role="dialog">
         <div class="modal-dialog mw-100 w-25" role="document">
