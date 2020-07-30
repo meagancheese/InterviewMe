@@ -5,6 +5,12 @@ indexes:
     direction: asc
   - name: "startTime"
     direction: asc
+- kind: "Availability"
+  properties:
+  - name: "startTime"
+    direction: asc
+  - name: "userId"
+    direction: asc
 - kind: "ScheduledInterview"
   properties:
   - name: "interviewer"
