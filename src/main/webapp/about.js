@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function onIndexLoad() {
+// Login status decisions should follow same flow as on home page, since this is publicly accessible.
+function onAboutLoad() {
   checkLogin();
 }
 
-// Disables / enables navbar links, adjusts login / logout tab, adjusts log in message depending on 
-// if user is logged in or out.
+// Disables / enables navbar links and adjusts login / logout tab depending on if user is logged in 
+// or out.
 // If user is logged in but not registered, redirects to registration.
 function checkLogin() {
   fetch('/login').then(response => response.json()).then(status => {
@@ -31,8 +32,6 @@ function checkLogin() {
       let loginInfo = getLoginInfo();
       loginInfo.then(getUserOrRedirectRegistration);
     } else {
-      document.getElementById('login-message-container').style.display = 'inline';
-      document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
       restrictedTabs = document.getElementsByClassName('restricted-tab');
       for(let element of restrictedTabs) {
         element.classList.add('disabled');

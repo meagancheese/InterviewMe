@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="about.js"></script>
+    <script src="authentication.js"></script>
+  </head>
+  <body onload="onAboutLoad()">
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">InterviewMe</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+          data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home</a>
+            <a class="nav-item nav-link active" href="#">About</a>
+            <a class="restricted-tab nav-item nav-link" href="profile.html">Profile</a>
+            <a class="restricted-tab nav-item nav-link" href="scheduled-interviews.html">Events</a>
+            <a class="restricted-tab nav-item nav-link" href="availability.html">Availability</a>
+            <a class="restricted-tab nav-item nav-link" href="search-interview.html">Scheduling</a>
+            <!--TODO: Move this to the right of the navbar-->
+            <a class="nav-item nav-link" href="#" id="login-tab"></a>
+          </div>
+        </div>
+      </nav>
+      <br>
+      <h1 class="text-center">About InterviewMe</h1>
+      <h4>Our Mission</h5>
+      <p>
+        InterviewMe is a platform for conducting mock technical interviews where interviewers and 
+        interviewees alike can practice their skills. We aim to connect users with live video
+        chats in order to encapsulate the true feeling and pace of a technical interview. We 
+        support the diversity of roles in the tech industry with our nine possible job positions 
+        ranging from Software Engineer to Technical Sales. 
+      </p>
+      
+      <h5>How It Works</h5>
+      <p>
+        After registering on InterviewMe, you can play either the role of the interviewer or 
+        interviewee. 
+      </p> 
+      <h6>As an Interviewer</h6>
+      <p>
+        Be sure to update the positions for which you are qualified to give an interview in your 
+        profile. This will be critical in matching you up with corresponding interviewees.
+        <br>
+        We will use your availabilities specified on the <a href="availability.html">
+        Availability Page</a> to schedule your interviews.
+        <br>
+        Interviewees will see your company and job when searching, so please update those 
+        accordingly. Once an interviewee is matched with you, you will get more details in an 
+        email. The interviews will be one hour long and hosted on Google Meet.
+      </p> 
+      <h6>As an Interviewee</h6>
+      <p>
+        To search for an interview, navigate to the <a href="search-interview.html">
+        Scheduling Page</a>. You can choose what position you are interested in and see what times 
+        and interviewers are available. You will be able to see their company and job, but no more 
+        personal information.
+        <br>
+        Once an interviewer is matched with you, you will get more details in an email. The 
+        interviews will be one hour long and hosted on Google Meet.
+      </p> 
+      <h5>Contact Us</h5>
+      <p>
+        If you have any comments, questions, or feedback, please email us at 
+        interviewme.business@gmail.com. 
+      </p>
+      <br><br><br>
+    </div>
+  </body>
+</html>
