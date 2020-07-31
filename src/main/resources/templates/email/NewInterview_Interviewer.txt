@@ -15,4 +15,6 @@ After interviewing:
  - Your interviewee will write up a feedback report. Expect to see this in your inbox shortly.
  - Send the interviewee feedback through this form: {{form_link}}.
 
-A Google Calendar event titled "InterviewMe Interview {{interviewer_first_name}} / {{interviewee_first_name}}" was added to your Google Calendar. Please reach out to interviewme.business@gmail.com if you have any questions.
+Your interview will be conducted in this Google Virtual Chat: {{chat_link}}.
+
+Please reach out to interviewme.business@gmail.com if you have any questions. 
