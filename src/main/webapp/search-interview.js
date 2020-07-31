@@ -23,12 +23,16 @@ function onSearchInterviewLoad() {
 function loadInterviews() {
   const searchResultsDiv = document.getElementById("search-results");
   searchResultsDiv.removeAttribute("hidden");
-
-  fetch(`/load-interviews?timeZoneOffset=${browserTimezoneOffset()}`)
+  fetch(`/load-interviews?timeZoneOffset=${browserTimezoneOffset()}&position=${selectedPosition()}`)
   .then(response => response.text())
   .then(interviewTimes => {
     interviewTimesDiv().innerHTML = interviewTimes;
   });
+}
+
+function selectedPosition() {
+  let position = document.getElementById('position').value;
+  return position.toUpperCase().replace(' ', '_');
 }
 
 function interviewTimesDiv() {
@@ -42,24 +46,38 @@ function selectInterview(interviewer) {
   let time = interviewer.getAttribute('data-time');
   let company = interviewer.getAttribute('data-company');
   let job = interviewer.getAttribute('data-job');
+  if (company === '') {
+    company = '<Not specified>';
+  }
+  if (job === '') {
+    job = '<Not specified>';
+  }
   let utcStartTime = interviewer.getAttribute('data-utc');
+  let position = document.getElementById('position').value;
   if (confirm(
       `You selected: ${date} from ${time} with a ` +
       `${company} ${job}. ` +
       `Click OK if you wish to proceed.`)) {
     alert(
-      `You have scheduled an interview on ${date}` +
+      `You have scheduled a ${position} interview on ${date}` +
       ` from ${time} with a ${company} ` +
       `${job}. Check your email for more ` +
       `information.`);
+    if (company === '<Not specified>') {
+      company = '';
+    }
+    if (job === '<Not specified>') {
+      job = '';
+    }
     let requestObject = {
       company: company,
       job: job,
-      utcStartTime: utcStartTime
+      utcStartTime: utcStartTime,
+      position: selectedPosition()
     };
     let requestBody = JSON.stringify(requestObject);
     let request = new Request('/scheduled-interviews', {method: 'POST', body: requestBody});
-    fetch(request).then(unused => {window.location.replace('/scheduled-interviews.html');});
+    fetch(request).then(() => {window.location.replace('/scheduled-interviews.html');});
   }
 }
 
@@ -70,11 +88,20 @@ function showInterviewers(selectButton) {
   const time = select.options[select.selectedIndex].text;
   const reformattedTime = time.replace('-', 'to');
   const utc = select.value;
-  fetch(`/show-interviewers?utcStartTime=${utc}&date=${date}&time=${reformattedTime}`)
+  fetch(`/show-interviewers?utcStartTime=${utc}&date=${date}&time=${reformattedTime}&position=${selectedPosition()}`)
   .then(response => response.text())
   .then(interviewers => {
     $('#modal-body').html(interviewers);
-    $('#modal-title').text(`Interviewers Information for ${date} from ${reformattedTime}`);
+    $('#modal-title').text(`Qualified Interviewers Information for ${date} from ${reformattedTime}`);
+    $('#interviewer-modal').modal('show');
+    checkIfSpecified();
   });
-  $('#interviewer-modal').modal('show');
+}
+
+function checkIfSpecified() {
+  $('.check-specified').each((index, el) => {
+    if (el.innerHTML === '') {
+      el.innerHTML = '&lt;Not specified&gt;';
+    }
+  });
 }

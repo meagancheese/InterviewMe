@@ -18,8 +18,8 @@
   <tbody>
     <c:forEach items = "${pageScope.set}" var = "interviewer">
       <tr>
-        <td>${interviewer.company()}</td>
-        <td>${interviewer.job()}</td>
+        <td class="check-specified">${interviewer.company()}</td>
+        <td class="check-specified">${interviewer.job()}</td>
         <td>
           <button type="button" class="btn btn-primary" 
               data-company="${interviewer.company()}" data-job="${interviewer.job()}" 

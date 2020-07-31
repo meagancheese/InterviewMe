@@ -22,7 +22,10 @@ import com.google.gson.Gson;
 import com.google.sps.data.Availability;
 import com.google.sps.data.AvailabilityDao;
 import com.google.sps.data.DatastoreAvailabilityDao;
+import com.google.sps.data.DatastorePersonDao;
 import com.google.sps.data.DatastoreScheduledInterviewDao;
+import com.google.sps.data.Job;
+import com.google.sps.data.PersonDao;
 import com.google.sps.data.PossibleInterviewSlot;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.ScheduledInterviewDao;
@@ -36,6 +39,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
+import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,21 +59,28 @@ public class LoadInterviewsServlet extends HttpServlet {
 
   private AvailabilityDao availabilityDao;
   private ScheduledInterviewDao scheduledInterviewDao;
+  private PersonDao personDao;
   private Instant currentTime;
   private final int maxTimezoneOffsetMinutes = 720;
   private final int maxTimezoneOffsetHours = 12;
 
   @Override
   public void init() {
-    init(new DatastoreAvailabilityDao(), new DatastoreScheduledInterviewDao(), Instant.now());
+    init(
+        new DatastoreAvailabilityDao(),
+        new DatastoreScheduledInterviewDao(),
+        new DatastorePersonDao(),
+        Instant.now());
   }
 
   public void init(
       AvailabilityDao availabilityDao,
       ScheduledInterviewDao scheduledInterviewDao,
+      PersonDao personDao,
       Instant currentTime) {
     this.availabilityDao = availabilityDao;
     this.scheduledInterviewDao = scheduledInterviewDao;
+    this.personDao = personDao;
     this.currentTime = currentTime;
   }
 
@@ -89,8 +100,10 @@ public class LoadInterviewsServlet extends HttpServlet {
     // current time.
     TimeRange interviewSearchTimeRange =
         new TimeRange(utcTime.toInstant(), utcTime.toInstant().plus(27, ChronoUnit.DAYS));
+    String position = request.getParameter("position");
+    Job selectedPosition = Job.valueOf(Job.class, position);
     List<PossibleInterviewSlot> possibleInterviews =
-        getPossibleInterviewSlots(interviewSearchTimeRange, timezoneOffset);
+        getPossibleInterviewSlots(selectedPosition, interviewSearchTimeRange, timezoneOffset);
 
     String date = possibleInterviews.isEmpty() ? "" : possibleInterviews.get(0).date();
     List<ArrayList<PossibleInterviewSlot>> possibleInterviewsForWeek =
@@ -130,7 +143,7 @@ public class LoadInterviewsServlet extends HttpServlet {
   }
 
   private List<PossibleInterviewSlot> getPossibleInterviewSlots(
-      TimeRange range, ZoneOffset timezoneOffset) {
+      Job position, TimeRange range, ZoneOffset timezoneOffset) {
     Set<String> interviewers = availabilityDao.getUsersAvailableInRange(range.start(), range.end());
     Set<PossibleInterviewSlot> possibleInterviews = new HashSet<PossibleInterviewSlot>();
     // We don't want to schedule an interview for a user with themself, so we are removing
@@ -144,6 +157,10 @@ public class LoadInterviewsServlet extends HttpServlet {
       userId = String.format("%d", userEmail.hashCode());
     }
     interviewers.remove(userId);
+    // We need to check that the interviewers are qualified to give an interview for the specified
+    // position.
+    interviewers.removeIf(
+        interviewer -> !personDao.get(interviewer).get().qualifiedJobs().contains(position));
     for (String interviewer : interviewers) {
       possibleInterviews.addAll(
           getPossibleInterviewSlotsForPerson(interviewer, range, timezoneOffset));

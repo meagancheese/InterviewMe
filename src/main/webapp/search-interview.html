@@ -41,14 +41,26 @@
       </nav>
       <br>
       <h1 class="text-center">Search for an Interview</h1>
-      <h5 class="text-center lead">Search for possible times in which you will be interviewed!</h5>
+      <h5 class="text-center lead">Select the position you'd like to be interviewed for and search for possible times!</h5>
       <br>
       <form>
-        <div class="form-group">
+        <div class="form-group mb-3">
           <!-- TODO: add parameters for this form. -->
-          <div id="search-button-container">
-            <button type="button" class="btn btn-primary mb-2" onclick="loadInterviews()">Search</button>
-          </div>
+          <label for="position">Position</label>
+          <select id="position" class="form-control" name="job">
+            <option>Software Engineer</option>
+            <option>Product Manager</option>
+            <option>Business Analyst</option>
+            <option>Technical Consultant</option>
+            <option>Software Tester</option>
+            <option>Technical Sales</option>
+            <option>Network Engineer</option>
+            <option>Systems Analyst</option>
+            <option>Technical Support</option>
+          </select>
+        </div>
+        <div id="search-button-container">
+          <button type="button" class="btn btn-primary mb-2" onclick="loadInterviews()">Search</button>
         </div>
       </form>
       <br>      
