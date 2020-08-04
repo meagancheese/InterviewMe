@@ -15,6 +15,9 @@
 package com.google.sps.data;
 
 import com.google.auto.value.AutoValue;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /** Represents a scheduled interview. */
 @AutoValue
@@ -56,5 +59,12 @@ public abstract class ScheduledInterview {
     abstract Builder setIntervieweeId(String intervieweeId);
 
     abstract ScheduledInterview build();
+  }
+
+  public String getDateString() {
+    LocalDateTime start = LocalDateTime.ofInstant(when().start(), ZoneId.systemDefault());
+    String startTime = start.format(DateTimeFormatter.ofPattern("h:mm a"));
+    String day = start.format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy"));
+    return String.format("%s at %s UTC", day, startTime);
   }
 }
