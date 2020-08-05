@@ -1,7 +1,5 @@
 Thank you for practicing your interviewing skills using InterviewMe on {{formatted_date}}. Your interviewee has submitted feedback for your interview, which you can view below. 
 
-The values 1-10 represent whether your interviewee strongly disagreed(1) or agreed(10) with the prompt. 
-
 I was comfortable during the interview: {{question_1}}
 My interviewer moved at a decent pace: {{question_2}}
 My interviewer was able to stay on topic: {{question_3}}

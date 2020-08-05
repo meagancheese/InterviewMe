@@ -1,7 +1,5 @@
 Thank you for practicing your interviewing skills using InterviewMe on {{formatted_date}}. Your interviewer has submitted feedback for your interview, which you can view below. 
 
-The values 1-10 represent whether your interviewer strongly disagreed(1) or agreed(10) with the prompt. 
-
 The interviewee communicated their thought process as they went along: {{question_1}}
 The interviewee understood the time complexity of their solution: {{question_2}}
 The interviewee took the time to consider better solutions: {{question_3}}
