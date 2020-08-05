@@ -44,7 +44,7 @@ function availabilityTableDiv() {
   return document.getElementById('table-container');
 }
 
-function updateAvailability() {
+function updateAvailability(reload) {
   let selectedSlots = document.getElementsByClassName('selected-time-slot');
   let scheduledSlots = document.getElementsByClassName('scheduled-time-slot');
   let markedSlots = Array.from(selectedSlots).concat(Array.from(scheduledSlots));
@@ -59,7 +59,11 @@ function updateAvailability() {
   };
   let requestBody = JSON.stringify(requestObject);
   let request = new Request('/availability', {method: 'PUT', body: requestBody});
-  fetch(request).then(() => location.reload()).catch((error) => {
+  fetch(request).then(() => {
+      if (reload) {
+        location.reload();
+      }
+    }).catch((error) => {
     alert('Error: ' + error + '\nThere was an error submitting your availability.' +
       ' Please try again.');
     });
@@ -73,6 +77,7 @@ function goBack() {
     page = 0;
     return;
   }
+  updateAvailability(false);
   page -= 1;
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }
@@ -82,6 +87,7 @@ function goForward() {
     page = maxWeeksAhead;
     return;
   }
+  updateAvailability(false);
   page += 1;
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }
