@@ -14,7 +14,7 @@
 
 function onAvailabilityLoad() {
   const loginInfo = getLoginInfo();
-  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
+  loginInfo.then(ifLoggedOutRedirectHome); 
   loginInfo.then(getUserOrRedirectRegistration);
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }

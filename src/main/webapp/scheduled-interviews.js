@@ -14,7 +14,7 @@
 
 function onScheduledInterviewsLoad() {
   const loginInfo = getLoginInfo();
-  loginInfo.then(supplyLogoutLinkOrRedirectHome); 
+  loginInfo.then(ifLoggedOutRedirectHome); 
   loginInfo.then(getUserOrRedirectRegistration);
   loadScheduledInterviewCards(); 
 }

@@ -26,19 +26,20 @@ function checkLogin() {
       for(let element of restrictedTabs) {
         element.classList.remove('disabled');
       }
-      document.getElementById('login-tab').innerText = 'Logout';
+      document.getElementById('logout-tab').removeAttribute('hidden');
       // If not registered, redirect to registration.
       let loginInfo = getLoginInfo();
       loginInfo.then(getUserOrRedirectRegistration);
     } else {
       document.getElementById('login-message-container').style.display = 'inline';
-      document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + status.changeLogInStatusURL + '">login</a>.';
+      document.getElementById('login-message').innerHTML = 'To get started, please <a href="' + 
+          status.loginUrl + '">login</a>.';
       restrictedTabs = document.getElementsByClassName('restricted-tab');
       for(let element of restrictedTabs) {
         element.classList.add('disabled');
       }
-      document.getElementById('login-tab').innerText = 'Login';
+      document.getElementById('login-tab').removeAttribute('hidden');
+      document.getElementById('login-tab').href = status.loginUrl;
     }
-    document.getElementById('login-tab').href = status.changeLogInStatusURL;
   });
 }

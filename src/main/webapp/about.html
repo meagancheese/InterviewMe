@@ -33,7 +33,9 @@
             <a class="restricted-tab nav-item nav-link" href="availability.html">Availability</a>
             <a class="restricted-tab nav-item nav-link" href="search-interview.html">Scheduling</a>
             <!--TODO: Move this to the right of the navbar-->
-            <a class="nav-item nav-link" href="#" id="login-tab"></a>
+            <a class="nav-item nav-link" href="#" id="login-tab" hidden>Login</a>
+            <a class="nav-item nav-link" href="#" onclick="event.preventDefault(); logout();" 
+              id="logout-tab" hidden>Logout</a>            
           </div>
         </div>
       </nav>

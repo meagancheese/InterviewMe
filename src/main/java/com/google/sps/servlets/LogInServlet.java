@@ -1,14 +1,5 @@
 package com.google.sps.servlets;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Transaction;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
@@ -35,8 +26,7 @@ public class LogInServlet extends HttpServlet {
     boolean loggedIn = userService.isUserLoggedIn();
     LoginInfo toSend;
     if (loggedIn) {
-      return new LoginInfo(
-          loggedIn, userService.createLogoutURL(rootUrl), userService.getCurrentUser().getEmail());
+      return new LoginInfo(loggedIn, "", userService.getCurrentUser().getEmail());
     }
     return new LoginInfo(loggedIn, userService.createLoginURL(rootUrl), "");
   }
@@ -44,12 +34,12 @@ public class LogInServlet extends HttpServlet {
   // Represents the logged in status of the site.
   public static class LoginInfo {
     public boolean loggedIn;
-    public final String changeLogInStatusURL;
+    public final String loginUrl;
     public final String email;
 
-    public LoginInfo(boolean loggedIn, String changeLogInStatusURL, String email) {
+    public LoginInfo(boolean loggedIn, String loginUrl, String email) {
       this.loggedIn = loggedIn;
-      this.changeLogInStatusURL = changeLogInStatusURL;
+      this.loginUrl = loginUrl;
       this.email = email;
     }
   }
