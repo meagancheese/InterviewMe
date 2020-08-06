@@ -182,7 +182,6 @@ public class AvailabilityTimeSlotGenerator {
       }
       String formattedTime =
           String.format("%d:%02d %s", standardHour, minute, hour < 12 ? "AM" : "PM");
-
       timeSlots.add(
           AvailabilityTimeSlot.create(
               formattedUTCTime,

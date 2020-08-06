@@ -16,6 +16,26 @@
   width: 130px;
 }
 
-td {
+.table td {
   cursor: default;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-sm td {
+  padding: 0px;
+}
+
+.table th {
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.short {
+  font-size: 0.5rem;
+}
+
+.tall {
+  font-size: 0.8rem;
 }

@@ -63,7 +63,7 @@ function updateAvailability(reload) {
   let scheduledSlots = document.getElementsByClassName('scheduled-time-slot');
   let markedSlots = Array.from(selectedSlots).concat(Array.from(scheduledSlots));
   let firstSlot = document.getElementsByTagName('tbody').item(0)
-    .firstElementChild.firstElementChild.getAttribute('data-utc');
+    .firstElementChild.firstElementChild.nextElementSibling.getAttribute('data-utc');
   let lastSlot = document.getElementsByTagName('tbody').item(0)
     .lastElementChild.lastElementChild.getAttribute('data-utc');
   let requestObject = {

@@ -20,24 +20,31 @@
 <table class="table table-sm text-center">
   <thead>
     <tr>
+      <th scope="col"></th>
       <c:forEach items = "${pageScope.list}" var = "day">
         <th scope="col">${day.get(0).date()}</th>
       </c:forEach>
     </tr>
   </thead>
   <tbody>
-    <!-- TODO: Change page format so that it is vertically condensed.-->
     <c:forEach var = "i" begin = "0" end = "${pageScope.list.get(0).size() - 1}">
-      <tr>
-        <c:forEach items = "${pageScope.list}" var = "day">
-          <td onmouseenter="event.preventDefault(); toggleTile(this);" 
-              onmousedown="event.preventDefault(); markMouseDown(); toggleTile(this);"
-              data-utc="${day.get(i).utcEncoding()}" 
-              class="${day.get(i).getClassList()}">
-            ${day.get(i).time()}
-          </td>
-        </c:forEach>
-      </tr>
+      <c:choose>
+        <c:when test="${i % 4 == 0}">
+          <tr class='tall'>
+        </c:when>
+        <c:otherwise>
+          <tr class='short'>
+        </c:otherwise>
+      </c:choose>
+            <td>${pageScope.list.get(0).get(i).time()}</td>
+              <c:forEach items = "${pageScope.list}" var = "day">
+                <td onmouseenter="event.preventDefault(); toggleTile(this);"
+                    onmousedown="event.preventDefault(); markMouseDown(); toggleTile(this);"
+                    data-utc="${day.get(i).utcEncoding()}" 
+                    class="${day.get(i).getClassList()}">
+                </td>
+              </c:forEach>
+          </tr>
     </c:forEach>
   </tbody>
 </table>
