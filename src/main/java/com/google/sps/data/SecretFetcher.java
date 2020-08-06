@@ -18,6 +18,7 @@ import com.google.cloud.secretmanager.v1.AccessSecretVersionRequest;
 import com.google.cloud.secretmanager.v1.AccessSecretVersionResponse;
 import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;
 import com.google.cloud.secretmanager.v1.SecretVersionName;
+import java.io.IOException;
 
 // Handles getting secrets we define in our GCP's SecretManager.
 public class SecretFetcher {
@@ -28,7 +29,7 @@ public class SecretFetcher {
     this.projectId = projectId;
   }
 
-  public String getSecretValue(String secretId) throws Exception {
+  public String getSecretValue(String secretId) throws IOException {
     // Initialize client that will be used to send requests. This client only needs to be created
     // once, and can be reused for multiple requests. After completing all of your requests, call
     // the "close" method on the client to safely clean up any remaining background resources.

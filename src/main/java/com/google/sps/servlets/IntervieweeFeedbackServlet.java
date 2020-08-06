@@ -23,6 +23,9 @@ import com.google.sps.data.Person;
 import com.google.sps.data.PersonDao;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.ScheduledInterviewDao;
+import com.google.sps.data.SendgridEmailSender;
+import com.google.sps.utils.EmailUtils;
+import com.google.sps.utils.SendgridEmailUtils;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -46,18 +49,37 @@ import javax.servlet.ServletException;
 public class IntervieweeFeedbackServlet extends HttpServlet {
   private ScheduledInterviewDao scheduledInterviewDao;
   private PersonDao personDao;
+  private EmailSender emailSender;
+  private EmailUtils emailUtils;
+  static final Email sender = new Email("interviewme.business@gmail.com");
   private Path emailsPath =
       Paths.get(
           System.getProperty("user.home") + "/InterviewMe/src/main/resources/templates/email");
 
   @Override
   public void init() {
-    init(new DatastoreScheduledInterviewDao(), new DatastorePersonDao());
+    EmailSender emailSender;
+    try {
+      emailSender = new SendgridEmailSender(sender);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    init(
+        new DatastoreScheduledInterviewDao(),
+        new DatastorePersonDao(),
+        emailSender,
+        new SendgridEmailUtils());
   }
 
-  public void init(ScheduledInterviewDao scheduledInterviewDao, PersonDao personDao) {
+  public void init(
+      ScheduledInterviewDao scheduledInterviewDao,
+      PersonDao personDao,
+      EmailSender emailSender,
+      EmailUtils emailUtils) {
     this.scheduledInterviewDao = scheduledInterviewDao;
     this.personDao = personDao;
+    this.emailSender = emailSender;
+    this.emailUtils = emailUtils;
   }
 
   @Override
@@ -122,14 +144,12 @@ public class IntervieweeFeedbackServlet extends HttpServlet {
   }
 
   private void sendFeedback(String intervieweeEmail, HashMap<String, String> answers)
-      throws IOException, Exception {
-    EmailSender emailSender = new EmailSender(new Email("interviewme.business@gmail.com"));
+      throws IOException {
     String subject = "Your Interviewer has submitted feedback for your interview!";
     Email recipient = new Email(intervieweeEmail);
     String contentString =
-        emailSender.fileContentToString(emailsPath + "/feedbackToInterviewee.txt");
-    Content content =
-        new Content("text/plain", emailSender.replaceAllPairs(answers, contentString));
+        emailUtils.fileContentToString(emailsPath + "/feedbackToInterviewee.txt");
+    Content content = new Content("text/plain", emailUtils.replaceAllPairs(answers, contentString));
     emailSender.sendEmail(recipient, subject, content);
   }
 }
