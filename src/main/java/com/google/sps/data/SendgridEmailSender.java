@@ -40,7 +40,7 @@ public class SendgridEmailSender implements EmailSender {
     this.sender = sender;
     this.sg =
         new SendGrid(
-            new SecretFetcher("interview-me-step-2020").getSecretValue("SENDGRID_API_KEY"));
+            new SecretFetcher("interviewme2020").getSecretValue("SENDGRID_API_KEY"));
   }
 
   // Sends an email from the "sender" Email to the "recipient" Email, with specified subject and

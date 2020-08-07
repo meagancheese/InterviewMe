@@ -96,7 +96,7 @@ public class ScheduledInterviewServlet extends HttpServlet {
     try {
       calendar =
           new GoogleCalendarAccess(
-              GoogleCalendarAccess.MakeCalendar(new SecretFetcher("interview-me-step-2020")));
+              GoogleCalendarAccess.MakeCalendar(new SecretFetcher("interviewme2020")));
     } catch (GeneralSecurityException e) {
       throw new RuntimeException(e);
     } catch (IOException e) {
