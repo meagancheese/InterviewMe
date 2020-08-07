@@ -111,8 +111,11 @@ public final class TimeRange {
     if (Duration.between(range.start, range.end).isZero()) {
       return false;
     }
-
-    return !instant.isBefore(range.start) && !instant.isAfter(range.end);
+    // End time is not included in a range, so if the instant is the end time, it is not contained
+    // within the range.
+    return !instant.isBefore(range.start)
+        && !instant.isAfter(range.end)
+        && !instant.equals(range.end);
   }
 
   /** Checks if two timeranges are the same. */
