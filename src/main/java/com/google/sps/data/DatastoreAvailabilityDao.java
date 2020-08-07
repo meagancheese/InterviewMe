@@ -118,11 +118,15 @@ public class DatastoreAvailabilityDao implements AvailabilityDao {
       keyList.add(entity.getKey());
     }
     // This iterative deletion avoids XG transactions, which max out at 25 root entities.
+    // We include the individual deletion transactions within a larger group transaction
+    // to avoid replacing Availabilities before they are deleted.
+    Transaction groupTxn = datastore.beginTransaction();
     for (Key key : keyList) {
       Transaction txn = datastore.beginTransaction();
       datastore.delete(txn, key);
       txn.commit();
     }
+    groupTxn.commit();
   }
 
   // Returns a sorted (by ascending start times) list of all Availabilities ranging from
