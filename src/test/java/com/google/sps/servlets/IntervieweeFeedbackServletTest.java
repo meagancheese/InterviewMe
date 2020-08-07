@@ -31,8 +31,6 @@ import com.google.sps.data.FakePersonDao;
 import com.google.sps.data.Job;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.TimeRange;
-import com.google.sps.utils.EmailUtils;
-import com.google.sps.utils.FakeEmailUtils;
 import com.google.sps.servlets.IntervieweeFeedbackServlet;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
@@ -59,7 +57,6 @@ public final class IntervieweeFeedbackServletTest {
   private FakeScheduledInterviewDao scheduledInterviewDao;
   private FakePersonDao personDao;
   private FakeEmailSender emailSender;
-  private FakeEmailUtils emailUtils;
   private final ScheduledInterview scheduledInterview =
       ScheduledInterview.create(
           /*id=*/ (long) -1,
@@ -81,7 +78,6 @@ public final class IntervieweeFeedbackServletTest {
     }
     scheduledInterviewDao = new FakeScheduledInterviewDao();
     personDao = new FakePersonDao();
-    emailUtils = new FakeEmailUtils();
   }
 
   @After
@@ -93,7 +89,7 @@ public final class IntervieweeFeedbackServletTest {
   @Test
   public void interviewIdDoesNotExist() throws IOException {
     IntervieweeFeedbackServlet intervieweeFeedbackServlet = new IntervieweeFeedbackServlet();
-    intervieweeFeedbackServlet.init(scheduledInterviewDao, personDao, emailSender, emailUtils);
+    intervieweeFeedbackServlet.init(scheduledInterviewDao, personDao, emailSender);
     scheduledInterviewDao.create(scheduledInterview);
     MockHttpServletRequest postRequest = new MockHttpServletRequest();
     MockHttpServletResponse postResponse = new MockHttpServletResponse();
@@ -109,7 +105,7 @@ public final class IntervieweeFeedbackServletTest {
   public void invalidUser() throws IOException {
     IntervieweeFeedbackServlet intervieweeFeedbackServlet = new IntervieweeFeedbackServlet();
     helper.setEnvIsLoggedIn(true).setEnvEmail("user@mail.com").setEnvAuthDomain("auth");
-    intervieweeFeedbackServlet.init(scheduledInterviewDao, personDao, emailSender, emailUtils);
+    intervieweeFeedbackServlet.init(scheduledInterviewDao, personDao, emailSender);
     scheduledInterviewDao.create(scheduledInterview);
     List<ScheduledInterview> scheduledInterviews =
         scheduledInterviewDao.getForPerson(emailToId("user@mail.com"));

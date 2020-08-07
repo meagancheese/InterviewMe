@@ -25,7 +25,6 @@ import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.ScheduledInterviewDao;
 import com.google.sps.data.SendgridEmailSender;
 import com.google.sps.utils.EmailUtils;
-import com.google.sps.utils.SendgridEmailUtils;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -50,7 +49,6 @@ public class IntervieweeFeedbackServlet extends HttpServlet {
   private ScheduledInterviewDao scheduledInterviewDao;
   private PersonDao personDao;
   private EmailSender emailSender;
-  private EmailUtils emailUtils;
   static final Email sender = new Email("interviewme.business@gmail.com");
   private Path emailsPath =
       Paths.get(
@@ -64,22 +62,14 @@ public class IntervieweeFeedbackServlet extends HttpServlet {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    init(
-        new DatastoreScheduledInterviewDao(),
-        new DatastorePersonDao(),
-        emailSender,
-        new SendgridEmailUtils());
+    init(new DatastoreScheduledInterviewDao(), new DatastorePersonDao(), emailSender);
   }
 
   public void init(
-      ScheduledInterviewDao scheduledInterviewDao,
-      PersonDao personDao,
-      EmailSender emailSender,
-      EmailUtils emailUtils) {
+      ScheduledInterviewDao scheduledInterviewDao, PersonDao personDao, EmailSender emailSender) {
     this.scheduledInterviewDao = scheduledInterviewDao;
     this.personDao = personDao;
     this.emailSender = emailSender;
-    this.emailUtils = emailUtils;
   }
 
   @Override
@@ -148,8 +138,8 @@ public class IntervieweeFeedbackServlet extends HttpServlet {
     String subject = "Your Interviewer has submitted feedback for your interview!";
     Email recipient = new Email(intervieweeEmail);
     String contentString =
-        emailUtils.fileContentToString(emailsPath + "/feedbackToInterviewee.txt");
-    Content content = new Content("text/plain", emailUtils.replaceAllPairs(answers, contentString));
+        EmailUtils.fileContentToString(emailsPath + "/feedbackToInterviewee.txt");
+    Content content = new Content("text/plain", EmailUtils.replaceAllPairs(answers, contentString));
     emailSender.sendEmail(recipient, subject, content);
   }
 }

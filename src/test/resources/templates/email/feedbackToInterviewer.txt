@@ -1,0 +1,19 @@
+Thank you for practicing your interviewing skills using InterviewMe on {{formatted_date}}. Your interviewee has submitted feedback for your interview, which you can view below. 
+
+I was comfortable during the interview: {{question_1}}
+My interviewer moved at a decent pace: {{question_2}}
+My interviewer was able to stay on topic: {{question_3}}
+My interviewer was able to provide advice or suggestions along the way when I got stuck: {{question_4}}
+My interviewer answered my questions to the best of their ability: {{question_5}}
+I felt my interviewer came prepared: {{question_6}}
+This InterviewMe experience was helpful: {{question_7}}
+
+Is there anything in particular that your interviewer did to improve your overall experience?
+{{question_8}}
+
+What is something that you think your interviewer could have done better?
+{{question_9}}
+
+
+Please reach out to interviewme.business@gmail.com if you have any questions or concerns. 
+Thank you for using InterviewMe!

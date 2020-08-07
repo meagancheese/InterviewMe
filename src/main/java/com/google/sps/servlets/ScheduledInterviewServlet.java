@@ -38,7 +38,6 @@ import com.google.sps.data.SecretFetcher;
 import com.google.sps.data.SendgridEmailSender;
 import com.google.sps.data.TimeRange;
 import com.google.sps.utils.EmailUtils;
-import com.google.sps.utils.SendgridEmailUtils;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
@@ -81,12 +80,8 @@ public class ScheduledInterviewServlet extends HttpServlet {
   private EmailSender emailSender;
   private CalendarAccess calendarAccess;
   private Calendar service;
-  private EmailUtils emailUtils;
   private final UserService userService = UserServiceFactory.getUserService();
   static final Email sender = new Email("interviewme.business@gmail.com");
-  private Path emailsPath =
-      Paths.get(
-          System.getProperty("user.home") + "/InterviewMe/src/main/resources/templates/email");
 
   @Override
   public void init() {
@@ -113,8 +108,7 @@ public class ScheduledInterviewServlet extends HttpServlet {
         new DatastoreAvailabilityDao(),
         new DatastorePersonDao(),
         calendar,
-        emailSender,
-        new SendgridEmailUtils());
+        emailSender);
   }
 
   public void init(
@@ -122,14 +116,12 @@ public class ScheduledInterviewServlet extends HttpServlet {
       AvailabilityDao availabilityDao,
       PersonDao personDao,
       CalendarAccess calendarAccess,
-      EmailSender emailSender,
-      EmailUtils emailUtils) {
+      EmailSender emailSender) {
     this.scheduledInterviewDao = scheduledInterviewDao;
     this.availabilityDao = availabilityDao;
     this.personDao = personDao;
     this.calendarAccess = calendarAccess;
     this.emailSender = emailSender;
-    this.emailUtils = emailUtils;
   }
 
   // Gets the current user's email and returns the ScheduledInterviews for that person.
@@ -447,22 +439,21 @@ public class ScheduledInterviewServlet extends HttpServlet {
     }
 
     String subject = "You have been requested to conduct a mock interview!";
-    String contentString =
-        emailUtils.fileContentToString(emailsPath + "/NewInterview_Interviewer.txt");
+    String contentString = EmailUtils.fileContentToString("NewInterview_Interviewer.txt");
 
     if (participantId.equals(scheduledInterview.intervieweeId())) {
       subject = "You have been registered for a mock interview!";
-      contentString = emailUtils.fileContentToString(emailsPath + "/NewInterview_Interviewee.txt");
+      contentString = EmailUtils.fileContentToString("NewInterview_Interviewee.txt");
     }
 
     if (participantId.equals(scheduledInterview.shadowId())) {
       subject = "You have been registered for a mock interview!";
-      contentString = emailUtils.fileContentToString(emailsPath + "/NewInterview_Shadow.txt");
+      contentString = EmailUtils.fileContentToString("NewInterview_Shadow.txt");
     }
 
     Email recipient = new Email(recipientEmail);
     Content content =
-        new Content("text/plain", emailUtils.replaceAllPairs(emailedDetails, contentString));
+        new Content("text/plain", EmailUtils.replaceAllPairs(emailedDetails, contentString));
     emailSender.sendEmail(recipient, subject, content);
   }
   // Formats the position string that is sent in an email. For example SOFTWARE_ENGINEER -> Software
@@ -471,7 +462,7 @@ public class ScheduledInterviewServlet extends HttpServlet {
     String splitString[] = str.split("_", 0);
     String formattedPositionString = "";
     for (String s : splitString) {
-      formattedPositionString += s.substring(0, 1) + s.substring(1).toLowerCase();
+      formattedPositionString += s.substring(0, 1) + s.substring(1).toLowerCase() + " ";
     }
     return formattedPositionString.trim();
   }

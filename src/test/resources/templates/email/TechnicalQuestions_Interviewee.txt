@@ -1,0 +1,31 @@
+Hello {{interviewee_first_name}},
+
+We see that you registered for a {{position}} mock interview with InterviewMe on {{formatted_date}}. As these interviews usually come with technical questions, we wanted to share with you some tips.
+
+  Repeat/clarify the question with the interviewer.
+    - Pay attention for hints.
+    - Vagueness is expected. This gives you the chance to define the problem better.
+
+  Brainstorm potential solutions.
+    - Start with the obvious/worst case.
+    - Draw pictures.
+    - Evaluate potential solutions by running time.
+    - Remember, this is a conversation, not a monologue.
+
+  Before coding:
+    - Make sure you understand your approach.
+    - Make sure the interviewer understands your approach.
+    - You may want to pick a suboptimal approach if it's easier to code (although often the optimal approach is the simplest.)
+    - Think about APIs, function signatures, etc.
+
+  During coding:
+    - Small syntax/language issues are OK, but avoid pseudo-code.
+    - Subroutines can help clarify code/allow you to skip writing some code.
+    - Style counts; use semantically meaningful names.
+
+  After coding:
+    - Talk about testing and test cases in general.
+    - Finally, talk about other possibly more efficient solutions with the interviewer.
+
+Please reach out to interviewme.business@gmail.com if you have any questions.   
+Best of luck!
