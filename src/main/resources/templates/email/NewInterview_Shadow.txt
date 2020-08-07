@@ -1,0 +1,11 @@
+Hello {{shadow_first_name}},
+
+You have been registered for a mock interview on {{formatted_date}}. You are the shadow. You will be shadowing an interview for the position of: {{position}}.
+
+Be sure to follow these general guidelines when shadowing:
+  - Be respectful to the interviewer and interviewee.
+  - Please mute yourself. You are here to observe. 
+
+The interview will be conducted in this Google Virtual Chat: {{chat_link}}.
+
+Please reach out to interviewme.business@gmail.com if you have any questions. 

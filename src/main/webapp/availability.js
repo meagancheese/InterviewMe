@@ -73,8 +73,11 @@ function updateAvailability(reload) {
   };
   let requestBody = JSON.stringify(requestObject);
   let request = new Request('/availability', {method: 'PUT', body: requestBody});
-  fetch(request).then(() => {
+  fetch(request)
+    .then(() => {
       if (reload) {
+        // Reloads the page to show the user their availability was updated when 
+        // they clicked the Update buton.
         location.reload();
       }
     }).catch((error) => {
@@ -91,7 +94,7 @@ function goBack() {
     page = 0;
     return;
   }
-  updateAvailability(false);
+  updateAvailability(/*reload=*/ false);
   page -= 1;
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }
@@ -101,7 +104,7 @@ function goForward() {
     page = maxWeeksAhead;
     return;
   }
-  updateAvailability(false);
+  updateAvailability(/*reload=*/ false);
   page += 1;
   loadAvailabilityTable(availabilityTableDiv(), browserTimezoneOffset());
 }

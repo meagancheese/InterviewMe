@@ -113,7 +113,7 @@ public class AvailabilityTimeSlotGenerator {
 
   // Creates longs of milliseconds for the start and end points of the specified week.
   private static List<Instant> getStartAndEndOfWeek(Instant instant, int timezoneOffsetMinutes) {
-    ZonedDateTime firstDay = generateDay(instant, timezoneOffsetMinutes);
+    ZonedDateTime firstDay = TimeUtils.generateDay(instant, timezoneOffsetMinutes);
     Instant startOfWeek = getStartOrEndOfWeek(firstDay, true);
     ZonedDateTime lastDay = firstDay.plus(6, ChronoUnit.DAYS);
     Instant endOfWeek = getStartOrEndOfWeek(lastDay, false);
@@ -158,7 +158,7 @@ public class AvailabilityTimeSlotGenerator {
       Instant instant,
       int timezoneOffsetMinutes,
       Map<Instant, Availability> userAvailabilityForWeek) {
-    ZonedDateTime day = generateDay(instant, timezoneOffsetMinutes);
+    ZonedDateTime day = TimeUtils.generateDay(instant, timezoneOffsetMinutes);
     ZoneId zoneId = day.getZone();
     String dayOfWeek = day.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
     int year = day.getYear();
@@ -192,16 +192,6 @@ public class AvailabilityTimeSlotGenerator {
     }
 
     return timeSlots.build();
-  }
-
-  // Uses an Instant and a timezoneOffsetMinutes int to create a ZonedDateTime instance.
-  private static ZonedDateTime generateDay(Instant instant, int timezoneOffsetMinutes) {
-    return instant.atZone(ZoneId.ofOffset("UTC", convertIntToOffset(timezoneOffsetMinutes)));
-  }
-
-  // Converts the timezoneOffsetMinutes int into a proper ZoneOffset instance.
-  private static ZoneOffset convertIntToOffset(int timezoneOffsetMinutes) {
-    return ZoneOffset.ofHoursMinutes((timezoneOffsetMinutes / 60), (timezoneOffsetMinutes % 60));
   }
 
   // Returns a readable date string such as "Tue 7/7".

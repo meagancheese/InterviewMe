@@ -17,17 +17,18 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 /**
- * An InterviewPostRequest is used to schedule an interview for the current user with an interviewer
- * who is qualified to interview for the selected position, has the selected company and job, and is
- * available at the specified time, which is represented by the utcStartTime String.
+ * An InterviewPostOrPutRequest is used to schedule or update an interview for the current user with
+ * an interviewer who is qualified to interview for the selected position, has the selected company
+ * and job, and is available at the specified time, which is represented by the utcStartTime String.
  */
-public class InterviewPostRequest {
+public class InterviewPostOrPutRequest {
   private String company;
   private String job;
   private String utcStartTime;
   private String position;
 
-  public InterviewPostRequest(String company, String job, String utcStartTime, String position) {
+  public InterviewPostOrPutRequest(
+      String company, String job, String utcStartTime, String position) {
     this.company = company;
     this.job = job;
     this.utcStartTime = utcStartTime;
@@ -56,7 +57,7 @@ public class InterviewPostRequest {
 
   public String toString() {
     return String.format(
-        "InterviewPostRequest= company:%s, job:%s, utcStartTime:%s, position:%s",
+        "InterviewPostOrPutRequest= company:%s, job:%s, utcStartTime:%s, position:%s",
         company, job, utcStartTime, position);
   }
 }

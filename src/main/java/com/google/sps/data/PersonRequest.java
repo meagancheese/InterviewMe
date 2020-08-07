@@ -24,6 +24,7 @@ public class PersonRequest {
   private String job;
   private String linkedIn;
   private EnumSet<Job> qualifiedJobs;
+  private boolean okShadow;
 
   public PersonRequest(
       String firstName,
@@ -31,13 +32,15 @@ public class PersonRequest {
       String company,
       String job,
       String linkedIn,
-      EnumSet<Job> qualifiedJobs) {
+      EnumSet<Job> qualifiedJobs,
+      boolean okShadow) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.company = company;
     this.job = job;
     this.linkedIn = linkedIn;
     this.qualifiedJobs = qualifiedJobs;
+    this.okShadow = okShadow;
   }
 
   public String getFirstName() {
@@ -64,29 +67,13 @@ public class PersonRequest {
     return qualifiedJobs;
   }
 
-  public String toString() {
-    return String.format(
-            "%s= %s:%s, %s:%s, %s:%s, %s:%s, %s:%s, %s: \n",
-            "PutPersonRequest",
-            "firstName",
-            firstName,
-            "lastName",
-            lastName,
-            "company",
-            company,
-            "job",
-            job,
-            "linkedIn",
-            linkedIn,
-            "qualifiedJobs")
-        + qualifiedJobsToString();
+  public boolean getOkShadow() {
+    return okShadow;
   }
 
-  private String qualifiedJobsToString() {
-    StringBuilder sb = new StringBuilder();
-    for (Job job : qualifiedJobs) {
-      sb.append(job.toString() + " ");
-    }
-    return sb.toString();
+  public String toString() {
+    return String.format(
+        "PutPersonRequest= firstName:%s, lastName:%s, company:%s, job:%s, linkedIn:%s, qualifiedJobs: %s, okShadow: %s",
+        firstName, lastName, company, job, linkedIn, qualifiedJobs, okShadow);
   }
 }

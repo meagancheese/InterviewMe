@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.FakeEmailSender;
 import com.google.sps.data.FakeScheduledInterviewDao;
 import com.google.sps.data.FakePersonDao;
+import com.google.sps.data.Job;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.TimeRange;
 import com.google.sps.utils.EmailUtils;
@@ -65,7 +66,10 @@ public final class IntervieweeFeedbackServletTest {
           /*when=*/ new TimeRange(
               Instant.parse("2020-07-06T17:00:10Z"), Instant.parse("2020-07-06T18:00:10Z")),
           /*interviewerId=*/ emailToId("user@company.org"),
-          /*intervieweeId=*/ emailToId("user@mail.com"));
+          /*intervieweeId=*/ emailToId("user@mail.com"),
+          "meet_link",
+          Job.SOFTWARE_ENGINEER,
+          "shadow_id");
 
   @Before
   public void setUp() {

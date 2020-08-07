@@ -35,6 +35,8 @@ public abstract class Person {
   public abstract String linkedIn();
 
   public abstract EnumSet<Job> qualifiedJobs();
+
+  public abstract boolean okShadow();
   /**
    * Creates a person that contains a user id, email, first name, last name, company, job, and
    * LinkedIn URL.
@@ -47,7 +49,8 @@ public abstract class Person {
       String company,
       String job,
       String linkedIn,
-      EnumSet<Job> qualifiedJobs) {
+      EnumSet<Job> qualifiedJobs,
+      boolean okShadow) {
     return builder()
         .setId(id)
         .setEmail(email)
@@ -57,6 +60,7 @@ public abstract class Person {
         .setJob(job)
         .setLinkedIn(linkedIn)
         .setQualifiedJobs(qualifiedJobs)
+        .setOkShadow(okShadow)
         .build();
   }
 
@@ -71,6 +75,7 @@ public abstract class Person {
         .setJob(personRequest.getJob())
         .setLinkedIn(personRequest.getLinkedIn())
         .setQualifiedJobs(personRequest.getQualifiedJobs())
+        .setOkShadow(personRequest.getOkShadow())
         .build();
   }
 
@@ -95,6 +100,8 @@ public abstract class Person {
     abstract Builder setLinkedIn(String linkedIn);
 
     abstract Builder setQualifiedJobs(EnumSet<Job> qualifiedJobs);
+
+    abstract Builder setOkShadow(boolean okShadow);
 
     abstract Person build();
   }

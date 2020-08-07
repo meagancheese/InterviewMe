@@ -30,6 +30,7 @@ import com.google.sps.data.PossibleInterviewSlot;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.ScheduledInterviewDao;
 import com.google.sps.data.TimeRange;
+import com.google.sps.data.TimeUtils;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.lang.Integer;
@@ -93,8 +94,8 @@ public class LoadInterviewsServlet extends HttpServlet {
         maxTimezoneOffsetMinutes,
         maxTimezoneOffsetHours,
         timezoneOffsetMinutes);
-    ZoneOffset timezoneOffset = convertIntToOffset(timezoneOffsetMinutes);
-    ZonedDateTime day = generateDay(currentTime, timezoneOffset);
+    ZoneOffset timezoneOffset = TimeUtils.convertIntToOffset(timezoneOffsetMinutes);
+    ZonedDateTime day = TimeUtils.generateDay(currentTime, timezoneOffsetMinutes);
     ZonedDateTime utcTime = day.withZoneSameInstant(ZoneOffset.UTC);
     // The user will be shown available interview times for the next four weeks, starting from the
     // current time.
@@ -104,42 +105,15 @@ public class LoadInterviewsServlet extends HttpServlet {
     Job selectedPosition = Job.valueOf(Job.class, position);
     List<PossibleInterviewSlot> possibleInterviews =
         getPossibleInterviewSlots(selectedPosition, interviewSearchTimeRange, timezoneOffset);
-
-    String date = possibleInterviews.isEmpty() ? "" : possibleInterviews.get(0).date();
-    List<ArrayList<PossibleInterviewSlot>> possibleInterviewsForWeek =
-        new ArrayList<ArrayList<PossibleInterviewSlot>>();
-
-    if (!possibleInterviews.isEmpty()) {
-      ArrayList<PossibleInterviewSlot> dayOfSlots = new ArrayList<PossibleInterviewSlot>();
-      for (PossibleInterviewSlot possibleInterview : possibleInterviews) {
-        if (!possibleInterview.date().equals(date)) {
-          possibleInterviewsForWeek.add(dayOfSlots);
-          dayOfSlots = new ArrayList<PossibleInterviewSlot>();
-          date = possibleInterview.date();
-        }
-        dayOfSlots.add(possibleInterview);
-      }
-      possibleInterviewsForWeek.add(dayOfSlots);
-    }
-
-    request.setAttribute("weekList", possibleInterviewsForWeek);
+    List<ArrayList<PossibleInterviewSlot>> possibleInterviewsForMonth =
+        orderPossibleInterviewSlotsIntoDays(possibleInterviews);
+    request.setAttribute("monthList", possibleInterviewsForMonth);
     RequestDispatcher rd = request.getRequestDispatcher("/possibleInterviewTimes.jsp");
-
     try {
       rd.forward(request, response);
     } catch (ServletException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  // Uses an Instant and a timezoneOffset to create a ZonedDateTime instance.
-  private static ZonedDateTime generateDay(Instant instant, ZoneOffset timezoneOffset) {
-    return instant.atZone(ZoneId.ofOffset("UTC", timezoneOffset));
-  }
-
-  // Converts the timezoneOffsetMinutes int into a proper ZoneOffset instance.
-  private static ZoneOffset convertIntToOffset(int timezoneOffsetMinutes) {
-    return ZoneOffset.ofHoursMinutes((timezoneOffsetMinutes / 60), (timezoneOffsetMinutes % 60));
   }
 
   private List<PossibleInterviewSlot> getPossibleInterviewSlots(
@@ -199,8 +173,8 @@ public class LoadInterviewsServlet extends HttpServlet {
         possibleInterviewSlotsForPerson.add(
             PossibleInterviewSlot.create(
                 availabilities.get(i).when().start().toString(),
-                getDate(availabilities.get(i).when().start(), timezoneOffset),
-                getTime(availabilities.get(i).when().start(), timezoneOffset)));
+                TimeUtils.getDate(availabilities.get(i).when().start(), timezoneOffset),
+                TimeUtils.getTime(availabilities.get(i).when().start(), timezoneOffset)));
       }
     }
     return possibleInterviewSlotsForPerson;
@@ -218,30 +192,6 @@ public class LoadInterviewsServlet extends HttpServlet {
         .equals(availabilities.get(index + numberOfSlotsAfterFirstInAnHour).when().start());
   }
 
-  private String getDate(Instant instant, ZoneOffset timezoneOffset) {
-    ZonedDateTime day = instant.atZone(ZoneId.ofOffset("UTC", timezoneOffset));
-    String dayOfWeek = day.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
-    int month = day.getMonthValue();
-    int dayOfMonth = day.getDayOfMonth();
-    return String.format("%s %d/%d", dayOfWeek, month, dayOfMonth);
-  }
-
-  private String getTime(Instant instant, ZoneOffset timezoneOffset) {
-    ZonedDateTime startTime = instant.atZone(ZoneId.ofOffset("UTC", timezoneOffset));
-    ZonedDateTime endTime = startTime.plus(1, ChronoUnit.HOURS);
-    return String.format("%s - %s", formatTime(startTime), formatTime(endTime));
-  }
-
-  private String formatTime(ZonedDateTime time) {
-    int hour = time.getHour();
-    int minute = time.getMinute();
-    int standardHour = hour;
-    if (hour > 12) {
-      standardHour = hour - 12;
-    }
-    return String.format("%d:%02d %s", standardHour, minute, hour < 12 ? "AM" : "PM");
-  }
-
   private void sortInterviews(List<PossibleInterviewSlot> possibleInterviewSlots) {
     possibleInterviewSlots.sort(
         (PossibleInterviewSlot p1, PossibleInterviewSlot p2) -> {
@@ -255,5 +205,27 @@ public class LoadInterviewsServlet extends HttpServlet {
           }
           return 1;
         });
+  }
+
+  static List<ArrayList<PossibleInterviewSlot>> orderPossibleInterviewSlotsIntoDays(
+      List<PossibleInterviewSlot> possibleInterviews) {
+    String date = possibleInterviews.isEmpty() ? "" : possibleInterviews.get(0).date();
+    List<ArrayList<PossibleInterviewSlot>> possibleInterviewsForMonth =
+        new ArrayList<ArrayList<PossibleInterviewSlot>>();
+    // In order to separate the time slots by day, when the date changes a new dayOfSlots is
+    // created and the previous dayOfSlots is added to possibleInterviewsForMonth.
+    if (!possibleInterviews.isEmpty()) {
+      ArrayList<PossibleInterviewSlot> dayOfSlots = new ArrayList<PossibleInterviewSlot>();
+      for (PossibleInterviewSlot possibleInterview : possibleInterviews) {
+        if (!possibleInterview.date().equals(date)) {
+          possibleInterviewsForMonth.add(dayOfSlots);
+          dayOfSlots = new ArrayList<PossibleInterviewSlot>();
+          date = possibleInterview.date();
+        }
+        dayOfSlots.add(possibleInterview);
+      }
+      possibleInterviewsForMonth.add(dayOfSlots);
+    }
+    return possibleInterviewsForMonth;
   }
 }

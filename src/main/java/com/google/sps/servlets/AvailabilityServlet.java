@@ -18,6 +18,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.sps.data.Availability;
 import com.google.sps.data.AvailabilityDao;
 import com.google.sps.data.DatastoreAvailabilityDao;
@@ -64,7 +65,7 @@ public class AvailabilityServlet extends HttpServlet {
     PutAvailabilityRequest utcEncodings;
     try {
       utcEncodings = new Gson().fromJson(jsonString, PutAvailabilityRequest.class);
-    } catch (Exception JsonSyntaxException) {
+    } catch (JsonSyntaxException jse) {
       response.sendError(400);
       return;
     }

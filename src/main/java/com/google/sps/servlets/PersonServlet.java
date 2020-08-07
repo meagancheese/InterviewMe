@@ -18,6 +18,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.sps.data.DatastorePersonDao;
 import com.google.sps.data.Person;
 import com.google.sps.data.PersonDao;
@@ -52,7 +53,7 @@ public class PersonServlet extends HttpServlet {
     PersonRequest personRequest;
     try {
       personRequest = new Gson().fromJson(getJsonString(request), PersonRequest.class);
-    } catch (Exception JsonSyntaxException) {
+    } catch (JsonSyntaxException jse) {
       response.sendError(400);
       return;
     }
@@ -68,7 +69,7 @@ public class PersonServlet extends HttpServlet {
     PersonRequest personRequest;
     try {
       personRequest = new Gson().fromJson(getJsonString(request), PersonRequest.class);
-    } catch (Exception JsonSyntaxException) {
+    } catch (JsonSyntaxException jse) {
       response.sendError(400);
       return;
     }

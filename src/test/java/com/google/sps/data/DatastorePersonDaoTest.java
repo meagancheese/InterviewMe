@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.Test;
+import com.google.gson.Gson;
 
 @RunWith(JUnit4.class)
 public class DatastorePersonDaoTest {
@@ -48,7 +49,8 @@ public class DatastorePersonDaoTest {
   private DatastoreService datastore;
 
   private final Person a =
-      Person.create("id_a", "a@gmail.com", "a", "a", "", "", "", EnumSet.of(Job.SOFTWARE_ENGINEER));
+      Person.create(
+          "id_a", "a@gmail.com", "a", "a", "", "", "", EnumSet.of(Job.SOFTWARE_ENGINEER), true);
 
   @Before
   public void setUp() {
@@ -77,7 +79,8 @@ public class DatastorePersonDaoTest {
             a.company(),
             a.job(),
             a.linkedIn(),
-            a.qualifiedJobs());
+            a.qualifiedJobs(),
+            a.okShadow());
     Assert.assertEquals(personAWithID, storedPerson);
   }
 
@@ -96,7 +99,8 @@ public class DatastorePersonDaoTest {
             a.company(),
             a.job(),
             a.linkedIn(),
-            EnumSet.of(Job.BUSINESS_ANALYST, Job.NETWORK_ENGINEER));
+            EnumSet.of(Job.BUSINESS_ANALYST, Job.NETWORK_ENGINEER),
+            false);
     dao.update(update);
     Entity updatedEntity = datastore.prepare(new Query("Person")).asSingleEntity();
     Person updatedPerson = dao.entityToPerson(updatedEntity);
@@ -119,14 +123,15 @@ public class DatastorePersonDaoTest {
             a.company(),
             a.job(),
             a.linkedIn(),
-            a.qualifiedJobs());
+            a.qualifiedJobs(),
+            true);
     Optional<Person> expectedPersonOptional = Optional.of(expectedPerson);
     Assert.assertEquals(expectedPersonOptional, actualPersonOptional);
   }
 
   // Checks that an empty Optional is returned when a Person does not exist within
   // datastore.
-  // @Test
+  @Test
   public void failsToGetPerson() {
     Optional<Person> actual = dao.get("$");
     Optional<Person> expected = Optional.empty();

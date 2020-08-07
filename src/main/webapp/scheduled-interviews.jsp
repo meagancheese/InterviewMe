@@ -22,16 +22,26 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Interviewee: ${scheduledInterview.getInterviewee()}</li>
             <li class="list-group-item">Interviewer: ${scheduledInterview.getInterviewer()}</li>
+            <li class="list-group-item">Shadow: ${scheduledInterview.getShadow()}</li>
+            <li class="list-group-item">
+              <a href=${scheduledInterview.getMeetLink()} target="_blank">
+                Meet Link
+              </a>
+            </li>
           </ul>
           <c:choose>
-            <c:when test= "${scheduledInterview.getHasStarted()}">
-              <a href="feedback.html?interview=${scheduledInterview.getId()}&role=${scheduledInterview.getRole()}" style="text-align:center">
-                <button class="btn btn-primary" type="button">Submit Feedback</button>
-              </a>
+            <c:when test ="${scheduledInterview.getRole().equals('Interviewer') || scheduledInterview.getRole().equals('Interviewee')}">
+              <c:choose>
+                <c:when test= "${scheduledInterview.getHasStarted()}">
+                  <a href="feedback.html?interview=${scheduledInterview.getId()}&role=${scheduledInterview.getRole()}" style="text-align:center">
+                    <button class="btn btn-primary" type="button">Submit Feedback</button>
+                  </a>
+                </c:when>
+                <c:otherwise>
+                  <p style="text-align:center">You may begin feedback 5 minutes after the interview has started.</p>
+                </c:otherwise>
+              </c:choose>
             </c:when>
-            <c:otherwise>
-              <p style="text-align:center">You may begin feedback 5 minutes after the interview has started.</p>
-            </c:otherwise>
           </c:choose>
         </div>
       </div>

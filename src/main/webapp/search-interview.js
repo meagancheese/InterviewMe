@@ -21,16 +21,27 @@ function onSearchInterviewLoad() {
 // Queries Datastore for available interview times and renders them on the
 // page.
 function loadInterviews() {
-  const searchResultsDiv = document.getElementById("search-results");
-  searchResultsDiv.removeAttribute("hidden");
-  fetch(`/load-interviews?timeZoneOffset=${browserTimezoneOffset()}&position=${selectedPosition()}`)
-  .then(response => response.text())
-  .then(interviewTimes => {
-    interviewTimesDiv().innerHTML = interviewTimes;
-  });
+  const searchResultsDiv = document.getElementById('search-results');
+  searchResultsDiv.removeAttribute('hidden');
+  const role = selectedRole();
+  let servlet = '';
+  if (role === 'Interviewee') {
+    servlet = 'load-interviews';
+  } else if (role === 'Shadow') {
+    servlet = 'shadow-load-interviews';
+  }
+  fetch(`/${servlet}?timeZoneOffset=${browserTimezoneOffset()}&position=${selectedEnumPosition()}`)
+    .then(response => response.text())
+    .then(interviewTimes => {
+      interviewTimesDiv().innerHTML = interviewTimes;
+    });
 }
 
-function selectedPosition() {
+function selectedRole() {
+  return document.getElementById('role').value;
+}
+
+function selectedEnumPosition() {
   let position = document.getElementById('position').value;
   return position.toUpperCase().replace(' ', '_');
 }
@@ -54,31 +65,50 @@ function selectInterview(interviewer) {
   }
   let utcStartTime = interviewer.getAttribute('data-utc');
   let position = document.getElementById('position').value;
-  if (confirm(
-      `You selected: ${date} from ${time} with a ` +
-      `${company} ${job}. ` +
-      `Click OK if you wish to proceed.`)) {
-    alert(
-      `You have scheduled a ${position} interview on ${date}` +
-      ` from ${time} with a ${company} ` +
-      `${job}. Check your email for more ` +
-      `information.`);
-    if (company === '<Not specified>') {
-      company = '';
+  let role = selectedRole();
+  if (role === 'Interviewee') {
+    if (confirm(
+        `You selected: ${date} from ${time} with a ` +
+        `${company} ${job}. ` +
+        `Click OK if you wish to proceed.`)) {
+      alert(
+        `You have scheduled a ${position} interview on ${date}` +
+        ` from ${time} with a ${company} ` +
+        `${job}. Check your email for more ` +
+        `information.`);
+      updateDatastore('POST', company, job, utcStartTime);
     }
-    if (job === '<Not specified>') {
-      job = '';
+  } else if (role === 'Shadow') {
+    if (confirm(
+        `You selected: ${date} from ${time} with a ` +
+        `${company} ${job}. ` +
+        `Click OK if you wish to proceed.`)) {
+      alert(
+        `You will shadow a ${position} interview on ${date}` +
+        ` from ${time} with a ${company} ` +
+        `${job}. Check your email for more ` +
+        `information.`);
+      updateDatastore('PUT', company, job, utcStartTime);
     }
-    let requestObject = {
-      company: company,
-      job: job,
-      utcStartTime: utcStartTime,
-      position: selectedPosition()
-    };
-    let requestBody = JSON.stringify(requestObject);
-    let request = new Request('/scheduled-interviews', {method: 'POST', body: requestBody});
-    fetch(request).then(() => {window.location.replace('/scheduled-interviews.html');});
   }
+}
+
+function updateDatastore(method, company, job, utcStartTime) {
+  if (company === '<Not specified>') {
+    company = '';
+  }
+  if (job === '<Not specified>') {
+    job = '';
+  }
+  let requestObject = {
+    company: company,
+    job: job,
+    utcStartTime: utcStartTime,
+    position: selectedEnumPosition()
+  };
+  let requestBody = JSON.stringify(requestObject);
+  let request = new Request('/scheduled-interviews', {method: method, body: requestBody});
+  fetch(request).then(() => {window.location.replace('/scheduled-interviews.html');});
 }
 
 // Fills in the modal with interviewer info from Datastore and shows it.
@@ -88,14 +118,21 @@ function showInterviewers(selectButton) {
   const time = select.options[select.selectedIndex].text;
   const reformattedTime = time.replace('-', 'to');
   const utc = select.value;
-  fetch(`/show-interviewers?utcStartTime=${utc}&date=${date}&time=${reformattedTime}&position=${selectedPosition()}`)
-  .then(response => response.text())
-  .then(interviewers => {
-    $('#modal-body').html(interviewers);
-    $('#modal-title').text(`Qualified Interviewers Information for ${date} from ${reformattedTime}`);
-    $('#interviewer-modal').modal('show');
-    checkIfSpecified();
-  });
+  const role = selectedRole();
+  let servlet = '';
+  if (role === 'Interviewee') {
+    servlet = 'show-interviewers';
+  } else if (role === 'Shadow') {
+    servlet = 'shadow-show-interviewers';
+  }
+  fetch(`/${servlet}?utcStartTime=${utc}&date=${date}&time=${reformattedTime}&position=${selectedEnumPosition()}`)
+    .then(response => response.text())
+    .then(interviewers => {
+      $('#modal-body').html(interviewers);
+      $('#modal-title').text(`Qualified Interviewers Information for ${date} from ${reformattedTime}`);
+      $('#interviewer-modal').modal('show');
+      checkIfSpecified();
+    });
 }
 
 function checkIfSpecified() {

@@ -40,7 +40,8 @@ function submitProfileForm(methodType, redirectUrl) {
     company: $('#company-field').val(),
     job: $('#job-field').val(),
     linkedIn: $('#linkedin-field').val(),
-    qualifiedJobs: qualifiedJobs
+    qualifiedJobs: qualifiedJobs,
+    okShadow: $('#ok-shadow-check').prop('checked')
   };
   fetch('/person',{
     method: methodType,
@@ -70,6 +71,7 @@ function autofillForm(person) {
   for (let qualifiedJob of person.qualifiedJobs) {
     document.getElementById(enumNameToId(qualifiedJob)).checked = true;
   }
+  document.getElementById('ok-shadow-check').checked = Boolean(person.okShadow);
 }
 
 function enumNameToId(enumName) {

@@ -84,7 +84,7 @@ public class GoogleCalendarAccess implements CalendarAccess {
 
   // Makes a Calendar service.
   public static Calendar MakeCalendar(SecretFetcher secretFetcher)
-      throws GeneralSecurityException, IOException, Exception {
+      throws GeneralSecurityException, IOException {
     String key = secretFetcher.getSecretValue("SERVICE_ACCT_KEY");
     return new Calendar.Builder(
             GoogleNetHttpTransport.newTrustedTransport(),

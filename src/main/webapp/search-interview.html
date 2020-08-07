@@ -41,11 +41,17 @@
       </nav>
       <br>
       <h1 class="text-center">Search for an Interview</h1>
-      <h5 class="text-center lead">Select the position you'd like to be interviewed for and search for possible times!</h5>
+      <h5 class="text-center lead">Select your interview role and job position and search for possible times!</h5>
       <br>
       <form>
         <div class="form-group mb-3">
-          <!-- TODO: add parameters for this form. -->
+          <label for="role">Role</label>
+          <select id="role" class="form-control" name="role">
+            <option>Interviewee</option>
+            <option>Shadow</option>
+          </select>
+        </div>
+        <div class="form-group mb-3">
           <label for="position">Position</label>
           <select id="position" class="form-control" name="job">
             <option>Software Engineer</option>

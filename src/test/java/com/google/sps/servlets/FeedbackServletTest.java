@@ -23,11 +23,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.sps.data.FakeScheduledInterviewDao;
+import com.google.sps.data.Job;
 import com.google.sps.data.ScheduledInterview;
 import com.google.sps.data.TimeRange;
-import com.google.sps.servlets.FeedbackServlet;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +45,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.junit.Test;
-import com.google.gson.JsonSyntaxException;
 
 @RunWith(JUnit4.class)
 public final class FeedbackServletTest {
@@ -57,7 +57,10 @@ public final class FeedbackServletTest {
           new TimeRange(
               Instant.parse("2020-07-06T17:00:10Z"), Instant.parse("2020-07-06T18:00:10Z")),
           emailToId("user@company.org"),
-          emailToId("user@mail.com"));
+          emailToId("user@mail.com"),
+          "meet_link",
+          Job.PRODUCT_MANAGER,
+          /*shadowId=*/ "");
 
   @Before
   public void setUp() {

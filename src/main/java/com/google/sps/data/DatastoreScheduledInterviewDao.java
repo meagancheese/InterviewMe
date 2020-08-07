@@ -61,20 +61,33 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
   }
 
   /**
-   * Retrieves all scheduledInterview entities from Datastore that involve a particular user and
-   * returns them as a list of ScheduledInterview objects in the order in which they occur.
+   * Returns a list, sorted by start time, of all scheduled ScheduledInterview objects between
+   * minTime and maxTime.
    */
-  @Override
-  public List<ScheduledInterview> getForPerson(String userId) {
-    FilterPredicate interviewerFilter =
-        new FilterPredicate("interviewer", FilterOperator.EQUAL, userId);
-    FilterPredicate intervieweeFilter =
-        new FilterPredicate("interviewee", FilterOperator.EQUAL, userId);
-    CompositeFilter compositeFilter =
-        CompositeFilterOperator.or(interviewerFilter, intervieweeFilter);
+  public List<ScheduledInterview> getInRange(Instant minTime, Instant maxTime) {
+    List<Entity> entities = getEntitiesInRange(minTime, maxTime, Optional.empty());
+    List<ScheduledInterview> scheduledInterviews = new ArrayList<ScheduledInterview>();
+    for (Entity entity : entities) {
+      scheduledInterviews.add(entityToScheduledInterview(entity));
+    }
+    return scheduledInterviews;
+  }
+
+  /**
+   * Returns a list, sorted by start time, of all ScheduledInterview objects ranging from minTime to
+   * maxTime that are for the selected position and do not already have a shadow.
+   */
+  public List<ScheduledInterview> getForPositionWithoutShadowInRange(
+      Job position, Instant minTime, Instant maxTime) {
+    List<Filter> allFilters = new ArrayList<>();
+    allFilters.add(getTimeFilter(minTime, maxTime));
+    allFilters.add(new FilterPredicate("position", FilterOperator.EQUAL, position.name()));
+    allFilters.add(new FilterPredicate("shadow", FilterOperator.EQUAL, ""));
+    CompositeFilter forPositionWithoutShadowInRange = CompositeFilterOperator.and(allFilters);
+
     Query query =
         new Query("ScheduledInterview")
-            .setFilter(compositeFilter)
+            .setFilter(forPositionWithoutShadowInRange)
             .addSort("startTime", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
     List<ScheduledInterview> relevantInterviews = new ArrayList<>();
@@ -86,18 +99,39 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
   }
 
   /**
-   * Returns a list of all scheduledInterviews ranging from minTime to maxTime of a user. minTime
-   * and maxTime are in milliseconds.
+   * Retrieves all scheduledInterview entities from Datastore that involve a particular user and
+   * returns them as a list of ScheduledInterview objects in the order in which they occur.
    */
+  @Override
+  public List<ScheduledInterview> getForPerson(String userId) {
+    Query query =
+        new Query("ScheduledInterview")
+            .setFilter(getUserFilter(userId))
+            .addSort("startTime", SortDirection.ASCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    List<ScheduledInterview> relevantInterviews = new ArrayList<>();
+
+    for (Entity entity : results.asIterable()) {
+      relevantInterviews.add(entityToScheduledInterview(entity));
+    }
+    return relevantInterviews;
+  }
+
+  // Returns a filter checking if userId is any role in a ScheduledInterview.
+  private CompositeFilter getUserFilter(String userId) {
+    Filter interviewerFilter = new FilterPredicate("interviewer", FilterOperator.EQUAL, userId);
+    Filter intervieweeFilter = new FilterPredicate("interviewee", FilterOperator.EQUAL, userId);
+    Filter shadowFilter = new FilterPredicate("shadow", FilterOperator.EQUAL, userId);
+    return CompositeFilterOperator.or(
+        CompositeFilterOperator.or(interviewerFilter, intervieweeFilter), shadowFilter);
+  }
+
+  /** Returns a list of all scheduledInterviews ranging from minTime to maxTime of a user. */
   @Override
   public List<ScheduledInterview> getScheduledInterviewsInRangeForUser(
       String userId, Instant minTime, Instant maxTime) {
-    Filter interviewerFilter = new FilterPredicate("interviewer", FilterOperator.EQUAL, userId);
-    Filter intervieweeFilter = new FilterPredicate("interviewee", FilterOperator.EQUAL, userId);
-    CompositeFilter scheduledForUserFilter =
-        CompositeFilterOperator.or(interviewerFilter, intervieweeFilter);
     List<Entity> entities =
-        getEntitiesInRange(minTime, maxTime, Optional.of(scheduledForUserFilter));
+        getEntitiesInRange(minTime, maxTime, Optional.of(getUserFilter(userId)));
     List<ScheduledInterview> scheduledInterviews = new ArrayList<ScheduledInterview>();
     for (Entity entity : entities) {
       scheduledInterviews.add(entityToScheduledInterview(entity));
@@ -132,7 +166,10 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
             Instant.ofEpochMilli((long) scheduledInterviewEntity.getProperty("startTime")),
             Instant.ofEpochMilli((long) scheduledInterviewEntity.getProperty("endTime"))),
         (String) scheduledInterviewEntity.getProperty("interviewer"),
-        (String) scheduledInterviewEntity.getProperty("interviewee"));
+        (String) scheduledInterviewEntity.getProperty("interviewee"),
+        (String) scheduledInterviewEntity.getProperty("meetLink"),
+        Job.valueOf((String) scheduledInterviewEntity.getProperty("position")),
+        (String) scheduledInterviewEntity.getProperty("shadow"));
   }
 
   /** Creates a scheduledInterview Entity from a scheduledInterview object. */
@@ -143,6 +180,9 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
     scheduledInterviewEntity.setProperty("endTime", scheduledInterview.when().end().toEpochMilli());
     scheduledInterviewEntity.setProperty("interviewer", scheduledInterview.interviewerId());
     scheduledInterviewEntity.setProperty("interviewee", scheduledInterview.intervieweeId());
+    scheduledInterviewEntity.setProperty("meetLink", scheduledInterview.meetLink());
+    scheduledInterviewEntity.setProperty("position", scheduledInterview.position().name());
+    scheduledInterviewEntity.setProperty("shadow", scheduledInterview.shadowId());
     return scheduledInterviewEntity;
   }
 
@@ -154,16 +194,31 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
     scheduledInterviewEntity.setProperty("endTime", scheduledInterview.when().end().toEpochMilli());
     scheduledInterviewEntity.setProperty("interviewer", scheduledInterview.interviewerId());
     scheduledInterviewEntity.setProperty("interviewee", scheduledInterview.intervieweeId());
+    scheduledInterviewEntity.setProperty("meetLink", scheduledInterview.meetLink());
+    scheduledInterviewEntity.setProperty("position", scheduledInterview.position().name());
+    scheduledInterviewEntity.setProperty("shadow", scheduledInterview.shadowId());
     return scheduledInterviewEntity;
   }
 
   /**
-   * Returns interviews within a desired range in the order in which they occur. For example:
-   * scheduledInterviews starting >= 2:00PM and ending <= 6:00PM on a certain date. The maxTime is
-   * 6:00PM on that day.
+   * Returns interviews within a desired range in the order in which they occur. For example: to get
+   * scheduledInterviews starting >= 2:00PM and ending <= 6:00PM on a certain date, set the maxTime
+   * to be 6:00PM on that date.
    */
   private List<Entity> getEntitiesInRange(
       Instant minTime, Instant maxTime, Optional<Filter> filterOpt) {
+    CompositeFilter startAndEndFilter = getTimeFilter(minTime, maxTime);
+    if (filterOpt.isPresent()) {
+      startAndEndFilter = CompositeFilterOperator.and(startAndEndFilter, filterOpt.get());
+    }
+    Query scheduledInterviewQuery =
+        new Query("ScheduledInterview")
+            .setFilter(startAndEndFilter)
+            .addSort("startTime", SortDirection.ASCENDING);
+    return datastore.prepare(scheduledInterviewQuery).asList(FetchOptions.Builder.withDefaults());
+  }
+
+  private CompositeFilter getTimeFilter(Instant minTime, Instant maxTime) {
     Filter startTimeFilter =
         new FilterPredicate(
             "startTime", FilterOperator.GREATER_THAN_OR_EQUAL, minTime.toEpochMilli());
@@ -175,14 +230,6 @@ public class DatastoreScheduledInterviewDao implements ScheduledInterviewDao {
             "startTime",
             FilterOperator.LESS_THAN_OR_EQUAL,
             maxTime.minus(60, ChronoUnit.MINUTES).toEpochMilli());
-    CompositeFilter startAndEndFilter = CompositeFilterOperator.and(startTimeFilter, endTimeFilter);
-    if (filterOpt.isPresent()) {
-      startAndEndFilter = CompositeFilterOperator.and(startAndEndFilter, filterOpt.get());
-    }
-    Query scheduledInterviewQuery =
-        new Query("ScheduledInterview")
-            .setFilter(startAndEndFilter)
-            .addSort("startTime", SortDirection.ASCENDING);
-    return datastore.prepare(scheduledInterviewQuery).asList(FetchOptions.Builder.withDefaults());
+    return CompositeFilterOperator.and(startTimeFilter, endTimeFilter);
   }
 }

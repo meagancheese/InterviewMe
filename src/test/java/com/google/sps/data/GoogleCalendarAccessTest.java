@@ -45,7 +45,13 @@ public final class GoogleCalendarAccessTest {
   LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalUserServiceTestConfig());
   private final ScheduledInterview interview1 =
       ScheduledInterview.create(
-          -1, new TimeRange(TIME_430PM, TIME_530PM), "interviewer_id", "interviewee_id");
+          -1,
+          new TimeRange(TIME_430PM, TIME_530PM),
+          "interviewer_id",
+          "interviewee_id",
+          "meet_link",
+          Job.SOFTWARE_ENGINEER,
+          "shadow_id");
 
   @Before
   public void setUp() {
