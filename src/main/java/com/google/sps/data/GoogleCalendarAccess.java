@@ -40,7 +40,7 @@ import java.util.Collections;
 // Handles all things Google Calendar (for now just getting a Meet link).
 public class GoogleCalendarAccess implements CalendarAccess {
   private Calendar service;
-  private static final String CALENDAR_ID = "info@jqed.dev";
+  private static final String CALENDAR_ID = "interviewme.business@gmail.com";
 
   // TODO: remember to write tests in the code that calls CalendarAccess() that handle what happens
   // per each exception

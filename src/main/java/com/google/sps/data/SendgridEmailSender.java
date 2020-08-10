@@ -38,9 +38,7 @@ public class SendgridEmailSender implements EmailSender {
 
   public SendgridEmailSender(Email sender) throws IOException {
     this.sender = sender;
-    this.sg =
-        new SendGrid(
-            new SecretFetcher("interviewme2020").getSecretValue("SENDGRID_API_KEY"));
+    this.sg = new SendGrid(new SecretFetcher("interviewme2020").getSecretValue("SENDGRID_API_KEY"));
   }
 
   // Sends an email from the "sender" Email to the "recipient" Email, with specified subject and
