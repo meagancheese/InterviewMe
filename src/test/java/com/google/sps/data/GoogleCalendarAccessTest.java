@@ -22,6 +22,7 @@ import com.google.api.services.calendar.model.ConferenceSolution;
 import com.google.api.services.calendar.model.ConferenceSolutionKey;
 import com.google.api.services.calendar.model.CreateConferenceRequest;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
@@ -35,6 +36,10 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import static com.google.common.truth.Truth.assertThat;
 
 /** Tests event definition (but not event creation) in GoogleCalendarAccess. */
 @RunWith(JUnit4.class)
@@ -52,10 +57,47 @@ public final class GoogleCalendarAccessTest {
           "meet_link",
           Job.SOFTWARE_ENGINEER,
           "shadow_id");
+  PersonDao personDao = new FakePersonDao();
+  Person interviewer =
+      Person.create(
+          "interviewer_id",
+          "interviewer@mail.com",
+          "firstName",
+          "lastName",
+          "company",
+          "job",
+          "linkedIn",
+          EnumSet.of(Job.NETWORK_ENGINEER),
+          /*okShadow=*/ true);
+  Person interviewee =
+      Person.create(
+          "interviewee_id",
+          "interviewee@mail.com",
+          "firstName",
+          "lastName",
+          "company",
+          "job",
+          "linkedIn",
+          EnumSet.of(Job.NETWORK_ENGINEER),
+          /*okShadow=*/ true);
+  Person shadow =
+      Person.create(
+          "shadow_id",
+          "shadow@mail.com",
+          "firstName",
+          "lastName",
+          "company",
+          "job",
+          "linkedIn",
+          EnumSet.of(Job.NETWORK_ENGINEER),
+          /*okShadow=*/ true);
 
   @Before
   public void setUp() {
     helper.setUp();
+    personDao.create(interviewer);
+    personDao.create(interviewee);
+    personDao.create(shadow);
   }
 
   @After
@@ -65,7 +107,7 @@ public final class GoogleCalendarAccessTest {
 
   @Test
   public void basic() throws Exception {
-    Event observed = GoogleCalendarAccess.makeEvent(interview1);
+    Event observed = GoogleCalendarAccess.makeEvent(interview1, personDao);
 
     EventDateTime expStart =
         new EventDateTime().setDateTime(new DateTime(interview1.when().start().toString()));
@@ -80,5 +122,23 @@ public final class GoogleCalendarAccessTest {
     expCreateRequest.setConferenceSolutionKey(new ConferenceSolutionKey().setType("hangoutsMeet"));
     Assert.assertEquals(
         observed.getConferenceData(), new ConferenceData().setCreateRequest(expCreateRequest));
+  }
+
+  @Test
+  public void getThreeAttendees() throws Exception {
+    List<EventAttendee> obs = GoogleCalendarAccess.getAttendees(interview1, personDao);
+    List<EventAttendee> exp =
+        Arrays.asList(
+            new EventAttendee[] {
+              new EventAttendee().setEmail("interviewer@mail.com"),
+              new EventAttendee().setEmail("interviewee@mail.com"),
+              new EventAttendee().setEmail("shadow@mail.com")
+            });
+    assertThat(obs).containsExactlyElementsIn(exp);
+  }
+
+  @Test
+  public void getAttendeesNoShadow() throws Exception {
+    List<EventAttendee> obs = GoogleCalendarAccess.getAttendees(interview1, new FakePersonDao());
   }
 }

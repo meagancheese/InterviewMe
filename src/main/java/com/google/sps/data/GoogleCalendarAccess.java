@@ -27,6 +27,7 @@ import com.google.api.services.calendar.model.ConferenceSolution;
 import com.google.api.services.calendar.model.ConferenceSolutionKey;
 import com.google.api.services.calendar.model.CreateConferenceRequest;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import com.google.common.annotations.VisibleForTesting;
@@ -35,7 +36,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 // Handles all things Google Calendar (for now just getting a Meet link).
 public class GoogleCalendarAccess implements CalendarAccess {
@@ -50,7 +53,7 @@ public class GoogleCalendarAccess implements CalendarAccess {
 
   // Defines an event.
   @VisibleForTesting
-  static Event makeEvent(ScheduledInterview interview) {
+  static Event makeEvent(ScheduledInterview interview, PersonDao personDao) {
     Event event =
         new Event()
             .setSummary("Interview")
@@ -65,6 +68,8 @@ public class GoogleCalendarAccess implements CalendarAccess {
     EventDateTime end = new EventDateTime().setDateTime(endDateTime);
     event.setEnd(end);
 
+    event.setAttendees(getAttendees(interview, personDao));
+
     CreateConferenceRequest createRequest = new CreateConferenceRequest();
     createRequest.setRequestId(String.valueOf(interview.id()));
     createRequest.setConferenceSolutionKey(new ConferenceSolutionKey().setType("hangoutsMeet"));
@@ -77,9 +82,27 @@ public class GoogleCalendarAccess implements CalendarAccess {
   @Override
   public String getMeetLink(ScheduledInterview interview)
       throws IOException, GeneralSecurityException {
-    Event event = makeEvent(interview);
+    Event event = makeEvent(interview, new DatastorePersonDao());
     event = service.events().insert(CALENDAR_ID, event).setConferenceDataVersion(1).execute();
     return event.getConferenceData().getEntryPoints().get(0).getUri();
+  }
+
+  public static List<EventAttendee> getAttendees(
+      ScheduledInterview interview, PersonDao personDao) {
+    List<EventAttendee> attendees = new ArrayList<>();
+    attendees = addAttendeeIfValidId(interview.interviewerId(), attendees, personDao);
+    attendees = addAttendeeIfValidId(interview.intervieweeId(), attendees, personDao);
+    attendees = addAttendeeIfValidId(interview.shadowId(), attendees, personDao);
+    return attendees;
+  }
+
+  private static List<EventAttendee> addAttendeeIfValidId(
+      String participantId, List<EventAttendee> attendees, PersonDao personDao) {
+    String email = personDao.get(participantId).map(Person::email).orElse("");
+    if (!email.isEmpty()) {
+      attendees.add(new EventAttendee().setEmail(email));
+    }
+    return attendees;
   }
 
   // Makes a Calendar service.
