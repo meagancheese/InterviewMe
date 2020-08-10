@@ -43,7 +43,7 @@ import java.util.List;
 // Handles all things Google Calendar (for now just getting a Meet link).
 public class GoogleCalendarAccess implements CalendarAccess {
   private Calendar service;
-  private static final String CALENDAR_ID = "interviewme.business@gmail.com";
+  private static final String CALENDAR_ID = "info@jqed.dev";
 
   // TODO: remember to write tests in the code that calls CalendarAccess() that handle what happens
   // per each exception
@@ -54,11 +54,12 @@ public class GoogleCalendarAccess implements CalendarAccess {
   // Defines an event.
   @VisibleForTesting
   static Event makeEvent(ScheduledInterview interview, PersonDao personDao) {
+    // TODO: add first names to summary
     Event event =
         new Event()
-            .setSummary("Interview")
+            .setSummary("InterviewMe Interview")
             .setDescription(
-                "This event won't be shown to users, just used to \"reserve\" a Meet link.");
+                "Use the Meet Link attached to this calendar to conduct the interview.");
 
     DateTime startDateTime = new DateTime(interview.when().start().toString());
     EventDateTime start = new EventDateTime().setDateTime(startDateTime);
@@ -79,11 +80,21 @@ public class GoogleCalendarAccess implements CalendarAccess {
 
   // Creates an event in the calendar CALENDAR_ID and returns the Meet Link associated with that
   // event.
+  // TODO: update name of this function & use cases, also update emails to reflect participants
+  // being invited to
+  // an event.
   @Override
   public String getMeetLink(ScheduledInterview interview)
       throws IOException, GeneralSecurityException {
     Event event = makeEvent(interview, new DatastorePersonDao());
-    event = service.events().insert(CALENDAR_ID, event).setConferenceDataVersion(1).execute();
+    event =
+        service
+            .events()
+            .insert(CALENDAR_ID, event)
+            .setConferenceDataVersion(1)
+            .setSendUpdates("all")
+            .setSupportsAttachments(true)
+            .execute();
     return event.getConferenceData().getEntryPoints().get(0).getUri();
   }
 
@@ -98,6 +109,9 @@ public class GoogleCalendarAccess implements CalendarAccess {
 
   private static List<EventAttendee> addAttendeeIfValidId(
       String participantId, List<EventAttendee> attendees, PersonDao personDao) {
+    if (participantId.isEmpty()) {
+      return attendees;
+    }
     String email = personDao.get(participantId).map(Person::email).orElse("");
     if (!email.isEmpty()) {
       attendees.add(new EventAttendee().setEmail(email));

@@ -48,15 +48,6 @@ public final class GoogleCalendarAccessTest {
   Instant TIME_530PM = Instant.parse("2020-08-07T17:30:10Z");
 
   LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalUserServiceTestConfig());
-  private final ScheduledInterview interview1 =
-      ScheduledInterview.create(
-          -1,
-          new TimeRange(TIME_430PM, TIME_530PM),
-          "interviewer_id",
-          "interviewee_id",
-          "meet_link",
-          Job.SOFTWARE_ENGINEER,
-          "shadow_id");
   PersonDao personDao = new FakePersonDao();
   Person interviewer =
       Person.create(
@@ -106,39 +97,77 @@ public final class GoogleCalendarAccessTest {
   }
 
   @Test
-  public void basic() throws Exception {
-    Event observed = GoogleCalendarAccess.makeEvent(interview1, personDao);
+  public void threeAttendees() throws Exception {
+    ScheduledInterview interview =
+        ScheduledInterview.create(
+            -1,
+            new TimeRange(TIME_430PM, TIME_530PM),
+            "interviewer_id",
+            "interviewee_id",
+            "meet_link",
+            Job.SOFTWARE_ENGINEER,
+            "shadow_id");
+    Event observed = GoogleCalendarAccess.makeEvent(interview, personDao);
 
     EventDateTime expStart =
-        new EventDateTime().setDateTime(new DateTime(interview1.when().start().toString()));
+        new EventDateTime().setDateTime(new DateTime(interview.when().start().toString()));
     Assert.assertEquals(observed.getStart(), expStart);
 
     EventDateTime expEnd =
-        new EventDateTime().setDateTime(new DateTime(interview1.when().end().toString()));
+        new EventDateTime().setDateTime(new DateTime(interview.when().end().toString()));
     Assert.assertEquals(observed.getEnd(), expEnd);
 
     CreateConferenceRequest expCreateRequest = new CreateConferenceRequest();
-    expCreateRequest.setRequestId(String.valueOf(interview1.id()));
+    expCreateRequest.setRequestId(String.valueOf(interview.id()));
     expCreateRequest.setConferenceSolutionKey(new ConferenceSolutionKey().setType("hangoutsMeet"));
     Assert.assertEquals(
         observed.getConferenceData(), new ConferenceData().setCreateRequest(expCreateRequest));
-  }
 
-  @Test
-  public void getThreeAttendees() throws Exception {
-    List<EventAttendee> obs = GoogleCalendarAccess.getAttendees(interview1, personDao);
-    List<EventAttendee> exp =
+    List<EventAttendee> expAttendees =
         Arrays.asList(
             new EventAttendee[] {
               new EventAttendee().setEmail("interviewer@mail.com"),
               new EventAttendee().setEmail("interviewee@mail.com"),
               new EventAttendee().setEmail("shadow@mail.com")
             });
-    assertThat(obs).containsExactlyElementsIn(exp);
+    assertThat(observed.getAttendees()).containsExactlyElementsIn(expAttendees);
   }
 
   @Test
-  public void getAttendeesNoShadow() throws Exception {
-    List<EventAttendee> obs = GoogleCalendarAccess.getAttendees(interview1, new FakePersonDao());
+  public void noShadow() throws Exception {
+    ScheduledInterview interview =
+        ScheduledInterview.create(
+            -1,
+            new TimeRange(TIME_430PM, TIME_530PM),
+            "interviewer_id",
+            "interviewee_id",
+            "meet_link",
+            Job.SOFTWARE_ENGINEER,
+            "");
+    Event observed = GoogleCalendarAccess.makeEvent(interview, personDao);
+    List<EventAttendee> expAttendees =
+        Arrays.asList(
+            new EventAttendee[] {
+              new EventAttendee().setEmail("interviewer@mail.com"),
+              new EventAttendee().setEmail("interviewee@mail.com")
+            });
+    assertThat(observed.getAttendees()).containsExactlyElementsIn(expAttendees);
+  }
+
+  @Test
+  public void invalidId() throws Exception {
+    ScheduledInterview interview =
+        ScheduledInterview.create(
+            -1,
+            new TimeRange(TIME_430PM, TIME_530PM),
+            "interviewer_id",
+            "bad_id",
+            "meet_link",
+            Job.SOFTWARE_ENGINEER,
+            "");
+    Event observed = GoogleCalendarAccess.makeEvent(interview, personDao);
+    List<EventAttendee> expAttendees =
+        Arrays.asList(new EventAttendee[] {new EventAttendee().setEmail("interviewer@mail.com")});
+    assertThat(observed.getAttendees()).containsExactlyElementsIn(expAttendees);
   }
 }
